@@ -41,6 +41,12 @@
     brightnessValue: document.getElementById("brightness-value"),
     contrastSlider: document.getElementById("contrast-slider"),
     contrastValue: document.getElementById("contrast-value"),
+    saturationSlider: document.getElementById("saturation-slider"),
+    saturationValue: document.getElementById("saturation-value"),
+    sharpnessSlider: document.getElementById("sharpness-slider"),
+    sharpnessValue: document.getElementById("sharpness-value"),
+    autoEnhanceButton: document.getElementById("auto-enhance-button"),
+    enhanceNote: document.getElementById("enhance-note"),
     grayscaleToggle: document.getElementById("grayscale-toggle"),
     ratioLock: document.getElementById("ratio-lock"),
     widthInput: document.getElementById("width-input"),
@@ -215,6 +221,11 @@
       elements.brightnessValue.textContent = "100%";
       elements.contrastSlider.value = "100";
       elements.contrastValue.textContent = "100%";
+      elements.saturationSlider.value = "100";
+      elements.saturationValue.textContent = "100%";
+      elements.sharpnessSlider.value = "0";
+      elements.sharpnessValue.textContent = "0%";
+      elements.enhanceNote.textContent = "Automatically balance contrast and color, then add a touch of sharpness.";
       elements.grayscaleToggle.checked = false;
       updateAspectControls();
 
@@ -243,6 +254,65 @@
 
   function updateQualityNote() {
     elements.qualityNote.classList.toggle("hidden", elements.formatSelect.value !== "image/png");
+  }
+
+  function updateEnhancementControls() {
+    elements.brightnessValue.textContent = `${elements.brightnessSlider.value}%`;
+    elements.contrastValue.textContent = `${elements.contrastSlider.value}%`;
+    elements.saturationValue.textContent = `${elements.saturationSlider.value}%`;
+    elements.sharpnessValue.textContent = `${elements.sharpnessSlider.value}%`;
+  }
+
+  function clamp(value, minimum, maximum) {
+    return Math.min(maximum, Math.max(minimum, value));
+  }
+
+  function autoEnhance() {
+    if (!state.image) return;
+    const sampleCanvas = document.createElement("canvas");
+    sampleCanvas.width = 64;
+    sampleCanvas.height = 64;
+    try {
+      const context = sampleCanvas.getContext("2d", { willReadFrequently: true });
+      if (!context) throw new Error("Your browser could not analyze this image for enhancement.");
+      context.drawImage(state.image, 0, 0, sampleCanvas.width, sampleCanvas.height);
+      const pixels = context.getImageData(0, 0, sampleCanvas.width, sampleCanvas.height).data;
+      let luminanceTotal = 0;
+      let luminanceSquaredTotal = 0;
+      let saturationTotal = 0;
+      let sampleCount = 0;
+      for (let index = 0; index < pixels.length; index += 16) {
+        if (pixels[index + 3] === 0) continue;
+        const red = pixels[index] / 255;
+        const green = pixels[index + 1] / 255;
+        const blue = pixels[index + 2] / 255;
+        const luminance = (0.2126 * red + 0.7152 * green + 0.0722 * blue) * 255;
+        const maximum = Math.max(red, green, blue);
+        const minimum = Math.min(red, green, blue);
+        luminanceTotal += luminance;
+        luminanceSquaredTotal += luminance * luminance;
+        saturationTotal += maximum === 0 ? 0 : (maximum - minimum) / maximum;
+        sampleCount += 1;
+      }
+      if (sampleCount === 0) throw new Error("This image has no visible pixels to analyze for auto-enhancement.");
+      const meanLuminance = luminanceTotal / sampleCount;
+      const luminanceDeviation = Math.sqrt(Math.max(0, luminanceSquaredTotal / sampleCount - meanLuminance ** 2));
+      const meanSaturation = saturationTotal / sampleCount;
+      elements.brightnessSlider.value = String(Math.round(clamp((128 / Math.max(1, meanLuminance)) * 100, 90, 115)));
+      elements.contrastSlider.value = String(Math.round(clamp(100 + (56 - luminanceDeviation) * 0.45, 90, 125)));
+      elements.saturationSlider.value = String(Math.round(clamp(100 + (0.5 - meanSaturation) * 35, 100, 125)));
+      elements.sharpnessSlider.value = "22";
+      elements.grayscaleToggle.checked = false;
+      updateEnhancementControls();
+      elements.enhanceNote.textContent = "Auto-enhanced for balanced light, contrast, color, and crisp detail. Fine-tune any slider.";
+      showMessage(elements.processingError, "");
+      scheduleProcessing();
+    } catch (error) {
+      showMessage(elements.processingError, error.message || "This image could not be auto-enhanced.");
+    } finally {
+      sampleCanvas.width = 0;
+      sampleCanvas.height = 0;
+    }
   }
 
   function getOutputDimensions() {
@@ -307,7 +377,7 @@
       context.scale(state.flipX ? -1 : 1, state.flipY ? -1 : 1);
       const rotatedWidth = Math.abs(state.rotation % 180) === 90 ? canvas.height : canvas.width;
       const rotatedHeight = Math.abs(state.rotation % 180) === 90 ? canvas.width : canvas.height;
-      context.filter = `brightness(${Number(elements.brightnessSlider.value)}%) contrast(${Number(elements.contrastSlider.value)}%) grayscale(${elements.grayscaleToggle.checked ? 1 : 0})`;
+      context.filter = `brightness(${Number(elements.brightnessSlider.value)}%) contrast(${Number(elements.contrastSlider.value)}%) saturate(${Number(elements.saturationSlider.value)}%) grayscale(${elements.grayscaleToggle.checked ? 1 : 0})`;
       if (state.cropRatio === null) {
         context.drawImage(state.image, -rotatedWidth / 2, -rotatedHeight / 2, rotatedWidth, rotatedHeight);
       } else {
@@ -352,9 +422,66 @@
     };
   }
 
-  async function encodeAtSize(dimensions, mimeType, quality) {
+  async function sharpenCanvas(canvas, revision) {
+    const strength = Number(elements.sharpnessSlider.value) / 100;
+    if (strength <= 0) return true;
+    const context = canvas.getContext("2d");
+    if (!context) throw new Error("Your browser could not create an image canvas for sharpening.");
+    const width = canvas.width;
+    const height = canvas.height;
+    const amount = strength * 0.2;
+    const rowsPerTile = 128;
+    for (let firstRow = 0; firstRow < height; firstRow += rowsPerTile) {
+      if (revision !== undefined && revision !== state.revision) return false;
+      const rowCount = Math.min(rowsPerTile, height - firstRow);
+      const sourceTop = Math.max(0, firstRow - 1);
+      const sourceBottom = Math.min(height, firstRow + rowCount + 1);
+      const source = context.getImageData(0, sourceTop, width, sourceBottom - sourceTop);
+      const output = context.createImageData(width, rowCount);
+      for (let row = 0; row < rowCount; row += 1) {
+        const imageY = firstRow + row;
+        const sourceRow = (imageY - sourceTop) * width;
+        const outputRow = row * width;
+        for (let x = 0; x < width; x += 1) {
+          const pixel = sourceRow + x;
+          const outputPixel = outputRow + x;
+          const offset = pixel * 4;
+          if (x === 0 || x === width - 1 || imageY === 0 || imageY === height - 1) {
+            output.data.set(source.data.subarray(offset, offset + 4), outputPixel * 4);
+            continue;
+          }
+          let redNeighbors = 0;
+          let greenNeighbors = 0;
+          let blueNeighbors = 0;
+          for (let dy = -1; dy <= 1; dy += 1) {
+            for (let dx = -1; dx <= 1; dx += 1) {
+              if (dx === 0 && dy === 0) continue;
+              const neighbor = ((imageY + dy - sourceTop) * width + x + dx) * 4;
+              redNeighbors += source.data[neighbor];
+              greenNeighbors += source.data[neighbor + 1];
+              blueNeighbors += source.data[neighbor + 2];
+            }
+          }
+          const outputOffset = outputPixel * 4;
+          output.data[outputOffset] = Math.max(0, Math.min(255, Math.round(source.data[offset] * (1 + 8 * amount) - redNeighbors * amount)));
+          output.data[outputOffset + 1] = Math.max(0, Math.min(255, Math.round(source.data[offset + 1] * (1 + 8 * amount) - greenNeighbors * amount)));
+          output.data[outputOffset + 2] = Math.max(0, Math.min(255, Math.round(source.data[offset + 2] * (1 + 8 * amount) - blueNeighbors * amount)));
+          output.data[outputOffset + 3] = source.data[offset + 3];
+        }
+      }
+      context.putImageData(output, 0, firstRow);
+      if (firstRow + rowCount < height) {
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+      }
+    }
+    return true;
+  }
+
+  async function encodeAtSize(dimensions, mimeType, quality, revision) {
     const canvas = createCanvas(dimensions);
     try {
+      const sharpened = await sharpenCanvas(canvas, revision);
+      if (!sharpened) return null;
       return await encodeCanvas(canvas, mimeType, quality);
     } finally {
       canvas.width = 0;
@@ -364,7 +491,7 @@
 
   async function findBestQuality(dimensions, mimeType, targetBytes, revision) {
     const minimumQuality = 0.05;
-    let bestBlob = await encodeAtSize(dimensions, mimeType, minimumQuality);
+    let bestBlob = await encodeAtSize(dimensions, mimeType, minimumQuality, revision);
     if (!bestBlob) throw new Error("The image could not be exported. Try another format.");
     if (revision !== state.revision) return null;
 
@@ -375,7 +502,7 @@
       for (let attempt = 0; attempt < 16; attempt += 1) {
         const scale = 0.75 ** (attempt + 1);
         const candidateDimensions = scaledDimensions(dimensions, scale);
-        const candidate = await encodeAtSize(candidateDimensions, mimeType, minimumQuality);
+        const candidate = await encodeAtSize(candidateDimensions, mimeType, minimumQuality, revision);
         if (!candidate) throw new Error("The image could not be exported. Try another format.");
         if (revision !== state.revision) return null;
         if (candidate.size < targetBytes) {
@@ -396,7 +523,7 @@
       for (let attempt = 0; attempt < 7; attempt += 1) {
         const scale = (lowScale + highScale) / 2;
         const candidateDimensions = scaledDimensions(dimensions, scale);
-        const candidate = await encodeAtSize(candidateDimensions, mimeType, minimumQuality);
+        const candidate = await encodeAtSize(candidateDimensions, mimeType, minimumQuality, revision);
         if (!candidate) throw new Error("The image could not be exported. Try another format.");
         if (revision !== state.revision) return null;
         if (candidate.size < targetBytes) {
@@ -415,7 +542,7 @@
     let highQuality = 1;
     for (let attempt = 0; attempt < 8; attempt += 1) {
       const quality = (lowQuality + highQuality) / 2;
-      const candidate = await encodeAtSize(dimensions, mimeType, quality);
+      const candidate = await encodeAtSize(dimensions, mimeType, quality, revision);
       if (!candidate) throw new Error("The image could not be exported. Try another format.");
       if (revision !== state.revision) return null;
       if (candidate.size < targetBytes) {
@@ -573,7 +700,7 @@
     const mimeType = elements.formatSelect.value;
     try {
       const result = state.targetBytes === null
-        ? { blob: await encodeAtSize(dimensions, mimeType, Number(elements.qualitySlider.value) / 100), dimensions }
+        ? { blob: await encodeAtSize(dimensions, mimeType, Number(elements.qualitySlider.value) / 100, revision), dimensions }
         : await findBestQuality(dimensions, mimeType, state.targetBytes, revision);
       if (revision !== state.revision) return;
       const { blob } = result;
@@ -697,11 +824,23 @@
     button.addEventListener("click", () => applyAspectRatio(Number(button.dataset.aspectRatio)));
   }
   elements.brightnessSlider.addEventListener("input", () => {
-    elements.brightnessValue.textContent = `${elements.brightnessSlider.value}%`;
+    updateEnhancementControls();
+    elements.enhanceNote.textContent = "Custom adjustments applied.";
     scheduleProcessing();
   });
   elements.contrastSlider.addEventListener("input", () => {
-    elements.contrastValue.textContent = `${elements.contrastSlider.value}%`;
+    updateEnhancementControls();
+    elements.enhanceNote.textContent = "Custom adjustments applied.";
+    scheduleProcessing();
+  });
+  elements.saturationSlider.addEventListener("input", () => {
+    updateEnhancementControls();
+    elements.enhanceNote.textContent = "Custom adjustments applied.";
+    scheduleProcessing();
+  });
+  elements.sharpnessSlider.addEventListener("input", () => {
+    updateEnhancementControls();
+    elements.enhanceNote.textContent = "Custom adjustments applied.";
     scheduleProcessing();
   });
   elements.grayscaleToggle.addEventListener("change", scheduleProcessing);
@@ -756,6 +895,11 @@
     elements.brightnessValue.textContent = "100%";
     elements.contrastSlider.value = "100";
     elements.contrastValue.textContent = "100%";
+    elements.saturationSlider.value = "100";
+    elements.saturationValue.textContent = "100%";
+    elements.sharpnessSlider.value = "0";
+    elements.sharpnessValue.textContent = "0%";
+    elements.enhanceNote.textContent = "Automatically balance contrast and color, then add a touch of sharpness.";
     elements.grayscaleToggle.checked = false;
     elements.formatSelect.value = FORMAT_EXTENSIONS[state.file.type] ? state.file.type : "image/png";
     updateQualityNote();
@@ -777,6 +921,33 @@
   });
 
   elements.downloadPdfButton.addEventListener("click", downloadAsPdf);
+
+  const editorTabs = [...document.querySelectorAll("[data-editor-tab]")];
+  function activateEditorTab(name, focus = false) {
+    for (const tab of editorTabs) {
+      const active = tab.dataset.editorTab === name;
+      tab.setAttribute("aria-selected", String(active));
+      tab.tabIndex = active ? 0 : -1;
+      const panel = document.getElementById(tab.getAttribute("aria-controls"));
+      panel.hidden = !active;
+      if (active && focus) tab.focus();
+    }
+  }
+  for (const tab of editorTabs) {
+    tab.addEventListener("click", () => activateEditorTab(tab.dataset.editorTab));
+    tab.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      event.preventDefault();
+      const currentIndex = editorTabs.indexOf(tab);
+      const nextIndex = event.key === "Home" ? 0
+        : event.key === "End" ? editorTabs.length - 1
+          : (currentIndex + (event.key === "ArrowRight" ? 1 : editorTabs.length - 1)) % editorTabs.length;
+      activateEditorTab(editorTabs[nextIndex].dataset.editorTab, true);
+    });
+  }
+  activateEditorTab("compress");
+
+  elements.autoEnhanceButton.addEventListener("click", autoEnhance);
 
   const legalPages = {
     about: {

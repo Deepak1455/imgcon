@@ -4,20 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#080b14" />
-    <meta name="description" content="Convert, resize, filter, and compress images to a target size online. Create PDFs privately in your browser with ImgCon." />
+    <meta name="description" content="Compress image to 20KB, 50KB, or 100KB online free. Make passport photos, convert JPG to WebP, resize, and enhance privately in your browser with ImgCon." />
+    <meta name="keywords" content="compress image to 20KB online free, compress image to 50KB, compress image to 100KB, passport photo maker, convert JPG to WebP, image compressor, image enhancer" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://imgcon.online/" />
+    <meta property="og:title" content="ImgCon — Free Image Compressor, Converter & Passport Photo Maker" />
+    <meta property="og:description" content="Compress to 20KB, 50KB, or 100KB, convert JPG to WebP, and enhance images locally in your browser." />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="ImgCon — Free Online Image Tools" />
+    <meta name="twitter:description" content="Compress, convert, resize, and enhance images privately in your browser." />
     <meta name="robots" content="index,follow" />
     <link rel="canonical" href="https://imgcon.online/" />
-    <title>ImgCon — Free Online Image Compressor &amp; Converter</title>
+    <title>ImgCon — Free Image Compressor 20KB, 50KB &amp; 100KB</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "ImgCon",
         "url": "https://imgcon.online/",
-        "applicationCategory": "UtilitiesApplication",
+        "applicationCategory": "MultimediaApplication",
         "operatingSystem": "Any",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-        "description": "Free browser-based image conversion, compression, resizing, filtering, and PDF export."
+        "browserRequirements": "Requires JavaScript and a modern browser with Canvas support.",
+        "featureList": [
+          "Compress images to 20KB, 50KB, or 100KB",
+          "Convert JPG to WebP, PNG, or JPG",
+          "Resize and crop passport photos",
+          "One-click image auto-enhance and sharpness controls",
+          "Private, local browser processing"
+        ],
+        "description": "Free browser-based image compressor, JPG to WebP converter, passport photo maker, image enhancer, resizer, and PDF exporter. Images are processed locally in the browser."
       }
     </script>
     <script type="application/ld+json">
@@ -27,28 +43,57 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "Can ImgCon compress an image to 50 KB?",
+            "name": "How can I compress an image to 20KB, 50KB, or 100KB online?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Choose the 50 KB target in the editor. ImgCon adjusts image quality and, when necessary, dimensions to fit under the selected maximum. Some images or formats may not be able to meet every target."
+              "text": "Open your image in ImgCon, choose the 20 KB, 50 KB, or 100 KB target, and download the result. ImgCon adjusts quality and, when needed, dimensions to target the maximum. Results depend on image content and format."
             }
           },
           {
             "@type": "Question",
-            "name": "Can I convert an image to another format?",
+            "name": "How do I convert JPG to WebP?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. Open an image and select PNG, JPG, or WEBP as the output format, then download the converted result."
+              "text": "Open a JPG image in ImgCon, select WEBP under Output format, preview the converted image, and download it. Conversion happens locally in your browser."
             }
           },
           {
             "@type": "Question",
-            "name": "Are my images private when I use ImgCon?",
+            "name": "How can I compress a photo for SSC or UPSC applications?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Image editing and export run locally in your browser. ImgCon does not upload your selected image to an image-processing server."
+              "text": "Check the current SSC or UPSC application instructions for its required dimensions, format, and maximum file size. Use ImgCon to resize or crop your photo and select a matching file-size target; always verify the downloaded file against the official requirements."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I make a passport photo with ImgCon?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "ImgCon can crop and resize an image using common aspect ratios, including passport-style proportions. Passport photo rules vary by country and application, so verify the required size, background, and framing before submitting."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is ImgCon secure, and are my photos uploaded?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Image editing and export run locally in your browser. ImgCon does not upload selected image files to an image-processing server. Keep your browser and device secure and check any official application requirements before submitting a photo."
             }
           }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to compress and enhance an image with ImgCon",
+        "description": "Compress, crop, convert, and enhance an image in three steps using ImgCon in your browser.",
+        "step": [
+          { "@type": "HowToStep", "name": "Choose an image", "text": "Select or drop an image into ImgCon. The image stays in your browser.", "url": "https://imgcon.online/#upload-section" },
+          { "@type": "HowToStep", "name": "Edit and enhance", "text": "Select a format or target file size, crop or resize as needed, and optionally use Magic Auto-Enhance.", "url": "https://imgcon.online/#editor" },
+          { "@type": "HowToStep", "name": "Download your result", "text": "Preview the processed image and download the image or a PDF copy.", "url": "https://imgcon.online/#editor" }
         ]
       }
     </script>
@@ -88,7 +133,22 @@
         background-size: 20px 20px;
         background-position: 0 0, 0 10px, 10px -10px, -10px 0;
       }
-      input[type="range"] { accent-color: #818cf8; }
+      input[type="range"] {
+        width: 100%;
+        height: 22px;
+        margin: 4px 0;
+        appearance: none;
+        -webkit-appearance: none;
+        background: transparent;
+        cursor: pointer;
+        accent-color: #818cf8;
+      }
+      input[type="range"]::-webkit-slider-runnable-track { height: 5px; border-radius: 999px; background: linear-gradient(90deg, #6366f1, #a78bfa); }
+      input[type="range"]::-moz-range-track { height: 5px; border-radius: 999px; background: linear-gradient(90deg, #6366f1, #a78bfa); }
+      input[type="range"]::-webkit-slider-thumb { width: 18px; height: 18px; margin-top: -6.5px; appearance: none; border: 2px solid #fff; border-radius: 50%; background: #6366f1; box-shadow: 0 1px 5px rgba(15, 23, 42, .35); transition: transform .15s ease, box-shadow .15s ease; }
+      input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border: 2px solid #fff; border-radius: 50%; background: #6366f1; box-shadow: 0 1px 5px rgba(15, 23, 42, .35); transition: transform .15s ease, box-shadow .15s ease; }
+      input[type="range"]:hover::-webkit-slider-thumb, input[type="range"]:focus-visible::-webkit-slider-thumb { transform: scale(1.12); box-shadow: 0 0 0 5px rgba(99, 102, 241, .18); }
+      input[type="range"]:focus-visible { outline: none; }
       input[type="number"]::-webkit-inner-spin-button,
       input[type="number"]::-webkit-outer-spin-button { opacity: .6; }
       .drop-active { border-color: #818cf8 !important; background-color: rgba(99, 102, 241, .09) !important; box-shadow: 0 0 0 1px rgba(129, 140, 248, .5), 0 0 32px rgba(99, 102, 241, .2); }
@@ -104,6 +164,9 @@
         transition: border-color .15s, color .15s, background .15s, transform .15s, box-shadow .15s;
       }
       .transform-button:hover { border-color: #818cf8; color: #c7d2fe; background: rgba(99, 102, 241, .08); transform: translateY(-1px); }
+      .editor-tab[aria-selected="true"] { color: #fff; border-color: rgba(129, 140, 248, .65); background: linear-gradient(135deg, rgba(99, 102, 241, .2), rgba(139, 92, 246, .12)); box-shadow: 0 0 0 1px rgba(129, 140, 248, .12) inset; }
+      .enhance-button { background: linear-gradient(110deg, #6366f1, #8b5cf6 55%, #d946ef); box-shadow: 0 10px 28px rgba(99, 102, 241, .2); }
+      .enhance-button:hover:not(:disabled) { box-shadow: 0 12px 34px rgba(139, 92, 246, .32); }
       button { transition: transform .15s ease, filter .15s ease; }
       button:active:not(:disabled) { transform: scale(.97); }
       button:hover:not(:disabled) { filter: brightness(1.08); }
@@ -140,7 +203,19 @@
       [data-theme="light"] dialog .text-white { color: #0f172a; }
       [data-theme="light"] #theme-toggle { color: #4f46e5; background: #fff; border-color: #cbd5e1; }
       [data-theme="light"] .faq-item { background: #fff; border-color: #dbe3ee; }
+      [data-theme="light"] .editor-tab[aria-selected="true"] { color: #4338ca; background: linear-gradient(135deg, #eef2ff, #f5f3ff); }
+      [data-theme="light"] .editor-tab[aria-selected="false"] { color: #475569; }
+      [data-theme="light"] .enhance-button { color: #fff; }
       [data-theme="light"] input:not([type="range"]):not([type="checkbox"]), [data-theme="light"] select { color: #0f172a; }
+      @media (max-width: 767px) {
+        .editor-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .editor-tab { min-height: 46px; padding: .45rem .2rem; font-size: .68rem; line-height: 1.1; }
+        .control-panel[hidden] { display: none !important; }
+      }
+      @media (min-width: 768px) {
+        .editor-tabs { display: none; }
+        .control-panel[hidden] { display: block !important; }
+      }
       @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
       }
@@ -148,7 +223,7 @@
   </head>
   <body class="min-h-full font-sans text-slate-100 antialiased">
     <header class="border-b border-white/[0.06]">
-      <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8">
+      <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-y-3 px-5 py-4 sm:px-8 sm:py-5">
         <a href="#" class="flex items-center gap-3" aria-label="ImgCon home">
           <span class="grid h-9 w-9 place-items-center rounded-xl bg-indigo-500 text-white shadow-lg shadow-indigo-950/50">
             <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" aria-hidden="true"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5v-9Z" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="9" r="1.4" fill="currentColor"/><path d="m5 16 4.2-4.1a1.15 1.15 0 0 1 1.6 0l1.5 1.5 2.1-2a1.15 1.15 0 0 1 1.6 0L20 15.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
@@ -159,9 +234,9 @@
           <button id="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="false" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-amber-300 hover:border-indigo-400" title="Switch theme">
             <svg id="theme-icon" viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
           </button>
-          <div class="flex items-center gap-2 rounded-full border border-emerald-400/15 bg-emerald-400/[0.06] px-3 py-1.5 text-xs font-medium text-emerald-300">
-            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>100% private · runs in your browser
-          </div>
+        </div>
+        <div class="flex w-full items-center justify-center gap-2 rounded-full border border-emerald-400/15 bg-emerald-400/[0.06] px-3 py-1.5 text-[11px] font-medium text-emerald-300 sm:ml-auto sm:w-auto sm:text-xs">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>100% private · runs in your browser
         </div>
       </div>
     </header>
@@ -172,8 +247,8 @@
           <svg viewBox="0 0 20 20" fill="none" class="h-3.5 w-3.5" aria-hidden="true"><path d="m10 2 1.7 5.3L17 9l-5.3 1.7L10 16l-1.7-5.3L3 9l5.3-1.7L10 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="m16 13 .8 2.2L19 16l-2.2.8L16 19l-.8-2.2L13 16l2.2-.8L16 13Z" fill="currentColor"/></svg>
           A little magic for your images
         </div>
-        <h1 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl">Your images, <span class="bg-gradient-to-r from-indigo-300 to-violet-300 bg-clip-text text-transparent">just right.</span></h1>
-        <p class="mx-auto mt-4 max-w-xl text-sm leading-6 text-slate-400 sm:text-base">Convert, compress, resize, and fine-tune in seconds. No uploads, no accounts — your images never leave your device.</p>
+        <h1 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl">Compress, convert &amp; enhance <span class="bg-gradient-to-r from-indigo-300 to-violet-300 bg-clip-text text-transparent">beautifully.</span></h1>
+        <p class="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-400 sm:text-base">Compress images to 20KB, 50KB, or 100KB, make passport-ready crops, or convert JPG to WebP — free, fast, and processed privately on your device.</p>
       </section>
 
       <section id="upload-section" class="mx-auto max-w-3xl">
@@ -227,6 +302,13 @@
 
           <aside class="rounded-2xl border border-line bg-panel p-5">
             <div class="mb-5 flex items-center justify-between"><h2 class="text-sm font-semibold text-white">Edit image</h2><button id="reset-button" type="button" class="text-xs text-slate-500 transition hover:text-slate-200">Reset</button></div>
+            <div class="editor-tabs mb-5 gap-1 rounded-2xl border border-white/[0.06] bg-slate-950/40 p-1" role="tablist" aria-label="Image editing controls">
+              <button type="button" class="editor-tab rounded-xl border border-transparent px-2 py-2 text-slate-400 transition" id="tab-compress" role="tab" aria-selected="true" aria-controls="panel-compress" data-editor-tab="compress">📦 Compress</button>
+              <button type="button" class="editor-tab rounded-xl border border-transparent px-2 py-2 text-slate-400 transition" id="tab-crop" role="tab" aria-selected="false" aria-controls="panel-crop" data-editor-tab="crop" tabindex="-1">📐 Crop &amp; Resize</button>
+              <button type="button" class="editor-tab rounded-xl border border-transparent px-2 py-2 text-slate-400 transition" id="tab-enhance" role="tab" aria-selected="false" aria-controls="panel-enhance" data-editor-tab="enhance" tabindex="-1">✨ Enhance &amp; Filters</button>
+              <button type="button" class="editor-tab rounded-xl border border-transparent px-2 py-2 text-slate-400 transition" id="tab-transform" role="tab" aria-selected="false" aria-controls="panel-transform" data-editor-tab="transform" tabindex="-1">🔄 Transform</button>
+            </div>
+            <div id="panel-compress" class="control-panel" role="tabpanel" aria-labelledby="tab-compress" data-control-panel="compress">
             <label for="format-select" class="mb-2 block text-xs font-medium text-slate-400">Output format</label>
             <select id="format-select" class="mb-5 w-full rounded-lg border border-slate-700 bg-[#0c111c] px-3 py-2.5 text-sm text-slate-200 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/15">
               <option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp">WEBP</option>
@@ -252,6 +334,8 @@
               </div>
               <p id="target-size-note" class="mt-2 text-[11px] leading-4 text-slate-500" aria-live="polite">Choose a size to automatically fit your image. Dimensions shrink only if needed.</p>
             </div>
+            </div>
+            <div id="panel-crop" class="control-panel" role="tabpanel" aria-labelledby="tab-crop" data-control-panel="crop" hidden>
             <div class="mb-5">
               <span class="mb-2 block text-xs font-medium text-slate-400">Aspect ratio &amp; crop</span>
               <div class="grid grid-cols-2 gap-2">
@@ -262,6 +346,19 @@
               </div>
             </div>
             <div class="mb-5">
+              <div class="mb-2 flex items-center justify-between"><span class="text-xs font-medium text-slate-400">Dimensions</span><label class="flex cursor-pointer items-center gap-2 text-xs text-slate-400"><input id="ratio-lock" type="checkbox" checked class="h-3.5 w-3.5 rounded border-slate-600 bg-slate-800 accent-indigo-400" />Lock ratio</label></div>
+              <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+                <label class="sr-only" for="width-input">Width in pixels</label><input id="width-input" type="number" min="1" max="16000" inputmode="numeric" placeholder="Width" class="min-w-0 rounded-lg border border-slate-700 bg-[#0c111c] px-3 py-2.5 text-sm text-slate-200 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/15" />
+                <span class="text-xs text-slate-600">×</span><label class="sr-only" for="height-input">Height in pixels</label><input id="height-input" type="number" min="1" max="16000" inputmode="numeric" placeholder="Height" class="min-w-0 rounded-lg border border-slate-700 bg-[#0c111c] px-3 py-2.5 text-sm text-slate-200 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/15" />
+              </div>
+            </div>
+            </div>
+            <div id="panel-enhance" class="control-panel" role="tabpanel" aria-labelledby="tab-enhance" data-control-panel="enhance" hidden>
+              <button id="auto-enhance-button" type="button" class="enhance-button mb-5 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white transition disabled:cursor-wait disabled:opacity-70">
+                <span aria-hidden="true">✨</span><span>Magic Auto-Enhance</span>
+              </button>
+              <p id="enhance-note" class="mb-5 -mt-3 text-[11px] leading-4 text-slate-500" aria-live="polite">Automatically balance contrast and color, then add a touch of sharpness.</p>
+            <div class="mb-5">
               <span class="mb-3 block text-xs font-medium text-slate-400">Image adjustments</span>
               <div class="mb-3">
                 <div class="mb-1 flex items-center justify-between"><label for="brightness-slider" class="text-xs text-slate-400">Brightness</label><span id="brightness-value" class="text-xs tabular-nums text-indigo-200">100%</span></div>
@@ -271,15 +368,19 @@
                 <div class="mb-1 flex items-center justify-between"><label for="contrast-slider" class="text-xs text-slate-400">Contrast</label><span id="contrast-value" class="text-xs tabular-nums text-indigo-200">100%</span></div>
                 <input id="contrast-slider" type="range" min="50" max="150" value="100" class="w-full cursor-pointer" />
               </div>
+              <div class="mb-3">
+                <div class="mb-1 flex items-center justify-between"><label for="saturation-slider" class="text-xs text-slate-400">Saturation</label><span id="saturation-value" class="text-xs tabular-nums text-indigo-200">100%</span></div>
+                <input id="saturation-slider" type="range" min="0" max="200" value="100" class="w-full cursor-pointer" />
+              </div>
+              <div class="mb-3">
+                <div class="mb-1 flex items-center justify-between"><label for="sharpness-slider" class="text-xs text-slate-400">Sharpness</label><span id="sharpness-value" class="text-xs tabular-nums text-indigo-200">0%</span></div>
+                <input id="sharpness-slider" type="range" min="0" max="100" value="0" class="w-full cursor-pointer" />
+                <p class="mt-1 text-[10px] leading-4 text-slate-500">Subtle edge sharpening for text and photo detail.</p>
+              </div>
               <label class="flex cursor-pointer items-center justify-between text-xs text-slate-400" for="grayscale-toggle"><span>Grayscale / black &amp; white</span><input id="grayscale-toggle" type="checkbox" class="h-4 w-4 rounded border-slate-600 bg-slate-800 accent-indigo-400" /></label>
             </div>
-            <div class="mb-5">
-              <div class="mb-2 flex items-center justify-between"><span class="text-xs font-medium text-slate-400">Dimensions</span><label class="flex cursor-pointer items-center gap-2 text-xs text-slate-400"><input id="ratio-lock" type="checkbox" checked class="h-3.5 w-3.5 rounded border-slate-600 bg-slate-800 accent-indigo-400" />Lock ratio</label></div>
-              <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-                <label class="sr-only" for="width-input">Width in pixels</label><input id="width-input" type="number" min="1" max="16000" inputmode="numeric" placeholder="Width" class="min-w-0 rounded-lg border border-slate-700 bg-[#0c111c] px-3 py-2.5 text-sm text-slate-200 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/15" />
-                <span class="text-xs text-slate-600">×</span><label class="sr-only" for="height-input">Height in pixels</label><input id="height-input" type="number" min="1" max="16000" inputmode="numeric" placeholder="Height" class="min-w-0 rounded-lg border border-slate-700 bg-[#0c111c] px-3 py-2.5 text-sm text-slate-200 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/15" />
-              </div>
             </div>
+            <div id="panel-transform" class="control-panel" role="tabpanel" aria-labelledby="tab-transform" data-control-panel="transform" hidden>
             <div class="mb-5">
               <span class="mb-2 block text-xs font-medium text-slate-400">Rotate &amp; flip</span>
               <div class="grid grid-cols-4 gap-2">
@@ -288,6 +389,7 @@
                 <button type="button" data-action="flip-horizontal" aria-label="Flip horizontally" title="Flip horizontally" class="transform-button"><svg viewBox="0 0 20 20" fill="none" class="h-4 w-4"><path d="M10 3v14M4 6h3v8H4zM13 6h3v8h-3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
                 <button type="button" data-action="flip-vertical" aria-label="Flip vertically" title="Flip vertically" class="transform-button"><svg viewBox="0 0 20 20" fill="none" class="h-4 w-4"><path d="M3 10h14M6 4v3h8V4zM6 13v3h8v-3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
               </div>
+            </div>
             </div>
             <p id="processing-error" role="alert" class="mb-3 hidden text-xs leading-5 text-rose-300"></p>
             <div class="grid grid-cols-2 gap-2">
@@ -307,27 +409,35 @@
       <section id="how-to-use" class="mx-auto mt-14 max-w-5xl rounded-3xl border border-white/[0.06] bg-white/[0.02] p-6 sm:p-8">
         <div class="mx-auto max-w-3xl text-center">
           <h2 class="text-2xl font-semibold tracking-tight text-white">How to use ImgCon in 3 steps</h2>
-          <p class="mt-2 text-sm text-slate-400">A simple, private workflow from original image to finished file.</p>
+          <p class="mt-2 text-sm text-slate-400">Three quick steps. No uploads, sign-ups, or complicated software.</p>
         </div>
         <ol class="mt-7 grid gap-4 sm:grid-cols-3">
-          <li class="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-5"><span class="text-xs font-semibold uppercase tracking-wider text-indigo-300">01 · Choose</span><h3 class="mt-2 text-sm font-semibold text-white">Add your image</h3><p class="mt-1 text-xs leading-5 text-slate-400">Browse for an image or drag it into the editor. It stays on your device.</p></li>
-          <li class="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-5"><span class="text-xs font-semibold uppercase tracking-wider text-indigo-300">02 · Adjust</span><h3 class="mt-2 text-sm font-semibold text-white">Make it yours</h3><p class="mt-1 text-xs leading-5 text-slate-400">Choose a format, target size, dimensions, and image adjustments.</p></li>
-          <li class="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-5"><span class="text-xs font-semibold uppercase tracking-wider text-indigo-300">03 · Download</span><h3 class="mt-2 text-sm font-semibold text-white">Save your result</h3><p class="mt-1 text-xs leading-5 text-slate-400">Preview the result and download your converted image or PDF.</p></li>
+          <li class="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-5"><span class="text-xs font-semibold uppercase tracking-wider text-indigo-300">01 · Choose</span><h3 class="mt-2 text-sm font-semibold text-white">Add your image</h3><p class="mt-1 text-xs leading-5 text-slate-400">Browse or drag in a photo. It stays on your device from start to finish.</p></li>
+          <li class="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-5"><span class="text-xs font-semibold uppercase tracking-wider text-indigo-300">02 · Edit</span><h3 class="mt-2 text-sm font-semibold text-white">Get it just right</h3><p class="mt-1 text-xs leading-5 text-slate-400">Compress to a target, crop a passport photo, convert JPG to WebP, or tap Magic Auto-Enhance.</p></li>
+          <li class="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-5"><span class="text-xs font-semibold uppercase tracking-wider text-indigo-300">03 · Download</span><h3 class="mt-2 text-sm font-semibold text-white">Save your result</h3><p class="mt-1 text-xs leading-5 text-slate-400">Review the preview, then download your image or create a PDF copy.</p></li>
         </ol>
         <div class="mx-auto mt-10 max-w-3xl">
           <h2 class="text-center text-xl font-semibold text-white">Frequently asked questions</h2>
           <div id="faq-list" class="mt-5 space-y-3">
             <article class="faq-item rounded-xl border border-white/[0.06] bg-white/[0.02] px-4" data-open="false">
-              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-size" aria-expanded="false"><span>Can I compress an image to 50 KB?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
-              <div id="faq-answer-size" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Choose the 50 KB target in the editor. ImgCon adjusts quality and, if needed, dimensions to meet the maximum. Exact results depend on the source image and format; some files cannot meet a particular target.</p></div></div>
+              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-size" aria-expanded="false"><span>How can I compress an image to 20KB, 50KB, or 100KB?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
+              <div id="faq-answer-size" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Open your image and choose the 20 KB, 50 KB, or 100 KB target. ImgCon adjusts quality and, when needed, dimensions to target the maximum. Results depend on image content and format.</p></div></div>
             </article>
             <article class="faq-item rounded-xl border border-white/[0.06] bg-white/[0.02] px-4" data-open="false">
-              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-format" aria-expanded="false"><span>Can I convert between image formats?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
-              <div id="faq-answer-format" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Yes. Open your image, select PNG, JPG, or WEBP under Output format, then download your converted image.</p></div></div>
+              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-format" aria-expanded="false"><span>How do I convert JPG to WebP?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
+              <div id="faq-answer-format" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Open your JPG, choose WEBP under Output format, preview the conversion, then download it. The conversion runs locally in your browser.</p></div></div>
             </article>
             <article class="faq-item rounded-xl border border-white/[0.06] bg-white/[0.02] px-4" data-open="false">
-              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-privacy" aria-expanded="false"><span>Are my images 100% private?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
-              <div id="faq-answer-privacy" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Image editing and export run locally in your browser; selected images are not uploaded to an ImgCon image-processing server. Your browser and device remain responsible for their local security.</p></div></div>
+              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-exam" aria-expanded="false"><span>How do I compress a photo for SSC or UPSC?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
+              <div id="faq-answer-exam" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Check the current SSC or UPSC instructions for required dimensions, format, and maximum size. Resize or crop your image and select a matching size target, then verify the downloaded file against the official requirements.</p></div></div>
+            </article>
+            <article class="faq-item rounded-xl border border-white/[0.06] bg-white/[0.02] px-4" data-open="false">
+              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-passport" aria-expanded="false"><span>Can ImgCon make a passport photo?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
+              <div id="faq-answer-passport" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">ImgCon can crop and resize using common aspect ratios, including passport-style proportions. Rules vary by country and application, so check required size, background, and framing before submitting.</p></div></div>
+            </article>
+            <article class="faq-item rounded-xl border border-white/[0.06] bg-white/[0.02] px-4" data-open="false">
+              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-privacy" aria-expanded="false"><span>Is ImgCon secure? Are my photos uploaded?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
+              <div id="faq-answer-privacy" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Editing and export run locally in your browser; selected image files are not uploaded to an ImgCon image-processing server. Keep your device and browser secure.</p></div></div>
             </article>
           </div>
         </div>
@@ -336,15 +446,15 @@
       <section id="features" class="mx-auto mt-14 grid max-w-5xl gap-3 sm:grid-cols-3">
         <article class="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4">
           <div class="mb-3 grid h-9 w-9 place-items-center rounded-xl bg-indigo-400/10 text-indigo-300"><svg viewBox="0 0 20 20" fill="none" class="h-4 w-4" aria-hidden="true"><path d="M4 5h12M4 10h8M4 15h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="m14 12 3 3m0-3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-          <h2 class="text-sm font-medium text-slate-200">All the essentials</h2><p class="mt-1 text-xs leading-5 text-slate-500">Convert formats, fine-tune quality, resize, rotate, and flip — all in one place.</p>
+          <h2 class="text-sm font-medium text-slate-200">The right size, fast</h2><p class="mt-1 text-xs leading-5 text-slate-500">Compress to 20KB, 50KB, or 100KB, or set a custom maximum. Preview every change before you save.</p>
         </article>
         <article class="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4">
           <div class="mb-3 grid h-9 w-9 place-items-center rounded-xl bg-emerald-400/10 text-emerald-300"><svg viewBox="0 0 20 20" fill="none" class="h-4 w-4" aria-hidden="true"><path d="M10 2.5 4 5v4.8c0 3.7 2.6 6.8 6 7.7 3.4-.9 6-4 6-7.7V5l-6-2.5Z" stroke="currentColor" stroke-width="1.5"/><path d="m7.5 10 1.7 1.7 3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <h2 class="text-sm font-medium text-slate-200">Private by design</h2><p class="mt-1 text-xs leading-5 text-slate-500">Nothing gets uploaded. Your images stay right here in your browser.</p>
+          <h2 class="text-sm font-medium text-slate-200">Private by design</h2><p class="mt-1 text-xs leading-5 text-slate-500">Your photos are processed on-device in your browser, not uploaded to an image-processing server.</p>
         </article>
         <article class="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4">
           <div class="mb-3 grid h-9 w-9 place-items-center rounded-xl bg-violet-400/10 text-violet-300"><svg viewBox="0 0 20 20" fill="none" class="h-4 w-4" aria-hidden="true"><path d="M10 3v2m0 10v2M3 10h2m10 0h2M5.05 5.05l1.42 1.42m7.06 7.06 1.42 1.42m0-9.9-1.42 1.42m-7.06 7.06-1.42 1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="10" r="3.5" stroke="currentColor" stroke-width="1.5"/></svg></div>
-          <h2 class="text-sm font-medium text-slate-200">Fast, instant results</h2><p class="mt-1 text-xs leading-5 text-slate-500">See every change as you make it, then download your finished image.</p>
+          <h2 class="text-sm font-medium text-slate-200">More than compression</h2><p class="mt-1 text-xs leading-5 text-slate-500">Convert JPG to WebP, prepare passport-style crops, and sharpen details with one-tap enhancement.</p>
         </article>
       </section>
     </main>
