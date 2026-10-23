@@ -17,6 +17,7 @@
     uploadError: document.getElementById("upload-error"),
     editor: document.getElementById("editor"),
     features: document.getElementById("features"),
+    fileThumbnail: document.getElementById("file-thumbnail"),
     fileName: document.getElementById("file-name"),
     imageDetails: document.getElementById("image-details"),
     originalPreview: document.getElementById("original-preview"),
@@ -170,6 +171,7 @@
     updateTargetSizeControls();
     updateAspectControls();
     elements.originalPreview.removeAttribute("src");
+    elements.fileThumbnail.removeAttribute("src");
     elements.editor.classList.add("hidden");
     elements.features.classList.remove("hidden");
     elements.dropZone.classList.remove("hidden");
@@ -229,6 +231,7 @@
 
       elements.fileName.textContent = file.name;
       elements.imageDetails.textContent = `${state.width.toLocaleString()} × ${state.height.toLocaleString()} px`;
+      elements.fileThumbnail.src = state.sourceUrl;
       elements.originalSize.textContent = formatBytes(file.size);
       elements.originalPreview.src = state.sourceUrl;
       elements.widthInput.value = String(state.width);
