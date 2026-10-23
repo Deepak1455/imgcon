@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#040711" />
+    <meta name="theme-color" content="#020617" />
     <meta name="description" content="Compress image to 20KB, 50KB, or 100KB online free. Make passport photos, convert JPG to WebP, resize, and enhance privately in your browser with ImgCon." />
     <meta name="keywords" content="compress image to 20KB online free, compress image to 50KB, compress image to 100KB, passport photo maker, convert JPG to WebP, image compressor, image enhancer" />
     <meta property="og:type" content="website" />
@@ -116,7 +116,7 @@
       };
     </script>
     <style>
-      :root { color-scheme: dark; --page-bg: #040711; --surface: #0b1120; --surface-raised: #0f172a; --line: rgba(255, 255, 255, .08); --text-primary: #f8fafc; --text-secondary: #94a3b8; }
+      :root { color-scheme: dark; --page-bg: #020617; --surface: #0f172a; --surface-raised: #111c32; --line: #1e293b; --text-primary: #f8fafc; --text-secondary: #cbd5e1; }
       html { color-scheme: dark; scroll-behavior: smooth; background: var(--page-bg); }
       header, footer, .bg-panel, [class~="border-line"], [class~="bg-white/[0.02]"], [class~="bg-white/[0.025]"], [class~="bg-[#0d111b]"], [class~="bg-[#0c111c]"], [class~="bg-[#101522]"] {
         transition: background-color .25s ease, color .25s ease, border-color .25s ease;
@@ -144,12 +144,6 @@
           radial-gradient(ellipse at 78% 32%, rgba(139, 92, 246, .13), transparent 34%),
           radial-gradient(ellipse at 60% 85%, rgba(14, 165, 233, .08), transparent 38%);
         background-size: 125% 125%;
-        animation: ambient-drift 28s ease-in-out infinite alternate;
-        will-change: transform, background-position;
-      }
-      @keyframes ambient-drift {
-        0% { transform: translate3d(-1.5%, -1%, 0) scale(1); background-position: 0 0, 100% 0, 40% 100%; }
-        100% { transform: translate3d(1.5%, 1%, 0) scale(1.035); background-position: 12% 8%, 85% 12%, 52% 88%; }
       }
       .checkerboard {
         background-color: #111827;
@@ -185,9 +179,6 @@
       .drop-zone > div:not(.pointer-events-none), .drop-zone > h2, .drop-zone > p { position: relative; z-index: 1; }
       .drop-zone:hover, .drop-zone.drop-active { border-color: rgba(129, 140, 248, .8) !important; background-color: rgba(99, 102, 241, .08) !important; box-shadow: 0 0 0 1px rgba(129, 140, 248, .16), 0 0 42px rgba(99, 102, 241, .17); transform: translateY(-2px); }
       .drop-zone:hover::before, .drop-zone:hover::after, .drop-zone.drop-active::before, .drop-zone.drop-active::after { opacity: 1; }
-      .drop-zone:hover::before, .drop-zone.drop-active::before { animation: border-beam 4s linear infinite; }
-      @property --beam-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
-      @keyframes border-beam { to { --beam-angle: 360deg; } }
       .transform-button {
         display: inline-flex;
         height: 38px;
@@ -200,7 +191,7 @@
         transition: border-color .15s, color .15s, background .15s, transform .15s, box-shadow .15s;
       }
       .transform-button:hover { border-color: #818cf8; color: #c7d2fe; background: rgba(99, 102, 241, .08); transform: translateY(-1px); }
-      .editor-tab[aria-selected="true"] { color: #fff; border-color: rgba(129, 140, 248, .65); background: linear-gradient(135deg, rgba(99, 102, 241, .2), rgba(139, 92, 246, .12)); box-shadow: 0 0 0 1px rgba(129, 140, 248, .12) inset; }
+      .editor-tab[aria-selected="true"] { color: #fff; border-color: #4f46e5; background: #4f46e5; box-shadow: none; }
       .enhance-button { background: linear-gradient(110deg, #6366f1, #8b5cf6 55%, #d946ef); box-shadow: 0 10px 28px rgba(99, 102, 241, .2); }
       .enhance-button:hover:not(:disabled) { box-shadow: 0 12px 34px rgba(139, 92, 246, .32); }
       button { position: relative; transition: transform .2s cubic-bezier(.2, .8, .2, 1), filter .2s ease, box-shadow .2s ease; }
@@ -209,20 +200,9 @@
       .icon-svg { width: 1.125rem; height: 1.125rem; flex: none; transition: color .2s ease, transform .25s cubic-bezier(.2, .8, .2, 1); }
       button:hover .icon-svg { transform: scale(1.08); }
       .editor-tab:hover .icon-svg { transform: translateY(-1px) scale(1.08); }
-      .shimmer-cta { isolation: isolate; overflow: hidden; }
-      .shimmer-cta::after { position: absolute; z-index: 0; inset: -40% auto -40% -60%; width: 42%; content: ""; transform: skewX(-22deg); background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .4), transparent); transition: left .65s cubic-bezier(.2, .8, .2, 1); pointer-events: none; }
-      .shimmer-cta > * { position: relative; z-index: 1; }
-      .shimmer-cta:hover::after { left: 130%; }
-      .preview-stage { position: relative; isolation: isolate; }
-      .processing-overlay:not(.hidden) { position: absolute; z-index: 2; inset: 0; display: flex !important; align-items: center; justify-content: center; overflow: hidden; background: rgba(4, 7, 17, .64); backdrop-filter: blur(2px); pointer-events: none; }
-      .processing-overlay:not(.hidden)::before { position: absolute; inset: -40% 0 auto; height: 35%; content: ""; opacity: .9; background: linear-gradient(180deg, transparent, rgba(99, 102, 241, .08) 25%, rgba(129, 140, 248, .72) 49%, rgba(192, 132, 252, .28) 54%, transparent); filter: drop-shadow(0 0 12px rgba(129, 140, 248, .9)); animation: scanner-sweep 1.8s cubic-bezier(.3, 0, .55, 1) infinite; }
-      .processing-overlay:not(.hidden)::after { position: absolute; inset: 0; content: ""; opacity: .32; background: repeating-linear-gradient(0deg, transparent 0 5px, rgba(129, 140, 248, .045) 6px 7px); }
-      .processing-overlay:not(.hidden) > * { position: relative; z-index: 1; }
-      @keyframes scanner-sweep { to { transform: translateY(410%); } }
-      img:not(.hidden) { animation: preview-in .24s ease both; }
-      @keyframes preview-in { from { opacity:  0; transform: scale(.985); } to { opacity: 1; transform: scale(1); } }
-      .target-size-button[aria-pressed="true"] { border-color: #818cf8; background: rgba(99, 102, 241, .16); color: #e0e7ff; }
-      .aspect-button[aria-pressed="true"] { border-color: #818cf8; background: rgba(99, 102, 241, .16); color: #e0e7ff; }
+      .preview-stage { position: relative; }
+      .preview-frame { flex: 1 1 auto; }
+      .target-size-button[aria-pressed="true"], .aspect-button[aria-pressed="true"] { border-color: #4f46e5; background: #4f46e5; color: #fff; }
       dialog { color: #e2e8f0; }
       dialog::backdrop { background: rgba(2, 6, 23, .78); backdrop-filter: blur(4px); }
       dialog[open] { animation: dialog-in .2s ease both; }
@@ -232,35 +212,68 @@
       .faq-answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .24s ease; }
       .faq-item[data-open="true"] .faq-answer { grid-template-rows: 1fr; }
       .faq-answer > div { overflow: hidden; }
-      [data-theme="light"] { color-scheme: light; --page-bg: #f8fafc; --surface: #fff; --surface-raised: #f1f5f9; --line: rgba(15, 23, 42, .1); --text-primary: #0f172a; --text-secondary: #475569; }
+      [data-theme="light"] { color-scheme: light; --page-bg: #f8fafc; --surface: #fff; --surface-raised: #f1f5f9; --line: #e2e8f0; --text-primary: #0f172a; --text-secondary: #334155; }
       [data-theme="light"] body { background: var(--page-bg); color: var(--text-primary); }
       [data-theme="light"] body::before { background: radial-gradient(ellipse at 22% 18%, rgba(99, 102, 241, .1), transparent 35%), radial-gradient(ellipse at 78% 32%, rgba(139, 92, 246, .08), transparent 34%), radial-gradient(ellipse at 60% 85%, rgba(14, 165, 233, .06), transparent 38%); }
       [data-theme="light"] header, [data-theme="light"] footer { border-color: #dbe3ee; }
       [data-theme="light"] .bg-panel, [data-theme="light"] [class~="bg-[#101522]"] { background-color: #fff; }
-      [data-theme="light"] .bg-panel, [data-theme="light"] [class~="bg-[#101522]"] { backdrop-filter: blur(24px); }
+      [data-theme="light"] .bg-panel { backdrop-filter: none; }
       [data-theme="light"] [class~="border-line"] { border-color: rgba(15, 23, 42, .1); }
       [data-theme="light"] [class~="border-white/[0.06]"], [data-theme="light"] [class~="border-white/[0.07]"] { border-color: rgba(15, 23, 42, .1); }
-      [data-theme="light"] [class~="bg-[#0d111b]"], [data-theme="light"] [class~="bg-[#0c111c]"] { background-color: #f8fafc; }
+      [data-theme="light"] [class~="bg-[#0d111b]"], [data-theme="light"] [class~="bg-[#0c111c]"] { background-color: #fff; }
       [data-theme="light"] [class~="border-line"], [data-theme="light"] [class~="border-slate-700"] { border-color: #d8e0eb; }
       [data-theme="light"] [class~="border-white/[0.06]"], [data-theme="light"] [class~="border-white/[0.07]"] { border-color: #dbe3ee; }
       [data-theme="light"] [class~="bg-white/[0.025]"], [data-theme="light"] [class~="bg-white/[0.02]"] { background-color: rgba(255, 255, 255, .82); }
       [data-theme="light"] .text-white, [data-theme="light"] .text-slate-100, [data-theme="light"] .text-slate-200 { color: #0f172a; }
-      [data-theme="light"] .text-slate-300 { color: #334155; }
-      [data-theme="light"] .text-slate-400 { color: #475569; }
-      [data-theme="light"] .text-slate-500, [data-theme="light"] .text-slate-600 { color: #64748b; }
+      [data-theme="light"] .text-slate-300, [data-theme="light"] .text-slate-400,
+      [data-theme="light"] .text-slate-500, [data-theme="light"] .text-slate-600 { color: #334155; }
       [data-theme="light"] .text-indigo-200 { color: #4338ca; }
       [data-theme="light"] .text-indigo-300 { color: #4f46e5; }
       [data-theme="light"] .transform-button { background: #fff; color: #334155; border-color: #cbd5e1; }
       [data-theme="light"] .checkerboard { background-color: #e2e8f0; background-image: linear-gradient(45deg, #cbd5e1 25%, transparent 25%), linear-gradient(-45deg, #cbd5e1 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #cbd5e1 75%), linear-gradient(-45deg, transparent 75%, #cbd5e1 75%); }
       [data-theme="light"] dialog { color: #334155; background: #fff; border-color: #cbd5e1; }
       [data-theme="light"] dialog .text-white { color: #0f172a; }
-      [data-theme="light"] .processing-overlay:not(.hidden) { background: rgba(248, 250, 252, .72); }
       [data-theme="light"] #theme-toggle { color: #4f46e5; background: #fff; border-color: #cbd5e1; }
       [data-theme="light"] .faq-item { background: #fff; border-color: #dbe3ee; }
-      [data-theme="light"] .editor-tab[aria-selected="true"] { color: #4338ca; background: linear-gradient(135deg, #eef2ff, #f5f3ff); }
+      [data-theme="light"] .editor-tab[aria-selected="true"] { color: #fff; border-color: #4f46e5; background: #4f46e5; }
       [data-theme="light"] .editor-tab[aria-selected="false"] { color: #475569; }
       [data-theme="light"] .enhance-button { color: #fff; }
+      [data-theme="light"] #download-button { color: #fff; }
       [data-theme="light"] input:not([type="range"]):not([type="checkbox"]), [data-theme="light"] select { color: #0f172a; }
+      [data-theme="light"] .bg-panel, [data-theme="light"] [class~="bg-[#101522]"],
+      [data-theme="light"] #how-to-use, [data-theme="light"] #how-to-use li,
+      [data-theme="light"] .faq-item, [data-theme="light"] #drop-zone,
+      [data-theme="light"] #editor > div > aside, [data-theme="light"] #editor > div > div:first-child {
+        background-color: #fff;
+        border-color: #e2e8f0;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, .06);
+        transition: box-shadow .2s ease;
+      }
+      [data-theme="light"] .bg-panel:hover, [data-theme="light"] #how-to-use:hover,
+      [data-theme="light"] #how-to-use li:hover, [data-theme="light"] .faq-item:hover,
+      [data-theme="light"] #drop-zone:hover, [data-theme="light"] #editor > div > aside:hover,
+      [data-theme="light"] #editor > div > div:first-child:hover {
+        box-shadow: 0 4px 10px rgba(15, 23, 42, .1);
+      }
+      [data-theme="light"] .text-emerald-300, [data-theme="light"] .text-emerald-400 { color: #059669; }
+      [data-theme="dark"] .bg-panel, [data-theme="dark"] [class~="bg-[#101522]"] {
+        background-color: #0f172a;
+        border-color: #1e293b;
+      }
+      [data-theme="dark"] [class~="bg-white/[0.025]"], [data-theme="dark"] [class~="bg-white/[0.02]"],
+      [data-theme="dark"] [class~="bg-[#0d111b]"], [data-theme="dark"] [class~="bg-[#0c111c]"] {
+        background-color: #0f172a;
+      }
+      [data-theme="dark"] #how-to-use, [data-theme="dark"] #how-to-use li,
+      [data-theme="dark"] .faq-item { background-color: #0f172a; border-color: #1e293b; }
+      #size-change.text-emerald-600 { color: #059669; }
+      [data-theme="light"] label, [data-theme="light"] h1, [data-theme="light"] h2,
+      [data-theme="light"] h3, [data-theme="light"] .font-medium, [data-theme="light"] .editor-tab,
+      [data-theme="light"] .transform-button { font-weight: 600; }
+      @media (max-width: 767px) {
+        button { min-width: 44px; min-height: 44px; }
+        #browse-button { display: inline-flex; align-items: center; justify-content: center; }
+      }
       @media (max-width: 767px) {
         .editor-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
         .editor-tab { min-height: 46px; padding: .45rem .2rem; font-size: .68rem; line-height: 1.1; }
@@ -336,18 +349,17 @@
 
         <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div class="overflow-hidden rounded-2xl border border-line bg-panel">
-            <div class="flex items-center justify-between border-b border-line px-4 py-3"><h2 class="text-sm font-medium text-slate-200">Preview</h2><span id="status" class="text-xs text-slate-500" aria-live="polite">Ready to edit</span></div>
-            <div class="grid min-h-[290px] grid-cols-1 gap-px bg-line sm:grid-cols-2">
+            <div class="flex items-center justify-between border-b border-line px-4 py-3"><h2 class="text-sm font-medium text-slate-200">Preview</h2><span id="status" class="min-w-[110px] text-right text-xs text-slate-500" aria-live="polite">Ready to edit</span></div>
+            <div class="grid grid-cols-1 gap-px bg-line sm:grid-cols-2">
               <div class="flex min-h-[260px] flex-col bg-[#0d111b]">
                 <div class="flex items-center justify-between px-4 py-3"><span class="text-xs font-medium text-slate-400">Original</span><span id="original-size" class="text-xs tabular-nums text-slate-500"></span></div>
-                <div class="checkerboard flex flex-1 items-center justify-center overflow-hidden p-4"><img id="original-preview" alt="Original image preview" class="max-h-72 max-w-full object-contain" /></div>
+                <div class="preview-frame checkerboard flex min-h-[240px] max-h-[380px] w-full items-center justify-center overflow-hidden p-4"><img id="original-preview" alt="Original image preview" class="max-h-full max-w-full object-contain" /></div>
               </div>
               <div class="flex min-h-[260px] flex-col bg-[#0d111b]">
                 <div class="flex items-center justify-between px-4 py-3"><span class="text-xs font-medium text-slate-400">Your result</span><span id="result-size" class="text-xs tabular-nums text-slate-500">—</span></div>
-                <div class="preview-stage checkerboard flex flex-1 items-center justify-center overflow-hidden p-4">
+                <div class="preview-stage preview-frame checkerboard flex min-h-[240px] max-h-[380px] w-full items-center justify-center overflow-hidden p-4">
                   <div id="result-placeholder" class="px-4 text-center text-xs leading-5 text-slate-500">Your edited image will appear here</div>
-                  <img id="result-preview" alt="Processed image preview" class="hidden max-h-72 max-w-full object-contain" />
-                  <div id="processing" role="status" aria-live="polite" class="processing-overlay hidden items-center gap-2 text-xs font-medium text-indigo-100"><svg viewBox="0 0 24 24" fill="none" class="icon-svg h-5 w-5 animate-pulse text-indigo-300" aria-hidden="true"><path d="M4 7h16M4 12h10M4 17h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="18" cy="12" r="2" stroke="currentColor" stroke-width="1.7"/></svg> Processing image…</div>
+                  <img id="result-preview" alt="Processed image preview" class="hidden max-h-full max-w-full object-contain" />
                 </div>
               </div>
             </div>
@@ -408,7 +420,7 @@
             </div>
             </div>
             <div id="panel-enhance" class="control-panel" role="tabpanel" aria-labelledby="tab-enhance" data-control-panel="enhance" hidden>
-              <button id="auto-enhance-button" type="button" class="enhance-button shimmer-cta mb-5 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white transition disabled:cursor-wait disabled:opacity-70">
+              <button id="auto-enhance-button" type="button" class="enhance-button mb-5 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-white transition disabled:cursor-wait disabled:opacity-70">
                 <svg viewBox="0 0 24 24" fill="none" class="icon-svg" aria-hidden="true"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3ZM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span>Magic Auto-Enhance</span>
               </button>
               <p id="enhance-note" class="mb-5 -mt-3 text-[11px] leading-4 text-slate-500" aria-live="polite">Automatically balance contrast and color, then add a touch of sharpness.</p>
@@ -447,7 +459,7 @@
             </div>
             <p id="processing-error" role="alert" class="mb-3 hidden text-xs leading-5 text-rose-300"></p>
             <div class="grid grid-cols-2 gap-2">
-            <button id="download-button" type="button" disabled class="shimmer-cta flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-500 px-3 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-950/40 transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-indigo-500">
+            <button id="download-button" type="button" disabled class="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-500 px-3 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-950/40 transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-indigo-500">
               <svg viewBox="0 0 24 24" fill="none" class="icon-svg" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M5 16v4h14v-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
               <span>Download image</span>
             </button>

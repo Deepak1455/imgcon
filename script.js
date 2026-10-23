@@ -23,7 +23,6 @@
     originalSize: document.getElementById("original-size"),
     resultPreview: document.getElementById("result-preview"),
     resultPlaceholder: document.getElementById("result-placeholder"),
-    processing: document.getElementById("processing"),
     resultSize: document.getElementById("result-size"),
     dimensionsResult: document.getElementById("dimensions-result"),
     sizeChange: document.getElementById("size-change"),
@@ -79,7 +78,6 @@
     cropRatio: null,
     ratio: 1,
     revision: 0,
-    processingTimer: null,
     renderFrame: 0,
     loadingImage: false,
   };
@@ -90,7 +88,7 @@
     elements.themeToggle.setAttribute("aria-pressed", String(isLight));
     elements.themeToggle.setAttribute("aria-label", `Switch to ${isLight ? "dark" : "light"} mode`);
     elements.themeToggle.title = `Switch to ${isLight ? "dark" : "light"} mode`;
-    document.querySelector('meta[name="theme-color"]').content = isLight ? "#f8fafc" : "#040711";
+    document.querySelector('meta[name="theme-color"]').content = isLight ? "#f8fafc" : "#020617";
     elements.themeIcon.innerHTML = isLight
       ? '<path d="M20.4 15.3A8.5 8.5 0 0 1 8.7 3.6 8.5 8.5 0 1 0 20.4 15.3Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>'
       : '<circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>';
@@ -157,7 +155,6 @@
   }
 
   function clearCurrentImage() {
-    clearTimeout(state.processingTimer);
     cancelAnimationFrame(state.renderFrame);
     state.renderFrame = 0;
     state.revision += 1;
@@ -335,7 +332,6 @@
 
   function scheduleProcessing() {
     if (!state.image) return;
-    clearTimeout(state.processingTimer);
     cancelAnimationFrame(state.renderFrame);
     state.revision += 1;
     const revision = state.revision;
@@ -346,13 +342,9 @@
       updateTargetSizeControls();
       elements.resultPlaceholder.textContent = "Your edited image will appear here";
       elements.status.textContent = "Updating preview…";
-      elements.processing.classList.remove("hidden");
-      elements.processing.classList.add("flex");
-      elements.resultPreview.classList.add("hidden");
-      elements.resultPlaceholder.classList.add("hidden");
       elements.downloadButton.disabled = true;
       elements.downloadPdfButton.disabled = true;
-      state.processingTimer = setTimeout(() => processImage(revision), 140);
+      processImage(revision);
     });
   }
 
@@ -689,8 +681,7 @@
     try {
       dimensions = getOutputDimensions();
     } catch (error) {
-      elements.processing.classList.add("hidden");
-      elements.processing.classList.remove("flex");
+      elements.resultPreview.classList.add("hidden");
       elements.resultPlaceholder.classList.remove("hidden");
       elements.resultPlaceholder.textContent = error.message;
       elements.status.textContent = "Check dimensions";
@@ -708,17 +699,28 @@
       if (!blob) {
         throw new Error("The image could not be exported in this format. Try another format or smaller dimensions.");
       }
+      const resultUrl = URL.createObjectURL(blob);
+      try {
+        const decodedPreview = new Image();
+        decodedPreview.src = resultUrl;
+        await decodedPreview.decode();
+      } catch (error) {
+        URL.revokeObjectURL(resultUrl);
+        throw new Error("The processed image could not be decoded for preview.");
+      }
+      if (revision !== state.revision) {
+        URL.revokeObjectURL(resultUrl);
+        return;
+      }
       if (state.resultUrl) URL.revokeObjectURL(state.resultUrl);
       state.resultBlob = blob;
-      state.resultUrl = URL.createObjectURL(blob);
+      state.resultUrl = resultUrl;
       elements.resultPreview.src = state.resultUrl;
       elements.resultPreview.classList.remove("hidden");
       elements.resultPlaceholder.classList.add("hidden");
       elements.resultSize.textContent = formatBytes(blob.size);
       elements.dimensionsResult.textContent = `${result.dimensions.width.toLocaleString()} × ${result.dimensions.height.toLocaleString()} px`;
       updateSizeChange(blob.size, state.file.size);
-      elements.processing.classList.add("hidden");
-      elements.processing.classList.remove("flex");
       elements.status.textContent = "Preview updated";
       elements.downloadButton.disabled = false;
       elements.downloadPdfButton.disabled = false;
@@ -737,7 +739,7 @@
     if (newSize < originalSize) {
       const saved = Math.round((1 - newSize / originalSize) * 100);
       elements.sizeChange.textContent = `${saved}% smaller`;
-      elements.sizeChange.classList.add("text-emerald-300");
+      elements.sizeChange.classList.add("text-emerald-600");
     } else if (newSize > originalSize) {
       const increase = Math.round((newSize / originalSize - 1) * 100);
       elements.sizeChange.textContent = `${increase}% larger`;
@@ -749,8 +751,7 @@
   }
 
   function showProcessingFailure(message) {
-    elements.processing.classList.add("hidden");
-    elements.processing.classList.remove("flex");
+    elements.resultPreview.classList.add("hidden");
     elements.resultPlaceholder.classList.remove("hidden");
     elements.resultPlaceholder.textContent = "Preview unavailable";
     elements.status.textContent = "Could not process image";
