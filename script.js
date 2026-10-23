@@ -320,12 +320,8 @@
       elements.fileInput.setAttribute("accept", "image/png,image/jpeg,image/webp,image/gif,image/bmp,image/avif");
     }
     if (button.hasAttribute("data-bulk")) {
-      if (state.batchItems.length) {
-        document.getElementById("batch-panel").scrollIntoView({ behavior: "smooth", block: "center" });
-      } else {
-        document.getElementById("upload-section").scrollIntoView({ behavior: "smooth", block: "center" });
-        openPicker();
-      }
+      document.getElementById("upload-section").scrollIntoView({ behavior: "smooth", block: "center" });
+      openPicker();
       return;
     }
 
@@ -339,7 +335,7 @@
     if (!state.image) {
       state.pendingQuickPreset = preset;
       document.getElementById("upload-section").scrollIntoView({ behavior: "smooth", block: "center" });
-      showToast("Select an image to use this quick tool.");
+      openPicker();
       return;
     }
 
@@ -1190,9 +1186,10 @@
   });
   elements.browseButton.addEventListener("click", openPicker);
   elements.fileInput.addEventListener("change", (event) => queueFiles(event.target.files));
-  for (const quickTool of document.querySelectorAll("[data-quick-tool]")) {
-    quickTool.addEventListener("click", () => applyQuickTool(quickTool));
-  }
+  document.getElementById("popular-solutions").addEventListener("click", (event) => {
+    const quickTool = event.target.closest("[data-quick-tool]");
+    if (quickTool) applyQuickTool(quickTool);
+  });
   elements.applySettingsButton.addEventListener("click", applySettingsToAll);
   elements.chooseAnother.addEventListener("click", () => {
     cancelBatchRun();
