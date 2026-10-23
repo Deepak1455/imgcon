@@ -33,11 +33,11 @@
     qualitySlider: document.getElementById("quality-slider"),
     qualityValue: document.getElementById("quality-value"),
     qualityNote: document.getElementById("quality-note"),
-    targetSizeButtons: [...document.querySelectorAll("[data-target-bytes]")],
+    targetSizeButtons: [...document.querySelectorAll(".target-size-button[data-target-bytes]")],
     targetSizeNote: document.getElementById("target-size-note"),
     customTargetKb: document.getElementById("custom-target-kb"),
     customTargetButton: document.getElementById("custom-target-button"),
-    aspectButtons: [...document.querySelectorAll("[data-aspect-ratio]")],
+    aspectButtons: [...document.querySelectorAll(".aspect-button[data-aspect-ratio]")],
     brightnessSlider: document.getElementById("brightness-slider"),
     brightnessValue: document.getElementById("brightness-value"),
     contrastSlider: document.getElementById("contrast-slider"),
@@ -98,6 +98,7 @@
     zipBuilding: false,
     toastTimer: 0,
     installPrompt: null,
+    pendingQuickPreset: null,
   };
 
   function showToast(message) {
@@ -247,13 +248,28 @@
   function queueFiles(files) {
     const selectedFiles = Array.from(files || []);
     if (selectedFiles.length === 0) return;
+    const pendingPreset = state.pendingQuickPreset;
+    state.pendingQuickPreset = null;
     cancelBatchRun();
     clearCurrentImage();
     for (const item of state.batchItems) {
       if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
     }
     state.batchItems = selectedFiles.map((file) => {
-      const item = { file, status: "Queued", message: "", previewUrl: null, blob: null, outputName: "", settings: null };
+      const item = {
+        file,
+        status: "Queued",
+        message: "",
+        previewUrl: null,
+        blob: null,
+        outputName: "",
+        settings: {
+          format: pendingPreset?.format || (FORMAT_EXTENSIONS[file.type] ? file.type : "image/png"),
+          quality: 85,
+          targetBytes: pendingPreset?.targetBytes ?? null,
+          aspectRatio: pendingPreset?.aspectRatio ?? null,
+        },
+      };
       if (!file.type.startsWith("image/")) {
         item.status = "Failed";
         item.message = "Not an image file";
@@ -280,6 +296,7 @@
       format: elements.formatSelect.value,
       quality: Number(elements.qualitySlider.value),
       targetBytes: state.targetBytes,
+      aspectRatio: state.cropRatio,
     };
     cancelBatchRun();
     clearCurrentImage();
@@ -293,6 +310,69 @@
     renderBatchQueue();
     showToast(`Applying settings to ${queuedImages.length} images…`);
     void processBatch(state.batchRunId);
+  }
+
+  function applyQuickTool(button) {
+    state.pendingQuickPreset = null;
+    if (button.hasAttribute("data-accept-heic")) {
+      elements.fileInput.setAttribute("accept", "image/png,image/jpeg,image/webp,image/gif,image/bmp,image/avif,image/heic,image/heif");
+    } else {
+      elements.fileInput.setAttribute("accept", "image/png,image/jpeg,image/webp,image/gif,image/bmp,image/avif");
+    }
+    if (button.hasAttribute("data-bulk")) {
+      if (state.batchItems.length) {
+        document.getElementById("batch-panel").scrollIntoView({ behavior: "smooth", block: "center" });
+      } else {
+        document.getElementById("upload-section").scrollIntoView({ behavior: "smooth", block: "center" });
+        openPicker();
+      }
+      return;
+    }
+
+    const preset = {
+      format: button.dataset.outputFormat || null,
+      targetBytes: button.dataset.targetBytes ? Number(button.dataset.targetBytes) : null,
+      aspectRatio: button.dataset.aspectRatio ? Number(button.dataset.aspectRatio) : null,
+      pdf: button.hasAttribute("data-pdf"),
+    };
+
+    if (!state.image) {
+      state.pendingQuickPreset = preset;
+      document.getElementById("upload-section").scrollIntoView({ behavior: "smooth", block: "center" });
+      showToast("Select an image to use this quick tool.");
+      return;
+    }
+
+    if (preset.format) {
+      elements.formatSelect.value = preset.format;
+      updateQualityNote();
+      activateEditorTab("compress");
+    }
+    if (button.hasAttribute("data-target-bytes")) {
+      state.targetBytes = preset.targetBytes;
+      elements.customTargetKb.value = preset.targetBytes / 1024;
+      updateTargetSizeControls();
+      activateEditorTab("compress");
+    }
+    if (preset.aspectRatio) {
+      const dimensions = getAspectDimensions(state.width, state.height, preset.aspectRatio);
+      elements.widthInput.value = String(dimensions.width);
+      elements.heightInput.value = String(dimensions.height);
+      elements.ratioLock.checked = true;
+      state.ratio = preset.aspectRatio;
+      state.cropRatio = preset.aspectRatio;
+      updateAspectControls();
+      activateEditorTab("crop");
+    }
+    if (state.batchItems.filter((item) => item.previewUrl).length > 1) {
+      applySettingsToAll();
+    } else {
+      scheduleProcessing();
+    }
+    elements.editor.scrollIntoView({ behavior: "smooth", block: "start" });
+    showToast(preset.pdf
+      ? "Image set to JPG. Use Download as PDF after processing."
+      : "Quick tool settings applied.");
   }
 
   async function processBatch(runId) {
@@ -518,6 +598,15 @@
         elements.originalPreview.src = state.sourceUrl;
         elements.widthInput.value = String(state.width);
         elements.heightInput.value = String(state.height);
+        if (settings.aspectRatio) {
+          const dimensions = getAspectDimensions(state.width, state.height, settings.aspectRatio);
+          elements.widthInput.value = String(dimensions.width);
+          elements.heightInput.value = String(dimensions.height);
+          elements.ratioLock.checked = true;
+          state.ratio = settings.aspectRatio;
+          state.cropRatio = settings.aspectRatio;
+          updateAspectControls();
+        }
         elements.editor.classList.remove("hidden");
         elements.features.classList.add("hidden");
         elements.dropZone.classList.add("hidden");
@@ -838,17 +927,17 @@
     }
   }
 
-  function applyAspectRatio(ratio) {
-    const maxWidth = state.width;
-    const maxHeight = state.height;
-    let width = maxWidth;
-    let height = Math.round(width / ratio);
-    if (height > maxHeight) {
-      height = maxHeight;
-      width = Math.round(height * ratio);
+  function getAspectDimensions(maxWidth, maxHeight, ratio) {
+    if (maxWidth / maxHeight > ratio) {
+      return { width: Math.max(1, Math.round(maxHeight * ratio)), height: maxHeight };
     }
-    elements.widthInput.value = String(Math.max(1, width));
-    elements.heightInput.value = String(Math.max(1, height));
+    return { width: maxWidth, height: Math.max(1, Math.round(maxWidth / ratio)) };
+  }
+
+  function applyAspectRatio(ratio) {
+    const dimensions = getAspectDimensions(state.width, state.height, ratio);
+    elements.widthInput.value = String(dimensions.width);
+    elements.heightInput.value = String(dimensions.height);
     elements.ratioLock.checked = true;
     elements.widthInput.max = String(MAX_DIMENSION);
     elements.heightInput.max = String(MAX_DIMENSION);
@@ -1101,6 +1190,9 @@
   });
   elements.browseButton.addEventListener("click", openPicker);
   elements.fileInput.addEventListener("change", (event) => queueFiles(event.target.files));
+  for (const quickTool of document.querySelectorAll("[data-quick-tool]")) {
+    quickTool.addEventListener("click", () => applyQuickTool(quickTool));
+  }
   elements.applySettingsButton.addEventListener("click", applySettingsToAll);
   elements.chooseAnother.addEventListener("click", () => {
     cancelBatchRun();
@@ -1300,8 +1392,8 @@
 
   const legalPages = {
     about: {
-      title: "About ImgCon",
-      html: `<p>ImgCon is a browser-based image utility for everyday conversion, resizing, compression, cropping, and PDF export. It is designed to make common image tasks straightforward without requiring an account.</p>
+      title: "About the Developer",
+      html: `<p>ImgCon is created and maintained as a browser-based image utility for everyday conversion, resizing, compression, cropping, and PDF export. It is designed to make common image tasks straightforward without requiring an account.</p>
         <h3 class="font-semibold text-white">Private by design</h3>
         <p>Image processing happens locally in your browser. Images selected in the editor are not uploaded to or stored on an ImgCon image-processing server. Temporary working data stays in your browser tab and is released when you replace or clear the image or close the page.</p>
         <h3 class="font-semibold text-white">About this service</h3>
@@ -1312,11 +1404,12 @@
       html: `<p><strong class="text-white">Images are processed on your device.</strong> ImgCon does not upload, collect, or store the image files you open in the editor on an ImgCon server. Conversion, resizing, filtering, compression, and PDF generation take place locally in your browser.</p>
         <h3 class="font-semibold text-white">Information and storage</h3>
         <p>This version does not require an account and does not intentionally store image content, edited results, or personal information. Your browser or device may keep temporary memory while the page is open. Standard web hosting and network providers may process basic technical request data, such as an IP address or requested page, to deliver and protect the website; this does not include image files selected in the editor.</p>
-        <h3 class="font-semibold text-white">Third parties</h3>
-        <p>The page may load website styling resources from third-party providers. If advertising, analytics, or other third-party services are added, those providers may use cookies or similar technologies under their own privacy policies. We will update this notice to identify those services before enabling them.</p>
+        <h3 class="font-semibold text-white">Advertising and third parties</h3>
+        <p>ImgCon uses Google AdSense to serve advertisements. Google and its partners may use cookies or similar technologies to show, measure, and personalize ads, subject to your location, consent choices, and Google’s policies. These third parties may process information such as your browser, device, or ad interactions; this is separate from image editing, and selected image files are not sent to ImgCon’s image-processing server. Learn about Google’s data practices at <a class="font-medium text-indigo-300 underline underline-offset-2" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">Google’s Partner Sites policy</a> and manage personalization through <a class="font-medium text-indigo-300 underline underline-offset-2" href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">Google Ads Settings</a>. Styling and other site features may also load resources from third-party providers.</p>
         <h3 class="font-semibold text-white">Your choices and security</h3>
-        <p>You can remove an image from the editor by choosing another file or closing the page. Keep in mind that no website or local browser environment can guarantee absolute security. Do not use this tool for files that your device or browser is not permitted to handle.</p>
-        <p class="text-xs text-slate-500">Last updated: October 22, 2026.</p>`,
+        <p>You can remove an image from the editor by choosing another file or closing the page. You can manage cookies through your browser settings and ad personalization through Google Ads Settings. Where required, additional consent choices may be presented for advertising cookies. Keep in mind that no website or local browser environment can guarantee absolute security. Do not use this tool for files that your device or browser is not permitted to handle.</p>
+        <p>For privacy questions, contact <a class="font-medium text-indigo-300 underline underline-offset-2" href="mailto:support@imgcon.online">support@imgcon.online</a>.</p>
+        <p class="text-xs text-slate-500">Last updated: October 23, 2026.</p>`,
     },
     terms: {
       title: "Terms of Service",
@@ -1329,13 +1422,13 @@
         <p>The service is provided without warranties to the fullest extent permitted by applicable law. ImgCon is not responsible for lost files, rejected uploads, inaccurate output, interruption, or indirect damages arising from use of the service. Nothing in these terms limits rights that cannot be excluded by law.</p>
         <h3 class="font-semibold text-white">Changes</h3>
         <p>We may update these terms or change features as the service evolves. Continued use after a revised version is posted constitutes acceptance where permitted by law.</p>
-        <p class="text-xs text-slate-500">Last updated: October 22, 2026.</p>`,
+        <p class="text-xs text-slate-500">Last updated: October 23, 2026.</p>`,
     },
     contact: {
       title: "Contact Us",
       html: `<p>We welcome questions, accessibility feedback, and reports about problems with ImgCon.</p>
         <h3 class="font-semibold text-white">Contact information</h3>
-        <p><a class="font-medium text-indigo-300 underline underline-offset-2" href="mailto:imgcon72@gmail.com">imgcon72@gmail.com</a> <button type="button" data-copy-email class="ml-2 rounded-lg border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-300 hover:border-indigo-400">Copy email</button></p>
+        <p><a class="font-medium text-indigo-300 underline underline-offset-2" href="mailto:support@imgcon.online">support@imgcon.online</a> <button type="button" data-copy-email class="ml-2 rounded-lg border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-300 hover:border-indigo-400">Copy email</button></p>
         <p data-copy-status role="status" aria-live="polite" class="text-xs text-slate-500"></p>
         <p>We aim to respond to support messages within 2 business days. Please do not include sensitive personal information or private images in a support request; image files are processed locally and are not needed to report a problem.</p>`,
     },
@@ -1364,7 +1457,7 @@
     let copied = false;
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText("imgcon72@gmail.com");
+        await navigator.clipboard.writeText("support@imgcon.online");
         copied = true;
       }
     } catch (error) {
@@ -1372,7 +1465,7 @@
     }
     if (!copied) {
       const textarea = document.createElement("textarea");
-      textarea.value = "imgcon72@gmail.com";
+      textarea.value = "support@imgcon.online";
       textarea.setAttribute("readonly", "");
       textarea.style.position = "fixed";
       textarea.style.left = "-9999px";

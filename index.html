@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#020617" />
-    <meta name="description" content="Compress image to 20KB, 50KB, or 100KB online free. Make passport photos, convert JPG to WebP, resize, and enhance privately in your browser with ImgCon." />
-    <meta name="keywords" content="compress image to 20KB online free, compress image to 50KB, compress image to 100KB, passport photo maker, convert JPG to WebP, image compressor, image enhancer" />
+    <meta name="description" content="Compress images to 20KB, 50KB, or 100KB for government forms (SSC, UPSC). Convert JPG to PNG, WebP online for free. Fast, secure, and 100% private." />
+    <meta name="keywords" content="compress image to 20kb, photo compressor 50kb, jpg to webp, passport photo compressor, online image converter" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://imgcon.online/" />
     <meta property="og:title" content="ImgCon - ⚡ Free Online Image Compressor &amp; Converter" />
@@ -21,7 +21,8 @@
     <meta property="og:image:height" content="630" />
     <link rel="icon" type="image/png" href="imgconlogo.png" />
     <link rel="manifest" href="manifest.json" />
-    <title>ImgCon — Free Image Compressor 20KB, 50KB &amp; 100KB</title>
+    <title>ImgCon — Free Online Image Compressor (20KB, 50KB) &amp; Format Converter</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6616979329366975" crossorigin="anonymous"></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -49,42 +50,42 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "How can I compress an image to 20KB, 50KB, or 100KB online?",
+            "name": "How can I compress an image to 20KB, 50KB, or 100KB?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Open your image in ImgCon, choose the 20 KB, 50 KB, or 100 KB target, and download the result. ImgCon adjusts quality and, when needed, dimensions to target the maximum. Results depend on image content and format."
+              "text": "Choose an image, select the 20 KB, 50 KB, or 100 KB target, and download the result when processing finishes. ImgCon adjusts quality and, if needed, dimensions. Results depend on the image and your selected output format."
             }
           },
           {
             "@type": "Question",
-            "name": "How do I convert JPG to WebP?",
+            "name": "What image formats does ImgCon support?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Open a JPG image in ImgCon, select WEBP under Output format, preview the converted image, and download it. Conversion happens locally in your browser."
+              "text": "You can select PNG, JPEG, WebP, GIF, BMP, and AVIF images. Export your result as PNG, JPG, or WebP. Some source formats may be decoded differently depending on browser support."
             }
           },
           {
             "@type": "Question",
-            "name": "How can I compress a photo for SSC or UPSC applications?",
+            "name": "Can I batch compress multiple images at once?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Check the current SSC or UPSC application instructions for its required dimensions, format, and maximum file size. Use ImgCon to resize or crop your photo and select a matching file-size target; always verify the downloaded file against the official requirements."
+              "text": "Select or drop multiple images into the queue. Choose the target size, quality, and output format, then select Apply these settings to all images in queue. Download the processed images together in a ZIP file."
             }
           },
           {
             "@type": "Question",
-            "name": "Can I make a passport photo with ImgCon?",
+            "name": "How do I compress a photo for an SSC or UPSC form?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "ImgCon can crop and resize an image using common aspect ratios, including passport-style proportions. Passport photo rules vary by country and application, so verify the required size, background, and framing before submitting."
+              "text": "Check the current application requirements for image dimensions, format, and maximum file size. Choose a matching target in ImgCon, resize or crop as needed, and verify the downloaded image meets the official requirements before submitting."
             }
           },
           {
             "@type": "Question",
-            "name": "Is ImgCon secure, and are my photos uploaded?",
+            "name": "Are my images uploaded or stored?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Image editing and export run locally in your browser. ImgCon does not upload selected image files to an image-processing server. Keep your browser and device secure and check any official application requirements before submitting a photo."
+              "text": "Image editing and export run locally in your browser. ImgCon does not upload selected image files to an image-processing server. Your files remain on your device while you use the tool."
             }
           }
         ]
@@ -209,6 +210,10 @@
       .preview-stage { position: relative; }
       .preview-frame { flex: 1 1 auto; }
       .target-size-button[aria-pressed="true"], .aspect-button[aria-pressed="true"] { border-color: #4f46e5; background: #4f46e5; color: #fff; }
+      .quick-tool-card { min-height: 46px; border: 1px solid rgba(255, 255, 255, .08); border-radius: .75rem; background: linear-gradient(120deg, rgba(99, 102, 241, .1), rgba(139, 92, 246, .05)); padding: .75rem 1rem; color: #cbd5e1; text-align: left; font-size: .8125rem; line-height: 1.35rem; transition: border-color .2s ease, background .2s ease, color .2s ease, transform .2s ease; }
+      .quick-tool-card:hover, .quick-tool-card:focus-visible { border-color: rgba(129, 140, 248, .65); background: linear-gradient(120deg, rgba(99, 102, 241, .2), rgba(139, 92, 246, .12)); color: #fff; outline: none; }
+      .ad-placeholder { min-height: 90px; border: 1px dashed rgba(148, 163, 184, .24); border-radius: 1rem; background: linear-gradient(120deg, rgba(255, 255, 255, .018), rgba(99, 102, 241, .025)); }
+      .ad-placeholder-inner { min-height: inherit; display: grid; place-items: center; padding: 1rem; text-align: center; }
       dialog { color: #e2e8f0; }
       dialog::backdrop { background: rgba(2, 6, 23, .78); backdrop-filter: blur(4px); }
       dialog[open] { animation: dialog-in .2s ease both; }
@@ -230,6 +235,9 @@
       [data-theme="light"] [class~="border-line"], [data-theme="light"] [class~="border-slate-700"] { border-color: #d8e0eb; }
       [data-theme="light"] [class~="border-white/[0.06]"], [data-theme="light"] [class~="border-white/[0.07]"] { border-color: #dbe3ee; }
       [data-theme="light"] [class~="bg-white/[0.025]"], [data-theme="light"] [class~="bg-white/[0.02]"] { background-color: rgba(255, 255, 255, .82); }
+      [data-theme="light"] .quick-tool-card { border-color: #dbe3ee; background: linear-gradient(120deg, rgba(99, 102, 241, .07), rgba(139, 92, 246, .03)); color: #334155; }
+      [data-theme="light"] .quick-tool-card:hover, [data-theme="light"] .quick-tool-card:focus-visible { border-color: #818cf8; color: #1e1b4b; }
+      [data-theme="light"] .ad-placeholder { border-color: #cbd5e1; background: linear-gradient(120deg, rgba(99, 102, 241, .025), rgba(139, 92, 246, .035)); }
       [data-theme="light"] .text-white, [data-theme="light"] .text-slate-100, [data-theme="light"] .text-slate-200 { color: #0f172a; }
       [data-theme="light"] .text-slate-300, [data-theme="light"] .text-slate-400,
       [data-theme="light"] .text-slate-500, [data-theme="light"] .text-slate-600 { color: #334155; }
@@ -313,6 +321,14 @@
         </div>
       </div>
     </header>
+
+    <aside class="mx-auto mt-5 max-w-7xl px-5 sm:px-8" aria-label="Advertisement">
+      <div class="ad-placeholder" data-ad-placeholder="top">
+        <div class="ad-placeholder-inner">
+          <span class="text-[10px] font-medium uppercase tracking-[.18em] text-slate-500">Advertisement</span>
+        </div>
+      </div>
+    </aside>
 
     <main class="mx-auto max-w-7xl px-5 pb-16 pt-12 sm:px-8 sm:pt-16">
       <section class="mx-auto mb-10 max-w-3xl text-center">
@@ -489,6 +505,62 @@
         </div>
       </section>
 
+      <aside class="mx-auto mt-8 max-w-6xl" aria-label="Advertisement">
+        <div class="ad-placeholder" data-ad-placeholder="after-tools">
+          <div class="ad-placeholder-inner">
+            <span class="text-[10px] font-medium uppercase tracking-[.18em] text-slate-500">Advertisement</span>
+          </div>
+        </div>
+      </aside>
+
+      <section id="popular-solutions" class="mx-auto mt-14 max-w-6xl" aria-labelledby="popular-solutions-title">
+        <div class="mx-auto max-w-3xl text-center">
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-300">Quick image tools</p>
+          <h2 id="popular-solutions-title" class="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">Popular Use Cases &amp; Quick Tools</h2>
+          <p class="mt-3 text-sm leading-6 text-slate-400">Choose a task to jump back to ImgCon. Select your photo to get started; presets will set the matching size, format, or crop when available.</p>
+        </div>
+        <div class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <section class="rounded-2xl border border-white/[0.06] bg-panel p-5" aria-labelledby="quick-exam-title">
+            <h3 id="quick-exam-title" class="text-base font-semibold text-white">Exam &amp; Government Forms</h3>
+            <div class="mt-4 grid gap-2">
+              <button type="button" data-quick-tool data-target-bytes="20480" class="quick-tool-card">Compress photo to 20KB</button>
+              <button type="button" data-quick-tool data-target-bytes="51200" class="quick-tool-card">Compress to 50KB for SSC / UPSC</button>
+              <button type="button" data-quick-tool data-target-bytes="10240" class="quick-tool-card">Resize signature under 10KB</button>
+              <button type="button" data-quick-tool data-aspect-ratio="0.7777777778" class="quick-tool-card">Passport photo crop · 3.5 × 4.5</button>
+            </div>
+          </section>
+          <section class="rounded-2xl border border-white/[0.06] bg-panel p-5" aria-labelledby="quick-convert-title">
+            <h3 id="quick-convert-title" class="text-base font-semibold text-white">Image Converters</h3>
+            <div class="mt-4 grid gap-2">
+              <button type="button" data-quick-tool data-output-format="image/png" class="quick-tool-card">Convert JPG to PNG</button>
+              <button type="button" data-quick-tool data-output-format="image/jpeg" class="quick-tool-card">Convert PNG to JPG</button>
+              <button type="button" data-quick-tool data-output-format="image/jpeg" class="quick-tool-card">Convert WebP to JPG</button>
+              <button type="button" data-quick-tool data-output-format="image/jpeg" data-accept-heic class="quick-tool-card">Convert HEIC to JPG <span class="mt-1 block text-[10px] font-normal text-slate-500">Requires browser support for opening HEIC images</span></button>
+            </div>
+          </section>
+          <section class="rounded-2xl border border-white/[0.06] bg-panel p-5" aria-labelledby="quick-social-title">
+            <h3 id="quick-social-title" class="text-base font-semibold text-white">Social &amp; Daily Tools</h3>
+            <div class="mt-4 grid gap-2">
+              <button type="button" data-quick-tool data-aspect-ratio="1.7777777778" class="quick-tool-card">YouTube thumbnail · 16:9</button>
+              <button type="button" data-quick-tool data-aspect-ratio="1" class="quick-tool-card">Instagram profile image · Square 1:1</button>
+              <button type="button" data-quick-tool data-bulk class="quick-tool-card">Bulk image compressor</button>
+              <button type="button" data-quick-tool data-output-format="image/jpeg" data-pdf class="quick-tool-card">Convert image to PDF <span class="mt-1 block text-[10px] font-normal text-slate-500">Choose a photo, then use Download as PDF</span></button>
+            </div>
+          </section>
+        </div>
+        <div class="mt-7 grid gap-4 lg:grid-cols-2">
+          <article class="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 sm:p-6">
+            <h3 class="text-lg font-semibold text-white">Compress photos and signatures for government exam forms</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-400">Application portals may require a passport photo or signature in a specific file size, image format, and set of dimensions. Check the latest SSC, UPSC, or other exam instructions first. Select the 20KB, 50KB, or custom target above, choose the required output format, and adjust the crop or dimensions before downloading. For several files, select them together, apply the same settings to the queue, and download the results in a ZIP.</p>
+            <p class="mt-3 text-sm leading-6 text-slate-400">A size target sets a maximum and can change image quality or dimensions. Review the final file and confirm it meets the official form rules before submission.</p>
+          </article>
+          <article class="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 sm:p-6">
+            <h3 class="text-lg font-semibold text-white">Why convert images to WebP?</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-400">WebP can encode photos and graphics more efficiently than some older image formats while supporting lossy and lossless compression. A smaller image can reduce page transfer size and help a website load faster, depending on the source image, quality settings, browser support, and delivery setup. Convert a JPG or PNG to WebP, compare the preview and file size, and choose the format that best fits your site.</p>
+          </article>
+        </div>
+      </section>
+
       <section id="how-to-use" class="mx-auto mt-14 max-w-5xl rounded-3xl border border-white/[0.06] bg-white/[0.02] p-6 sm:p-8">
         <div class="mx-auto max-w-3xl text-center">
           <h2 class="text-2xl font-semibold tracking-tight text-white">How to use ImgCon in 3 steps</h2>
@@ -499,28 +571,67 @@
           <li class="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-5"><span class="text-xs font-semibold uppercase tracking-wider text-indigo-300">02 · Edit</span><h3 class="mt-2 text-sm font-semibold text-white">Get it just right</h3><p class="mt-1 text-xs leading-5 text-slate-400">Compress to a target, crop a passport photo, convert JPG to WebP, or tap Magic Auto-Enhance.</p></li>
           <li class="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-5"><span class="text-xs font-semibold uppercase tracking-wider text-indigo-300">03 · Download</span><h3 class="mt-2 text-sm font-semibold text-white">Save your result</h3><p class="mt-1 text-xs leading-5 text-slate-400">Review the preview, then download your image or create a PDF copy.</p></li>
         </ol>
+        <section class="mx-auto mt-10 max-w-4xl" aria-labelledby="why-imgcon-title">
+          <h2 id="why-imgcon-title" class="text-center text-xl font-semibold text-white">Why Use ImgCon?</h2>
+          <div class="mt-5 grid gap-3 sm:grid-cols-3">
+            <article class="rounded-xl border border-white/[0.06] bg-white/[0.025] p-4">
+              <h3 class="text-sm font-semibold text-white">Private by design</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-400">Your photos are processed in your browser. Image files are not uploaded to an image-processing server.</p>
+            </article>
+            <article class="rounded-xl border border-white/[0.06] bg-white/[0.025] p-4">
+              <h3 class="text-sm font-semibold text-white">Fast, local processing</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-400">Compress, convert, and preview images on your device without waiting for a server upload.</p>
+            </article>
+            <article class="rounded-xl border border-white/[0.06] bg-white/[0.025] p-4">
+              <h3 class="text-sm font-semibold text-white">Tools in one place</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-400">Set a file-size target, convert formats, crop passport-style photos, or process a batch and download it as a ZIP.</p>
+            </article>
+          </div>
+        </section>
+        <section class="mx-auto mt-10 max-w-4xl" aria-labelledby="form-compression-title">
+          <h2 id="form-compression-title" class="text-center text-xl font-semibold text-white">Step-by-Step Guide: How to Compress Photos to 20KB/50KB for Online Forms</h2>
+          <ol class="mt-5 grid gap-3 sm:grid-cols-2">
+            <li class="rounded-xl border border-white/[0.06] bg-white/[0.025] p-4">
+              <h3 class="text-sm font-semibold text-white">1. Check the form requirements</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-400">Confirm the required file size, dimensions, and format in the current SSC, UPSC, or other application instructions.</p>
+            </li>
+            <li class="rounded-xl border border-white/[0.06] bg-white/[0.025] p-4">
+              <h3 class="text-sm font-semibold text-white">2. Select your photo</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-400">Browse, drag and drop, or paste an image. To process multiple photos, select or drop them together.</p>
+            </li>
+            <li class="rounded-xl border border-white/[0.06] bg-white/[0.025] p-4">
+              <h3 class="text-sm font-semibold text-white">3. Choose a size and format</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-400">Select the 20 KB or 50 KB target and the output format required by the form. Adjust dimensions or crop if needed.</p>
+            </li>
+            <li class="rounded-xl border border-white/[0.06] bg-white/[0.025] p-4">
+              <h3 class="text-sm font-semibold text-white">4. Review and download</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-400">Check the output preview and file size. For a batch, apply your settings to every queued image and download the results in a ZIP.</p>
+            </li>
+          </ol>
+          <p class="mt-4 text-xs leading-5 text-slate-500">A target size is a maximum; the final dimensions or quality may change to meet it. Always verify the downloaded file against the application’s official requirements.</p>
+        </section>
         <div class="mx-auto mt-10 max-w-3xl">
           <h2 class="text-center text-xl font-semibold text-white">Frequently asked questions</h2>
           <div id="faq-list" class="mt-5 space-y-3">
             <article class="faq-item rounded-xl border border-white/[0.06] bg-white/[0.02] px-4" data-open="false">
               <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-size" aria-expanded="false"><span>How can I compress an image to 20KB, 50KB, or 100KB?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
-              <div id="faq-answer-size" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Open your image and choose the 20 KB, 50 KB, or 100 KB target. ImgCon adjusts quality and, when needed, dimensions to target the maximum. Results depend on image content and format.</p></div></div>
+              <div id="faq-answer-size" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Choose an image, select the 20 KB, 50 KB, or 100 KB target, and download the result when processing finishes. ImgCon adjusts quality and, if needed, dimensions. Results depend on the image and your selected output format.</p></div></div>
             </article>
             <article class="faq-item rounded-xl border border-white/[0.06] bg-white/[0.02] px-4" data-open="false">
-              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-format" aria-expanded="false"><span>How do I convert JPG to WebP?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
-              <div id="faq-answer-format" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Open your JPG, choose WEBP under Output format, preview the conversion, then download it. The conversion runs locally in your browser.</p></div></div>
+              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-format" aria-expanded="false"><span>What image formats does ImgCon support?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
+              <div id="faq-answer-format" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">You can select PNG, JPEG, WebP, GIF, BMP, and AVIF images. Export your result as PNG, JPG, or WebP. Some source formats may be decoded differently depending on browser support.</p></div></div>
             </article>
             <article class="faq-item rounded-xl border border-white/[0.06] bg-white/[0.02] px-4" data-open="false">
-              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-exam" aria-expanded="false"><span>How do I compress a photo for SSC or UPSC?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
-              <div id="faq-answer-exam" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Check the current SSC or UPSC instructions for required dimensions, format, and maximum size. Resize or crop your image and select a matching size target, then verify the downloaded file against the official requirements.</p></div></div>
+              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-exam" aria-expanded="false"><span>Can I batch compress multiple images at once?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
+              <div id="faq-answer-exam" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Select or drop multiple images into the queue. Choose your target size, quality, and output format, then select Apply these settings to all images in queue. Download the processed images together in a ZIP file.</p></div></div>
             </article>
             <article class="faq-item rounded-xl border border-white/[0.06] bg-white/[0.02] px-4" data-open="false">
-              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-passport" aria-expanded="false"><span>Can ImgCon make a passport photo?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
-              <div id="faq-answer-passport" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">ImgCon can crop and resize using common aspect ratios, including passport-style proportions. Rules vary by country and application, so check required size, background, and framing before submitting.</p></div></div>
+              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-passport" aria-expanded="false"><span>How do I compress a photo for an SSC or UPSC form?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
+              <div id="faq-answer-passport" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Check the current application requirements for image dimensions, format, and maximum file size. Choose a matching target in ImgCon, resize or crop as needed, and verify the downloaded image meets the official requirements before submitting.</p></div></div>
             </article>
             <article class="faq-item rounded-xl border border-white/[0.06] bg-white/[0.02] px-4" data-open="false">
-              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-privacy" aria-expanded="false"><span>Is ImgCon secure? Are my photos uploaded?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
-              <div id="faq-answer-privacy" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Editing and export run locally in your browser; selected image files are not uploaded to an ImgCon image-processing server. Keep your device and browser secure.</p></div></div>
+              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-privacy" aria-expanded="false"><span>Are my images uploaded or stored?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
+              <div id="faq-answer-privacy" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Image editing and export run locally in your browser. ImgCon does not upload selected image files to an image-processing server. Your files remain on your device while you use the tool.</p></div></div>
             </article>
           </div>
         </div>
@@ -543,12 +654,12 @@
     </main>
     <footer class="border-t border-white/[0.06]">
       <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-5 py-5 text-xs text-slate-600 sm:flex-row sm:px-8">
-        <div class="text-center sm:text-left"><span>ImgCon · Simple image tools, with privacy built in.</span><p class="mt-1">Questions? <a class="font-medium text-indigo-300 underline underline-offset-2 hover:text-indigo-200" href="mailto:imgcon72@gmail.com">imgcon72@gmail.com</a> <button type="button" data-copy-email class="ml-1 underline underline-offset-2 hover:text-slate-300">Copy email</button><span data-copy-status class="sr-only" aria-live="polite"></span><br />We aim to reply within 2 business days.</p></div>
+        <div class="text-center sm:text-left"><span>ImgCon · Simple image tools, with privacy built in.</span><p class="mt-1">Questions? <a class="font-medium text-indigo-300 underline underline-offset-2 hover:text-indigo-200" href="mailto:support@imgcon.online">support@imgcon.online</a> <button type="button" data-copy-email class="ml-1 underline underline-offset-2 hover:text-slate-300">Copy email</button><span data-copy-status class="sr-only" aria-live="polite"></span><br />We aim to reply within 2 business days.</p></div>
         <nav aria-label="Legal and company information" class="flex flex-wrap justify-center gap-x-4 gap-y-2">
-          <button type="button" data-legal="about" class="transition hover:text-slate-300">About Us</button>
+          <button type="button" data-legal="about" class="transition hover:text-slate-300">About Developer</button>
           <button type="button" data-legal="privacy" class="transition hover:text-slate-300">Privacy Policy</button>
           <button type="button" data-legal="terms" class="transition hover:text-slate-300">Terms of Service</button>
-          <button type="button" data-legal="contact" class="transition hover:text-slate-300">Contact Us</button>
+          <a class="transition hover:text-slate-300" href="mailto:support@imgcon.online">Contact: support@imgcon.online</a>
         </nav>
         <span>Made for your browser. No uploads, ever.</span>
       </div>
