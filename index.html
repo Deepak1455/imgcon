@@ -4,8 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#080b14" />
-    <meta name="description" content="Convert, compress, resize, and transform images privately in your browser with ImgCon." />
-    <title>ImgCon — Image tools, made simple</title>
+    <meta name="description" content="Convert, resize, filter, and compress images to a target size online. Create PDFs privately in your browser with ImgCon." />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://imgcon.online/" />
+    <title>ImgCon — Free Online Image Compressor &amp; Converter</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "ImgCon",
+        "url": "https://imgcon.online/",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "description": "Free browser-based image conversion, compression, resizing, filtering, and PDF export."
+      }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -54,6 +68,10 @@
         transition: border-color .15s, color .15s, background .15s;
       }
       .transform-button:hover { border-color: #818cf8; color: #c7d2fe; background: rgba(99, 102, 241, .08); }
+      .target-size-button[aria-pressed="true"] { border-color: #818cf8; background: rgba(99, 102, 241, .16); color: #e0e7ff; }
+      .aspect-button[aria-pressed="true"] { border-color: #818cf8; background: rgba(99, 102, 241, .16); color: #e0e7ff; }
+      dialog { color: #e2e8f0; }
+      dialog::backdrop { background: rgba(2, 6, 23, .78); backdrop-filter: blur(4px); }
     </style>
   </head>
   <body class="min-h-full font-sans text-slate-100 antialiased">
@@ -143,6 +161,42 @@
               <p id="quality-note" class="mt-2 hidden text-[11px] leading-4 text-slate-500">PNG is lossless; quality applies to JPG and WEBP.</p>
             </div>
             <div class="mb-5">
+              <div class="mb-2 flex items-center justify-between"><span class="text-xs font-medium text-slate-400">Target file size</span><span class="text-[10px] text-slate-600">maximum size</span></div>
+              <div class="grid grid-cols-4 gap-2">
+                <button type="button" data-target-bytes="20480" aria-pressed="false" class="target-size-button transform-button text-xs font-medium">20 KB</button>
+                <button type="button" data-target-bytes="51200" aria-pressed="false" class="target-size-button transform-button text-xs font-medium">50 KB</button>
+                <button type="button" data-target-bytes="102400" aria-pressed="false" class="target-size-button transform-button text-xs font-medium">100 KB</button>
+                <button type="button" data-target-bytes="204800" aria-pressed="false" class="target-size-button transform-button text-xs font-medium">200 KB</button>
+              </div>
+              <div class="mt-2 grid grid-cols-[1fr_auto] gap-2">
+                <label class="sr-only" for="custom-target-kb">Custom target size in kilobytes</label>
+                <input id="custom-target-kb" type="number" min="0.1" max="51200" step="0.1" inputmode="decimal" placeholder="Custom size in KB" class="min-w-0 rounded-lg border border-slate-700 bg-[#0c111c] px-3 py-2 text-xs text-slate-200 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/15" />
+                <button id="custom-target-button" type="button" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-indigo-400 hover:text-white">Apply</button>
+              </div>
+              <p id="target-size-note" class="mt-2 text-[11px] leading-4 text-slate-500" aria-live="polite">Choose a size to automatically fit your image. Dimensions shrink only if needed.</p>
+            </div>
+            <div class="mb-5">
+              <span class="mb-2 block text-xs font-medium text-slate-400">Aspect ratio &amp; crop</span>
+              <div class="grid grid-cols-2 gap-2">
+                <button type="button" data-aspect-ratio="1" aria-pressed="false" class="aspect-button transform-button text-xs font-medium">1:1 · Square</button>
+                <button type="button" data-aspect-ratio="1.7777777778" aria-pressed="false" class="aspect-button transform-button text-xs font-medium">16:9 · Landscape</button>
+                <button type="button" data-aspect-ratio="0.8" aria-pressed="false" class="aspect-button transform-button text-xs font-medium">4:5 · Instagram</button>
+                <button type="button" data-aspect-ratio="0.7777777778" aria-pressed="false" class="aspect-button transform-button text-xs font-medium">3.5:4.5 · Passport</button>
+              </div>
+            </div>
+            <div class="mb-5">
+              <span class="mb-3 block text-xs font-medium text-slate-400">Image adjustments</span>
+              <div class="mb-3">
+                <div class="mb-1 flex items-center justify-between"><label for="brightness-slider" class="text-xs text-slate-400">Brightness</label><span id="brightness-value" class="text-xs tabular-nums text-indigo-200">100%</span></div>
+                <input id="brightness-slider" type="range" min="50" max="150" value="100" class="w-full cursor-pointer" />
+              </div>
+              <div class="mb-3">
+                <div class="mb-1 flex items-center justify-between"><label for="contrast-slider" class="text-xs text-slate-400">Contrast</label><span id="contrast-value" class="text-xs tabular-nums text-indigo-200">100%</span></div>
+                <input id="contrast-slider" type="range" min="50" max="150" value="100" class="w-full cursor-pointer" />
+              </div>
+              <label class="flex cursor-pointer items-center justify-between text-xs text-slate-400" for="grayscale-toggle"><span>Grayscale / black &amp; white</span><input id="grayscale-toggle" type="checkbox" class="h-4 w-4 rounded border-slate-600 bg-slate-800 accent-indigo-400" /></label>
+            </div>
+            <div class="mb-5">
               <div class="mb-2 flex items-center justify-between"><span class="text-xs font-medium text-slate-400">Dimensions</span><label class="flex cursor-pointer items-center gap-2 text-xs text-slate-400"><input id="ratio-lock" type="checkbox" checked class="h-3.5 w-3.5 rounded border-slate-600 bg-slate-800 accent-indigo-400" />Lock ratio</label></div>
               <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
                 <label class="sr-only" for="width-input">Width in pixels</label><input id="width-input" type="number" min="1" max="16000" inputmode="numeric" placeholder="Width" class="min-w-0 rounded-lg border border-slate-700 bg-[#0c111c] px-3 py-2.5 text-sm text-slate-200 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/15" />
@@ -159,10 +213,15 @@
               </div>
             </div>
             <p id="processing-error" role="alert" class="mb-3 hidden text-xs leading-5 text-rose-300"></p>
-            <button id="download-button" type="button" disabled class="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-500 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-950/40 transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-indigo-500">
+            <div class="grid grid-cols-2 gap-2">
+            <button id="download-button" type="button" disabled class="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-500 px-3 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-950/40 transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-indigo-500">
               <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4" aria-hidden="true"><path d="M10 3.5v9m0 0 3.5-3.5M10 12.5 6.5 9M4 14v2.5h12V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               Download image
             </button>
+            <button id="download-pdf-button" type="button" disabled class="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-700 bg-[#0c111c] px-3 py-3 text-sm font-semibold text-slate-200 transition hover:border-indigo-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-45">
+              Download as PDF
+            </button>
+            </div>
             <p class="mt-3 text-center text-[10px] leading-4 text-slate-600">Processed privately on your device</p>
           </aside>
         </div>
@@ -184,8 +243,24 @@
       </section>
     </main>
     <footer class="border-t border-white/[0.06]">
-      <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-5 text-xs text-slate-600 sm:flex-row sm:px-8"><span>ImgCon · Simple image tools, with privacy built in.</span><span>Made for your browser. No uploads, ever.</span></div>
+      <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-5 py-5 text-xs text-slate-600 sm:flex-row sm:px-8">
+        <span>ImgCon · Simple image tools, with privacy built in.</span>
+        <nav aria-label="Legal and company information" class="flex flex-wrap justify-center gap-x-4 gap-y-2">
+          <button type="button" data-legal="about" class="transition hover:text-slate-300">About Us</button>
+          <button type="button" data-legal="privacy" class="transition hover:text-slate-300">Privacy Policy</button>
+          <button type="button" data-legal="terms" class="transition hover:text-slate-300">Terms of Service</button>
+          <button type="button" data-legal="contact" class="transition hover:text-slate-300">Contact Us</button>
+        </nav>
+        <span>Made for your browser. No uploads, ever.</span>
+      </div>
     </footer>
+    <dialog id="legal-dialog" aria-labelledby="legal-title" class="m-auto max-h-[85vh] w-[min(92vw,42rem)] rounded-2xl border border-slate-700 bg-[#101522] p-0 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-line px-5 py-4">
+        <h2 id="legal-title" class="text-base font-semibold text-white"></h2>
+        <button id="legal-close" type="button" aria-label="Close dialog" class="rounded-lg border border-slate-700 px-3 py-1.5 text-xs text-slate-300 hover:border-slate-500 hover:text-white">Close</button>
+      </div>
+      <div id="legal-content" class="space-y-4 overflow-y-auto px-5 py-5 text-sm leading-6 text-slate-300"></div>
+    </dialog>
     <script src="script.js" defer></script>
   </body>
 </html>

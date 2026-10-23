@@ -32,13 +32,28 @@
     qualitySlider: document.getElementById("quality-slider"),
     qualityValue: document.getElementById("quality-value"),
     qualityNote: document.getElementById("quality-note"),
+    targetSizeButtons: [...document.querySelectorAll("[data-target-bytes]")],
+    targetSizeNote: document.getElementById("target-size-note"),
+    customTargetKb: document.getElementById("custom-target-kb"),
+    customTargetButton: document.getElementById("custom-target-button"),
+    aspectButtons: [...document.querySelectorAll("[data-aspect-ratio]")],
+    brightnessSlider: document.getElementById("brightness-slider"),
+    brightnessValue: document.getElementById("brightness-value"),
+    contrastSlider: document.getElementById("contrast-slider"),
+    contrastValue: document.getElementById("contrast-value"),
+    grayscaleToggle: document.getElementById("grayscale-toggle"),
     ratioLock: document.getElementById("ratio-lock"),
     widthInput: document.getElementById("width-input"),
     heightInput: document.getElementById("height-input"),
     resetButton: document.getElementById("reset-button"),
     chooseAnother: document.getElementById("choose-another"),
     downloadButton: document.getElementById("download-button"),
+    downloadPdfButton: document.getElementById("download-pdf-button"),
     processingError: document.getElementById("processing-error"),
+    legalDialog: document.getElementById("legal-dialog"),
+    legalTitle: document.getElementById("legal-title"),
+    legalContent: document.getElementById("legal-content"),
+    legalClose: document.getElementById("legal-close"),
   };
 
   const state = {
@@ -52,6 +67,8 @@
     rotation: 0,
     flipX: false,
     flipY: false,
+    targetBytes: null,
+    cropRatio: null,
     ratio: 1,
     revision: 0,
     processingTimer: null,
@@ -71,6 +88,19 @@
     element.classList.toggle("hidden", !message);
   }
 
+  function updateTargetSizeControls(note) {
+    for (const button of elements.targetSizeButtons) {
+      button.setAttribute("aria-pressed", String(Number(button.dataset.targetBytes) === state.targetBytes));
+    }
+    elements.qualitySlider.disabled = state.targetBytes !== null;
+    elements.qualitySlider.classList.toggle("cursor-not-allowed", state.targetBytes !== null);
+    elements.qualitySlider.classList.toggle("opacity-50", state.targetBytes !== null);
+    elements.targetSizeNote.textContent = note
+      || (state.targetBytes === null
+        ? "Choose a size to automatically fit your image. Dimensions shrink only if needed."
+        : `Finding the best quality under ${formatBytes(state.targetBytes)}…`);
+  }
+
   function releaseResult() {
     if (state.resultUrl) URL.revokeObjectURL(state.resultUrl);
     state.resultUrl = null;
@@ -84,6 +114,7 @@
     elements.sizeChange.textContent = "";
     elements.sizeChange.className = "text-xs font-medium";
     elements.downloadButton.disabled = true;
+    elements.downloadPdfButton.disabled = true;
   }
 
   function clearCurrentImage() {
@@ -95,6 +126,11 @@
     state.image = null;
     state.sourceUrl = null;
     state.loadingImage = false;
+    state.targetBytes = null;
+    state.cropRatio = null;
+    elements.customTargetKb.value = "";
+    updateTargetSizeControls();
+    updateAspectControls();
     elements.originalPreview.removeAttribute("src");
     elements.editor.classList.add("hidden");
     elements.features.classList.remove("hidden");
@@ -121,6 +157,8 @@
     if (state.sourceUrl) URL.revokeObjectURL(state.sourceUrl);
     state.loadingImage = true;
     state.file = file;
+    state.targetBytes = null;
+    updateTargetSizeControls();
     state.sourceUrl = URL.createObjectURL(file);
     const image = new Image();
     image.onload = () => {
@@ -138,6 +176,13 @@
       state.rotation = 0;
       state.flipX = false;
       state.flipY = false;
+      state.cropRatio = null;
+      elements.brightnessSlider.value = "100";
+      elements.brightnessValue.textContent = "100%";
+      elements.contrastSlider.value = "100";
+      elements.contrastValue.textContent = "100%";
+      elements.grayscaleToggle.checked = false;
+      updateAspectControls();
 
       elements.fileName.textContent = file.name;
       elements.imageDetails.textContent = `${state.width.toLocaleString()} × ${state.height.toLocaleString()} px`;
@@ -189,6 +234,7 @@
     state.revision += 1;
     const revision = state.revision;
     showMessage(elements.processingError, "");
+    updateTargetSizeControls();
     elements.resultPlaceholder.textContent = "Your edited image will appear here";
     elements.status.textContent = "Updating preview…";
     elements.processing.classList.remove("hidden");
@@ -196,10 +242,271 @@
     elements.resultPreview.classList.add("hidden");
     elements.resultPlaceholder.classList.add("hidden");
     elements.downloadButton.disabled = true;
+    elements.downloadPdfButton.disabled = true;
     state.processingTimer = setTimeout(() => processImage(revision), 160);
   }
 
-  function processImage(revision) {
+  function createCanvas(dimensions) {
+    const canvas = document.createElement("canvas");
+    canvas.width = dimensions.width;
+    canvas.height = dimensions.height;
+    const context = canvas.getContext("2d");
+    if (!context) throw new Error("Your browser could not create an image canvas.");
+
+    if (elements.formatSelect.value === "image/jpeg") {
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    const radians = (state.rotation * Math.PI) / 180;
+    context.translate(canvas.width / 2, canvas.height / 2);
+    context.rotate(radians);
+    context.scale(state.flipX ? -1 : 1, state.flipY ? -1 : 1);
+    const rotatedWidth = Math.abs(state.rotation % 180) === 90 ? canvas.height : canvas.width;
+    const rotatedHeight = Math.abs(state.rotation % 180) === 90 ? canvas.width : canvas.height;
+    context.filter = `brightness(${Number(elements.brightnessSlider.value)}%) contrast(${Number(elements.contrastSlider.value)}%) grayscale(${elements.grayscaleToggle.checked ? 1 : 0})`;
+    if (state.cropRatio === null) {
+      context.drawImage(state.image, -rotatedWidth / 2, -rotatedHeight / 2, rotatedWidth, rotatedHeight);
+    } else {
+      const outputRatio = rotatedWidth / rotatedHeight;
+      const sourceRatio = Math.abs(state.rotation % 180) === 90 ? 1 / outputRatio : outputRatio;
+      const imageRatio = state.image.naturalWidth / state.image.naturalHeight;
+      let sourceX = 0;
+      let sourceY = 0;
+      let sourceWidth = state.image.naturalWidth;
+      let sourceHeight = state.image.naturalHeight;
+      if (imageRatio > sourceRatio) {
+        sourceWidth = sourceHeight * sourceRatio;
+        sourceX = (state.image.naturalWidth - sourceWidth) / 2;
+      } else {
+        sourceHeight = sourceWidth / sourceRatio;
+        sourceY = (state.image.naturalHeight - sourceHeight) / 2;
+      }
+      context.drawImage(state.image, sourceX, sourceY, sourceWidth, sourceHeight, -rotatedWidth / 2, -rotatedHeight / 2, rotatedWidth, rotatedHeight);
+    }
+    return canvas;
+  }
+
+  function encodeCanvas(canvas, mimeType, quality) {
+    return new Promise((resolve, reject) => {
+      try {
+        canvas.toBlob((blob) => resolve(blob), mimeType, quality);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  function scaledDimensions(dimensions, scale) {
+    return {
+      width: Math.max(1, Math.round(dimensions.width * scale)),
+      height: Math.max(1, Math.round(dimensions.height * scale)),
+    };
+  }
+
+  async function encodeAtSize(dimensions, mimeType, quality) {
+    const canvas = createCanvas(dimensions);
+    try {
+      return await encodeCanvas(canvas, mimeType, quality);
+    } finally {
+      canvas.width = 0;
+      canvas.height = 0;
+    }
+  }
+
+  async function findBestQuality(dimensions, mimeType, targetBytes, revision) {
+    const minimumQuality = 0.05;
+    let bestBlob = await encodeAtSize(dimensions, mimeType, minimumQuality);
+    if (!bestBlob) throw new Error("The image could not be exported. Try another format.");
+    if (revision !== state.revision) return null;
+
+    if (bestBlob.size >= targetBytes) {
+      let tooLargeScale = 1;
+      let fittingScale = 1;
+      let foundFittingScale = false;
+      for (let attempt = 0; attempt < 16; attempt += 1) {
+        const scale = 0.75 ** (attempt + 1);
+        const candidateDimensions = scaledDimensions(dimensions, scale);
+        const candidate = await encodeAtSize(candidateDimensions, mimeType, minimumQuality);
+        if (!candidate) throw new Error("The image could not be exported. Try another format.");
+        if (revision !== state.revision) return null;
+        if (candidate.size < targetBytes) {
+          bestBlob = candidate;
+          fittingScale = scale;
+          foundFittingScale = true;
+          break;
+        }
+        tooLargeScale = scale;
+        if (candidateDimensions.width === 1 && candidateDimensions.height === 1) break;
+      }
+      if (!foundFittingScale) {
+        throw new Error(`This image cannot fit under ${formatBytes(targetBytes)} in the selected format.`);
+      }
+
+      let lowScale = fittingScale;
+      let highScale = tooLargeScale;
+      for (let attempt = 0; attempt < 7; attempt += 1) {
+        const scale = (lowScale + highScale) / 2;
+        const candidateDimensions = scaledDimensions(dimensions, scale);
+        const candidate = await encodeAtSize(candidateDimensions, mimeType, minimumQuality);
+        if (!candidate) throw new Error("The image could not be exported. Try another format.");
+        if (revision !== state.revision) return null;
+        if (candidate.size < targetBytes) {
+          bestBlob = candidate;
+          lowScale = scale;
+        } else {
+          highScale = scale;
+        }
+      }
+      dimensions = scaledDimensions(dimensions, lowScale);
+    }
+
+    if (mimeType === "image/png") return { blob: bestBlob, dimensions };
+
+    let lowQuality = minimumQuality;
+    let highQuality = 1;
+    for (let attempt = 0; attempt < 8; attempt += 1) {
+      const quality = (lowQuality + highQuality) / 2;
+      const candidate = await encodeAtSize(dimensions, mimeType, quality);
+      if (!candidate) throw new Error("The image could not be exported. Try another format.");
+      if (revision !== state.revision) return null;
+      if (candidate.size < targetBytes) {
+        bestBlob = candidate;
+        lowQuality = quality;
+      } else {
+        highQuality = quality;
+      }
+    }
+    return { blob: bestBlob, dimensions };
+  }
+
+  function updateAspectControls() {
+    for (const button of elements.aspectButtons) {
+      button.setAttribute("aria-pressed", String(Number(button.dataset.aspectRatio) === state.cropRatio));
+    }
+  }
+
+  function applyAspectRatio(ratio) {
+    const maxWidth = state.width;
+    const maxHeight = state.height;
+    let width = maxWidth;
+    let height = Math.round(width / ratio);
+    if (height > maxHeight) {
+      height = maxHeight;
+      width = Math.round(height * ratio);
+    }
+    elements.widthInput.value = String(Math.max(1, width));
+    elements.heightInput.value = String(Math.max(1, height));
+    elements.ratioLock.checked = true;
+    elements.widthInput.max = String(MAX_DIMENSION);
+    elements.heightInput.max = String(MAX_DIMENSION);
+    state.ratio = ratio;
+    state.cropRatio = ratio;
+    updateAspectControls();
+    scheduleProcessing();
+  }
+
+  function buildPdf(jpegBytes, imageWidth, imageHeight) {
+    const landscape = imageWidth > imageHeight;
+    const pageWidth = landscape ? 842 : 595;
+    const pageHeight = landscape ? 595 : 842;
+    const margin = 36;
+    const scale = Math.min((pageWidth - margin * 2) / imageWidth, (pageHeight - margin * 2) / imageHeight);
+    const drawWidth = imageWidth * scale;
+    const drawHeight = imageHeight * scale;
+    const x = (pageWidth - drawWidth) / 2;
+    const y = (pageHeight - drawHeight) / 2;
+    const content = `q\n${drawWidth.toFixed(2)} 0 0 ${drawHeight.toFixed(2)} ${x.toFixed(2)} ${y.toFixed(2)} cm\n/Im0 Do\nQ\n`;
+    const encoder = new TextEncoder();
+    const chunks = [];
+    const offsets = [0];
+    let length = 0;
+    const append = (part) => {
+      chunks.push(part);
+      length += part.length;
+    };
+    const appendText = (text) => append(encoder.encode(text));
+    appendText("%PDF-1.4\n");
+    const objects = [
+      "1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n",
+      "2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n",
+      `3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>\nendobj\n`,
+      null,
+      null,
+    ];
+    for (let index = 0; index < objects.length; index += 1) {
+      offsets.push(length);
+      if (index === 3) {
+        appendText(`4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${imageWidth} /Height ${imageHeight} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpegBytes.length} >>\nstream\n`);
+        append(jpegBytes);
+        appendText("\nendstream\nendobj\n");
+      } else if (index === 4) {
+        const contentBytes = encoder.encode(content);
+        appendText(`5 0 obj\n<< /Length ${contentBytes.length} >>\nstream\n`);
+        append(contentBytes);
+        appendText("endstream\nendobj\n");
+      } else {
+        appendText(objects[index]);
+      }
+    }
+    const xrefOffset = length;
+    appendText(`xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`);
+    for (const offset of offsets.slice(1)) appendText(`${String(offset).padStart(10, "0")} 00000 n \n`);
+    appendText(`trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`);
+    const pdf = new Uint8Array(length);
+    let offset = 0;
+    for (const chunk of chunks) {
+      pdf.set(chunk, offset);
+      offset += chunk.length;
+    }
+    return new Blob([pdf], { type: "application/pdf" });
+  }
+
+  async function downloadAsPdf() {
+    if (!state.resultBlob || !state.file) return;
+    const resultBlob = state.resultBlob;
+    const sourceFile = state.file;
+    const buttonLabel = elements.downloadPdfButton.textContent;
+    elements.downloadPdfButton.disabled = true;
+    elements.downloadPdfButton.textContent = "Creating PDF…";
+    try {
+      const bitmap = await createImageBitmap(resultBlob);
+      const canvas = document.createElement("canvas");
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      const imageWidth = bitmap.width;
+      const imageHeight = bitmap.height;
+      const context = canvas.getContext("2d");
+      let jpegBlob;
+      try {
+        if (!context) throw new Error("Your browser could not create an image canvas for the PDF.");
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(bitmap, 0, 0);
+        jpegBlob = await encodeCanvas(canvas, "image/jpeg", 0.92);
+      } finally {
+        bitmap.close();
+        canvas.width = 0;
+        canvas.height = 0;
+      }
+      if (!jpegBlob) throw new Error("The image could not be prepared for PDF export.");
+      const pdf = buildPdf(new Uint8Array(await jpegBlob.arrayBuffer()), imageWidth, imageHeight);
+      const url = URL.createObjectURL(pdf);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${sourceFile.name.replace(/\.[^.]+$/, "") || "image"}.pdf`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (error) {
+      showMessage(elements.processingError, error.message || "The PDF could not be created in this browser.");
+    } finally {
+      elements.downloadPdfButton.textContent = buttonLabel;
+      elements.downloadPdfButton.disabled = !state.resultBlob;
+    }
+  }
+
+  async function processImage(revision) {
     if (revision !== state.revision || !state.image) return;
     let dimensions;
     try {
@@ -214,34 +521,15 @@
       return;
     }
 
-    const canvas = document.createElement("canvas");
-    canvas.width = dimensions.width;
-    canvas.height = dimensions.height;
-    const context = canvas.getContext("2d");
-    if (!context) {
-      showProcessingFailure("Your browser could not create an image canvas.");
-      return;
-    }
-
-    if (elements.formatSelect.value === "image/jpeg") {
-      context.fillStyle = "#ffffff";
-      context.fillRect(0, 0, canvas.width, canvas.height);
-    }
-    const radians = (state.rotation * Math.PI) / 180;
-    context.translate(canvas.width / 2, canvas.height / 2);
-    context.rotate(radians);
-    context.scale(state.flipX ? -1 : 1, state.flipY ? -1 : 1);
-    const rotatedWidth = Math.abs(state.rotation % 180) === 90 ? canvas.height : canvas.width;
-    const rotatedHeight = Math.abs(state.rotation % 180) === 90 ? canvas.width : canvas.height;
-    context.drawImage(state.image, -rotatedWidth / 2, -rotatedHeight / 2, rotatedWidth, rotatedHeight);
-
     const mimeType = elements.formatSelect.value;
-    const quality = Number(elements.qualitySlider.value) / 100;
-    canvas.toBlob((blob) => {
+    try {
+      const result = state.targetBytes === null
+        ? { blob: await encodeAtSize(dimensions, mimeType, Number(elements.qualitySlider.value) / 100), dimensions }
+        : await findBestQuality(dimensions, mimeType, state.targetBytes, revision);
       if (revision !== state.revision) return;
+      const { blob } = result;
       if (!blob) {
-        showProcessingFailure("The image could not be exported in this format. Try another format or smaller dimensions.");
-        return;
+        throw new Error("The image could not be exported in this format. Try another format or smaller dimensions.");
       }
       if (state.resultUrl) URL.revokeObjectURL(state.resultUrl);
       state.resultBlob = blob;
@@ -250,16 +538,22 @@
       elements.resultPreview.classList.remove("hidden");
       elements.resultPlaceholder.classList.add("hidden");
       elements.resultSize.textContent = formatBytes(blob.size);
-      elements.dimensionsResult.textContent = `${dimensions.width.toLocaleString()} × ${dimensions.height.toLocaleString()} px`;
+      elements.dimensionsResult.textContent = `${result.dimensions.width.toLocaleString()} × ${result.dimensions.height.toLocaleString()} px`;
       updateSizeChange(blob.size, state.file.size);
       elements.processing.classList.add("hidden");
       elements.processing.classList.remove("flex");
       elements.status.textContent = "Preview updated";
       elements.downloadButton.disabled = false;
+      elements.downloadPdfButton.disabled = false;
       showMessage(elements.processingError, "");
-      canvas.width = 0;
-      canvas.height = 0;
-    }, mimeType, quality);
+      updateTargetSizeControls(state.targetBytes === null
+        ? ""
+        : `Target met: ${formatBytes(blob.size)} (maximum ${formatBytes(state.targetBytes)}).`);
+    } catch (error) {
+      if (revision !== state.revision) return;
+      showProcessingFailure(error.message || "The image could not be exported. Try another format or smaller dimensions.");
+      if (state.targetBytes !== null) updateTargetSizeControls("Could not meet this size target. See the error above.");
+    }
   }
 
   function updateSizeChange(newSize, originalSize) {
@@ -284,6 +578,7 @@
     elements.resultPlaceholder.textContent = "Preview unavailable";
     elements.status.textContent = "Could not process image";
     elements.downloadButton.disabled = true;
+    elements.downloadPdfButton.disabled = true;
     showMessage(elements.processingError, message);
   }
 
@@ -320,9 +615,47 @@
     scheduleProcessing();
   });
   elements.qualitySlider.addEventListener("input", () => {
+    state.targetBytes = null;
+    elements.customTargetKb.value = "";
     elements.qualityValue.textContent = `${elements.qualitySlider.value}%`;
     scheduleProcessing();
   });
+  for (const button of elements.targetSizeButtons) {
+    button.addEventListener("click", () => {
+      const targetBytes = Number(button.dataset.targetBytes);
+      state.targetBytes = state.targetBytes === targetBytes ? null : targetBytes;
+      elements.customTargetKb.value = "";
+      updateTargetSizeControls();
+      scheduleProcessing();
+    });
+  }
+  elements.customTargetButton.addEventListener("click", () => {
+    const targetKb = Number(elements.customTargetKb.value);
+    if (!Number.isFinite(targetKb) || targetKb < 0.1 || targetKb > 51200) {
+      elements.targetSizeNote.textContent = "Enter a target between 0.1 KB and 51,200 KB.";
+      return;
+    }
+    const targetBytes = targetKb * 1024;
+    state.targetBytes = state.targetBytes === targetBytes ? null : targetBytes;
+    if (state.targetBytes === null) elements.customTargetKb.value = "";
+    updateTargetSizeControls();
+    scheduleProcessing();
+  });
+  elements.customTargetKb.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") elements.customTargetButton.click();
+  });
+  for (const button of elements.aspectButtons) {
+    button.addEventListener("click", () => applyAspectRatio(Number(button.dataset.aspectRatio)));
+  }
+  elements.brightnessSlider.addEventListener("input", () => {
+    elements.brightnessValue.textContent = `${elements.brightnessSlider.value}%`;
+    scheduleProcessing();
+  });
+  elements.contrastSlider.addEventListener("input", () => {
+    elements.contrastValue.textContent = `${elements.contrastSlider.value}%`;
+    scheduleProcessing();
+  });
+  elements.grayscaleToggle.addEventListener("change", scheduleProcessing);
   elements.widthInput.addEventListener("input", () => {
     const width = Number(elements.widthInput.value);
     if (elements.ratioLock.checked && Number.isFinite(width) && width > 0 && state.ratio) {
@@ -362,13 +695,23 @@
     state.rotation = 0;
     state.flipX = false;
     state.flipY = false;
+    state.targetBytes = null;
+    state.cropRatio = null;
     elements.widthInput.value = String(state.width);
     elements.heightInput.value = String(state.height);
     elements.ratioLock.checked = true;
+    elements.customTargetKb.value = "";
     elements.qualitySlider.value = "85";
     elements.qualityValue.textContent = "85%";
+    elements.brightnessSlider.value = "100";
+    elements.brightnessValue.textContent = "100%";
+    elements.contrastSlider.value = "100";
+    elements.contrastValue.textContent = "100%";
+    elements.grayscaleToggle.checked = false;
     elements.formatSelect.value = FORMAT_EXTENSIONS[state.file.type] ? state.file.type : "image/png";
     updateQualityNote();
+    updateTargetSizeControls();
+    updateAspectControls();
     scheduleProcessing();
   });
 
@@ -382,5 +725,64 @@
     document.body.append(link);
     link.click();
     link.remove();
+  });
+
+  elements.downloadPdfButton.addEventListener("click", downloadAsPdf);
+
+  const legalPages = {
+    about: {
+      title: "About ImgCon",
+      html: `<p>ImgCon is a browser-based image utility for everyday conversion, resizing, compression, cropping, and PDF export. It is designed to make common image tasks straightforward without requiring an account.</p>
+        <h3 class="font-semibold text-white">Private by design</h3>
+        <p>Image processing happens locally in your browser. Images selected in the editor are not uploaded to or stored on an ImgCon image-processing server. Temporary working data stays in your browser tab and is released when you replace or clear the image or close the page.</p>
+        <h3 class="font-semibold text-white">About this service</h3>
+        <p>ImgCon is provided as a general-purpose tool. Supported formats and performance depend on your browser and device. We may improve or change the service over time.</p>`,
+    },
+    privacy: {
+      title: "Privacy Policy",
+      html: `<p><strong class="text-white">Images are processed on your device.</strong> ImgCon does not upload, collect, or store the image files you open in the editor on an ImgCon server. Conversion, resizing, filtering, compression, and PDF generation take place locally in your browser.</p>
+        <h3 class="font-semibold text-white">Information and storage</h3>
+        <p>This version does not require an account and does not intentionally store image content, edited results, or personal information. Your browser or device may keep temporary memory while the page is open. Standard web hosting and network providers may process basic technical request data, such as an IP address or requested page, to deliver and protect the website; this does not include image files selected in the editor.</p>
+        <h3 class="font-semibold text-white">Third parties</h3>
+        <p>The page may load website styling resources from third-party providers. If advertising, analytics, or other third-party services are added, those providers may use cookies or similar technologies under their own privacy policies. We will update this notice to identify those services before enabling them.</p>
+        <h3 class="font-semibold text-white">Your choices and security</h3>
+        <p>You can remove an image from the editor by choosing another file or closing the page. Keep in mind that no website or local browser environment can guarantee absolute security. Do not use this tool for files that your device or browser is not permitted to handle.</p>
+        <p class="text-xs text-slate-500">Last updated: October 22, 2026.</p>`,
+    },
+    terms: {
+      title: "Terms of Service",
+      html: `<p>By using ImgCon, you agree to these terms. If you do not agree, do not use the service.</p>
+        <h3 class="font-semibold text-white">Use of the tool</h3>
+        <p>ImgCon provides browser-based image utilities on an “as available” basis. You are responsible for ensuring that you have the rights and permissions needed to use, edit, and download each image, and for checking that the resulting file meets the requirements of its intended destination.</p>
+        <h3 class="font-semibold text-white">Your files and results</h3>
+        <p>Image processing and PDF creation are performed locally in your browser; ImgCon does not upload or retain your image files on an image-processing server. You remain responsible for keeping your original files and verifying downloaded results. Output quality, supported formats, and exact file size can vary by browser.</p>
+        <h3 class="font-semibold text-white">No warranty; limitation</h3>
+        <p>The service is provided without warranties to the fullest extent permitted by applicable law. ImgCon is not responsible for lost files, rejected uploads, inaccurate output, interruption, or indirect damages arising from use of the service. Nothing in these terms limits rights that cannot be excluded by law.</p>
+        <h3 class="font-semibold text-white">Changes</h3>
+        <p>We may update these terms or change features as the service evolves. Continued use after a revised version is posted constitutes acceptance where permitted by law.</p>
+        <p class="text-xs text-slate-500">Last updated: October 22, 2026.</p>`,
+    },
+    contact: {
+      title: "Contact Us",
+      html: `<p>We welcome questions, accessibility feedback, and reports about problems with ImgCon.</p>
+        <h3 class="font-semibold text-white">Contact information</h3>
+        <p>No monitored support email or contact form has been configured for this version of the website. The site operator should publish a working contact address here before launch so users can reach the team.</p>
+        <p>Please do not include sensitive personal information or private images in a support request. Image files are processed locally and are not needed to report a problem.</p>`,
+    },
+  };
+
+  document.querySelectorAll("[data-legal]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const page = legalPages[button.dataset.legal];
+      if (!page) return;
+      elements.legalTitle.textContent = page.title;
+      elements.legalContent.innerHTML = page.html;
+      elements.legalDialog.showModal();
+      elements.legalClose.focus();
+    });
+  });
+  elements.legalClose.addEventListener("click", () => elements.legalDialog.close());
+  elements.legalDialog.addEventListener("click", (event) => {
+    if (event.target === elements.legalDialog) elements.legalDialog.close();
   });
 })();
