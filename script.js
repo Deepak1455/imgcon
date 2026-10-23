@@ -54,8 +54,15 @@
     resetButton: document.getElementById("reset-button"),
     chooseAnother: document.getElementById("choose-another"),
     downloadButton: document.getElementById("download-button"),
+    downloadAllButton: document.getElementById("download-all-button"),
+    batchPanel: document.getElementById("batch-panel"),
+    batchList: document.getElementById("batch-list"),
+    batchSummary: document.getElementById("batch-summary"),
     downloadPdfButton: document.getElementById("download-pdf-button"),
     processingError: document.getElementById("processing-error"),
+    shareButton: document.getElementById("share-button"),
+    installButton: document.getElementById("install-button"),
+    toast: document.getElementById("toast"),
     legalDialog: document.getElementById("legal-dialog"),
     legalTitle: document.getElementById("legal-title"),
     legalContent: document.getElementById("legal-content"),
@@ -81,7 +88,206 @@
     revision: 0,
     renderFrame: 0,
     loadingImage: false,
+    batchItems: [],
+    batchRunId: 0,
+    activeBatchItem: null,
+    batchResolver: null,
+    zipBuilding: false,
+    toastTimer: 0,
+    installPrompt: null,
   };
+
+  function showToast(message) {
+    clearTimeout(state.toastTimer);
+    elements.toast.textContent = message;
+    elements.toast.classList.remove("opacity-0");
+    elements.toastTimer = setTimeout(() => elements.toast.classList.add("opacity-0"), 2800);
+  }
+
+  async function copyWebsiteLink() {
+    let copied = false;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText("https://imgcon.online");
+        copied = true;
+      }
+    } catch (error) {
+      console.warn("ImgCon could not use the Clipboard API; trying the browser fallback.", error);
+    }
+    if (!copied) {
+      const input = document.createElement("textarea");
+      input.value = "https://imgcon.online";
+      input.setAttribute("readonly", "");
+      input.style.position = "fixed";
+      input.style.left = "-9999px";
+      document.body.append(input);
+      input.select();
+      try {
+        copied = document.execCommand("copy");
+      } catch (error) {
+        console.warn("ImgCon could not copy the website link.", error);
+      } finally {
+        input.remove();
+      }
+    }
+    showToast(copied ? "Link copied to clipboard!" : "Could not copy the link.");
+  }
+
+  async function sharePage() {
+    if (navigator.share) {
+      const shareData = {
+        title: "ImgCon — Free Online Image Tools",
+        text: "Compress, convert, and enhance images privately in your browser.",
+        url: "https://imgcon.online",
+      };
+      if (state.resultBlob && state.file && typeof File === "function") {
+        const extension = FORMAT_EXTENSIONS[elements.formatSelect.value];
+        const baseName = state.file.name.replace(/\.[^.]+$/, "") || "image";
+        const imageFile = new File([state.resultBlob], `${baseName}.${extension}`, { type: state.resultBlob.type });
+        try {
+          if (navigator.canShare && navigator.canShare({ files: [imageFile] })) {
+            shareData.files = [imageFile];
+          }
+        } catch (error) {
+          console.warn("ImgCon could not check image sharing support.", error);
+        }
+      }
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (error) {
+        if (error.name === "AbortError") return;
+        console.warn("ImgCon could not open the native share dialog; copying the website link.", error);
+      }
+    }
+    await copyWebsiteLink();
+  }
+
+  function renderBatchQueue() {
+    const fragment = document.createDocumentFragment();
+    let readyCount = 0;
+    let failedCount = 0;
+    let pendingCount = 0;
+    for (const item of state.batchItems) {
+      if (item.status === "Ready") readyCount += 1;
+      if (item.status === "Failed") failedCount += 1;
+      if (item.status === "Queued" || item.status === "Processing") pendingCount += 1;
+      const row = document.createElement("li");
+      row.className = "flex min-w-0 items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-2.5";
+      if (item.previewUrl) {
+        const thumbnail = document.createElement("img");
+        thumbnail.src = item.previewUrl;
+        thumbnail.alt = "";
+        thumbnail.className = "h-10 w-10 shrink-0 rounded-lg border border-white/[0.07] object-cover";
+        row.append(thumbnail);
+      }
+      const details = document.createElement("div");
+      details.className = "min-w-0 flex-1";
+      const name = document.createElement("p");
+      name.className = "truncate text-xs font-medium text-slate-200";
+      name.textContent = item.file.name;
+      const status = document.createElement("p");
+      status.className = `mt-1 text-[11px] ${item.status === "Ready" ? "text-emerald-400" : item.status === "Failed" ? "text-rose-300" : "text-slate-500"}`;
+      status.textContent = item.status === "Ready" && item.blob
+        ? `Ready · ${formatBytes(item.blob.size)}`
+        : item.message || item.status;
+      details.append(name, status);
+      row.append(details);
+      fragment.append(row);
+    }
+    elements.batchList.replaceChildren(fragment);
+    elements.batchPanel.classList.toggle("hidden", state.batchItems.length === 0);
+    elements.batchSummary.textContent = `${state.batchItems.length} image${state.batchItems.length === 1 ? "" : "s"} · ${readyCount} ready${pendingCount ? ` · ${pendingCount} processing` : ""}${failedCount ? ` · ${failedCount} failed` : ""}`;
+    elements.downloadAllButton.disabled = readyCount === 0 || pendingCount > 0 || state.zipBuilding;
+  }
+
+  function completeActiveBatchItem(success) {
+    const item = state.activeBatchItem;
+    if (!item) return;
+    if (success && state.resultBlob) {
+      const baseName = item.file.name.replace(/\.[^.]+$/, "").replace(/[\\/:*?"<>|]+/g, "_") || "image";
+      item.blob = state.resultBlob;
+      item.outputName = `${baseName}.${FORMAT_EXTENSIONS[elements.formatSelect.value]}`;
+      item.status = "Ready";
+      item.message = "";
+    } else if (!item.blob) {
+      item.status = "Failed";
+      item.message = "Could not process";
+    }
+    renderBatchQueue();
+    if (state.batchResolver) {
+      const resolve = state.batchResolver;
+      state.batchResolver = null;
+      resolve(success);
+    }
+  }
+
+  function cancelBatchRun() {
+    state.batchRunId += 1;
+    if (state.batchResolver) {
+      const resolve = state.batchResolver;
+      state.batchResolver = null;
+      resolve(false);
+    }
+    for (const item of state.batchItems) {
+      if (item.status === "Processing" || item.status === "Queued") {
+        item.status = "Failed";
+        item.message = "Cancelled";
+      }
+    }
+    renderBatchQueue();
+    state.activeBatchItem = null;
+  }
+
+  function queueFiles(files) {
+    const selectedFiles = Array.from(files || []);
+    if (selectedFiles.length === 0) return;
+    cancelBatchRun();
+    clearCurrentImage();
+    for (const item of state.batchItems) {
+      if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+    }
+    state.batchItems = selectedFiles.map((file) => {
+      const item = { file, status: "Queued", message: "", previewUrl: null, blob: null, outputName: "" };
+      if (!file.type.startsWith("image/")) {
+        item.status = "Failed";
+        item.message = "Not an image file";
+      } else if (file.size > MAX_FILE_SIZE) {
+        item.status = "Failed";
+        item.message = "Larger than 50 MB";
+      } else {
+        item.previewUrl = URL.createObjectURL(file);
+      }
+      return item;
+    });
+    elements.features.classList.toggle("hidden", state.batchItems.some((item) => item.status === "Queued"));
+    elements.dropZone.classList.remove("hidden");
+    elements.fileInput.value = "";
+    renderBatchQueue();
+    const runId = state.batchRunId;
+    void processBatch(runId);
+  }
+
+  async function processBatch(runId) {
+    for (const item of state.batchItems) {
+      if (runId !== state.batchRunId) return;
+      if (item.status !== "Queued") continue;
+      item.status = "Processing";
+      renderBatchQueue();
+      try {
+        await acceptFile(item.file, item);
+      } catch (error) {
+        item.status = "Failed";
+        item.message = "Could not process";
+        if (state.activeBatchItem === item) {
+          state.activeBatchItem = null;
+          state.batchResolver = null;
+        }
+        showMessage(elements.uploadError, error.message || "An image could not be processed.");
+        renderBatchQueue();
+      }
+    }
+  }
 
   function setTheme(theme, persist = true) {
     const isLight = theme === "light";
@@ -111,6 +317,32 @@
 
   elements.themeToggle.addEventListener("click", () => {
     setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
+  });
+  elements.shareButton.addEventListener("click", sharePage);
+
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    state.installPrompt = event;
+    elements.installButton.classList.remove("hidden");
+  });
+  window.addEventListener("appinstalled", () => {
+    state.installPrompt = null;
+    elements.installButton.classList.add("hidden");
+    showToast("ImgCon installed!");
+  });
+  elements.installButton.addEventListener("click", async () => {
+    if (!state.installPrompt) return;
+    const prompt = state.installPrompt;
+    try {
+      await prompt.prompt();
+      await prompt.userChoice;
+    } catch (error) {
+      console.error("ImgCon could not open the install prompt.", error);
+      showToast("The install prompt could not be opened.");
+    } finally {
+      state.installPrompt = null;
+      elements.installButton.classList.add("hidden");
+    }
   });
 
   function formatBytes(bytes) {
@@ -182,75 +414,83 @@
     elements.fileInput.click();
   }
 
-  function acceptFile(file) {
-    if (state.loadingImage || !file) return;
+  function acceptFile(file, batchItem) {
+    if (state.loadingImage || !file) return Promise.resolve(false);
     showMessage(elements.uploadError, "");
     showMessage(elements.processingError, "");
     if (!file.type.startsWith("image/")) {
       showMessage(elements.uploadError, "Please choose a valid image file.");
-      return;
+      return Promise.resolve(false);
     }
     if (file.size > MAX_FILE_SIZE) {
       showMessage(elements.uploadError, "This image is larger than 50 MB. Please choose a smaller file.");
-      return;
+      return Promise.resolve(false);
     }
-    if (state.sourceUrl) URL.revokeObjectURL(state.sourceUrl);
-    state.loadingImage = true;
-    state.file = file;
-    state.targetBytes = null;
-    updateTargetSizeControls();
-    state.sourceUrl = URL.createObjectURL(file);
-    const image = new Image();
-    image.onload = () => {
-      if (state.file !== file) return;
-      state.loadingImage = false;
-      if (!image.naturalWidth || !image.naturalHeight) {
-        showMessage(elements.uploadError, "This image could not be decoded. Try another image.");
-        clearCurrentImage();
-        return;
-      }
-      state.image = image;
-      state.width = image.naturalWidth;
-      state.height = image.naturalHeight;
-      state.ratio = state.width / state.height;
-      state.rotation = 0;
-      state.flipX = false;
-      state.flipY = false;
-      state.cropRatio = null;
-      elements.brightnessSlider.value = "100";
-      elements.brightnessValue.textContent = "100%";
-      elements.contrastSlider.value = "100";
-      elements.contrastValue.textContent = "100%";
-      elements.saturationSlider.value = "100";
-      elements.saturationValue.textContent = "100%";
-      elements.sharpnessSlider.value = "0";
-      elements.sharpnessValue.textContent = "0%";
-      elements.enhanceNote.textContent = "Automatically balance contrast and color, then add a touch of sharpness.";
-      elements.grayscaleToggle.checked = false;
-      updateAspectControls();
+    return new Promise((resolve) => {
+      state.batchResolver = resolve;
+      state.activeBatchItem = batchItem;
+      releaseResult();
+      if (state.sourceUrl) URL.revokeObjectURL(state.sourceUrl);
+      state.loadingImage = true;
+      state.file = file;
+      elements.status.textContent = "Loading image…";
+      state.targetBytes = null;
+      updateTargetSizeControls();
+      state.sourceUrl = URL.createObjectURL(file);
+      const image = new Image();
+      image.onload = () => {
+        if (state.file !== file) return;
+        state.loadingImage = false;
+        if (!image.naturalWidth || !image.naturalHeight) {
+          showMessage(elements.uploadError, "This image could not be decoded. Try another image.");
+          completeActiveBatchItem(false);
+          clearCurrentImage();
+          return;
+        }
+        state.image = image;
+        state.width = image.naturalWidth;
+        state.height = image.naturalHeight;
+        state.ratio = state.width / state.height;
+        state.rotation = 0;
+        state.flipX = false;
+        state.flipY = false;
+        state.cropRatio = null;
+        elements.brightnessSlider.value = "100";
+        elements.brightnessValue.textContent = "100%";
+        elements.contrastSlider.value = "100";
+        elements.contrastValue.textContent = "100%";
+        elements.saturationSlider.value = "100";
+        elements.saturationValue.textContent = "100%";
+        elements.sharpnessSlider.value = "0";
+        elements.sharpnessValue.textContent = "0%";
+        elements.enhanceNote.textContent = "Automatically balance contrast and color, then add a touch of sharpness.";
+        elements.grayscaleToggle.checked = false;
+        updateAspectControls();
 
-      elements.fileName.textContent = file.name;
-      elements.imageDetails.textContent = `${state.width.toLocaleString()} × ${state.height.toLocaleString()} px`;
-      elements.fileThumbnail.src = state.sourceUrl;
-      elements.originalSize.textContent = formatBytes(file.size);
-      elements.originalPreview.src = state.sourceUrl;
-      elements.widthInput.value = String(state.width);
-      elements.heightInput.value = String(state.height);
-      elements.formatSelect.value = FORMAT_EXTENSIONS[file.type] ? file.type : "image/png";
-      elements.qualitySlider.value = "85";
-      elements.qualityValue.textContent = "85%";
-      elements.editor.classList.remove("hidden");
-      elements.features.classList.add("hidden");
-      elements.dropZone.classList.add("hidden");
-      updateQualityNote();
-      scheduleProcessing();
-    };
-    image.onerror = () => {
-      if (state.file !== file) return;
-      showMessage(elements.uploadError, "This image could not be opened. Try a different file.");
-      clearCurrentImage();
-    };
-    image.src = state.sourceUrl;
+        elements.fileName.textContent = file.name;
+        elements.imageDetails.textContent = `${state.width.toLocaleString()} × ${state.height.toLocaleString()} px`;
+        elements.fileThumbnail.src = state.sourceUrl;
+        elements.originalSize.textContent = formatBytes(file.size);
+        elements.originalPreview.src = state.sourceUrl;
+        elements.widthInput.value = String(state.width);
+        elements.heightInput.value = String(state.height);
+        elements.formatSelect.value = FORMAT_EXTENSIONS[file.type] ? file.type : "image/png";
+        elements.qualitySlider.value = "85";
+        elements.qualityValue.textContent = "85%";
+        elements.editor.classList.remove("hidden");
+        elements.features.classList.add("hidden");
+        elements.dropZone.classList.add("hidden");
+        updateQualityNote();
+        scheduleProcessing();
+      };
+      image.onerror = () => {
+        if (state.file !== file) return;
+        showMessage(elements.uploadError, "This image could not be opened. Try a different file.");
+        completeActiveBatchItem(false);
+        clearCurrentImage();
+      };
+      image.src = state.sourceUrl;
+    });
   }
 
   function updateQualityNote() {
@@ -689,6 +929,7 @@
       elements.resultPlaceholder.textContent = error.message;
       elements.status.textContent = "Check dimensions";
       showMessage(elements.processingError, error.message);
+      completeActiveBatchItem(false);
       return;
     }
 
@@ -731,10 +972,12 @@
       updateTargetSizeControls(state.targetBytes === null
         ? ""
         : `Target met: ${formatBytes(blob.size)} (maximum ${formatBytes(state.targetBytes)}).`);
+      completeActiveBatchItem(true);
     } catch (error) {
       if (revision !== state.revision) return;
       showProcessingFailure(error.message || "The image could not be exported. Try another format or smaller dimensions.");
       if (state.targetBytes !== null) updateTargetSizeControls("Could not meet this size target. See the error above.");
+      completeActiveBatchItem(false);
     }
   }
 
@@ -763,13 +1006,62 @@
     showMessage(elements.processingError, message);
   }
 
+  async function downloadBatchZip() {
+    const readyItems = state.batchItems.filter((item) => item.status === "Ready" && item.blob);
+    if (readyItems.length === 0) return;
+    if (typeof window.JSZip !== "function") {
+      showToast("ZIP download is unavailable. Check your internet connection and try again.");
+      return;
+    }
+    state.zipBuilding = true;
+    renderBatchQueue();
+    const originalLabel = elements.downloadAllButton.textContent;
+    elements.downloadAllButton.textContent = "Preparing ZIP…";
+    try {
+      const zip = new window.JSZip();
+      const usedNames = new Set();
+      for (const item of readyItems) {
+        const lastDot = item.outputName.lastIndexOf(".");
+        const baseName = lastDot > 0 ? item.outputName.slice(0, lastDot) : item.outputName;
+        const extension = lastDot > 0 ? item.outputName.slice(lastDot) : "";
+        let name = item.outputName;
+        let suffix = 2;
+        while (usedNames.has(name.toLowerCase())) {
+          name = `${baseName} (${suffix})${extension}`;
+          suffix += 1;
+        }
+        usedNames.add(name.toLowerCase());
+        zip.file(name, item.blob);
+      }
+      const archive = await zip.generateAsync({ type: "blob" });
+      const url = URL.createObjectURL(archive);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "imgcon-images.zip";
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (error) {
+      console.error("ImgCon could not create the ZIP archive.", error);
+      showToast("Could not create the ZIP download.");
+    } finally {
+      state.zipBuilding = false;
+      elements.downloadAllButton.textContent = originalLabel;
+      renderBatchQueue();
+    }
+  }
+
+  elements.downloadAllButton.addEventListener("click", downloadBatchZip);
+
   elements.dropZone.addEventListener("click", (event) => {
     if (event.target.closest("button")) return;
     openPicker();
   });
   elements.browseButton.addEventListener("click", openPicker);
-  elements.fileInput.addEventListener("change", (event) => acceptFile(event.target.files[0]));
+  elements.fileInput.addEventListener("change", (event) => queueFiles(event.target.files));
   elements.chooseAnother.addEventListener("click", () => {
+    cancelBatchRun();
     clearCurrentImage();
     showMessage(elements.uploadError, "");
     openPicker();
@@ -787,7 +1079,17 @@
       elements.dropZone.classList.remove("drop-active");
     });
   }
-  elements.dropZone.addEventListener("drop", (event) => acceptFile(event.dataTransfer.files[0]));
+  elements.dropZone.addEventListener("drop", (event) => queueFiles(event.dataTransfer.files));
+  window.addEventListener("paste", (event) => {
+    const clipboardItems = event.clipboardData ? [...event.clipboardData.items] : [];
+    const imageFiles = clipboardItems
+      .filter((item) => item.kind === "file" && item.type.startsWith("image/"))
+      .map((item) => item.getAsFile())
+      .filter(Boolean);
+    if (imageFiles.length === 0) return;
+    event.preventDefault();
+    queueFiles(imageFiles);
+  });
   document.addEventListener("dragover", (event) => event.preventDefault());
   document.addEventListener("drop", (event) => event.preventDefault());
 
@@ -1064,4 +1366,11 @@
       });
     });
   });
+
+  if ("serviceWorker" in navigator && window.isSecureContext) {
+    navigator.serviceWorker.register("./sw.js").catch((error) => {
+      console.error("ImgCon could not register offline support.", error);
+      showToast("Offline support could not be enabled.");
+    });
+  }
 })();
