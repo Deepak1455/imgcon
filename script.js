@@ -4,6 +4,7 @@
   const MAX_FILE_SIZE = 50 * 1024 * 1024;
   const MAX_DIMENSION = 16000;
   const MAX_PIXELS = 100_000_000;
+  const SHARE_TEXT = "⚡ ImgCon — Best Free Online Image Compressor & Converter!\n📸 Compress to 20KB, 50KB for Govt Forms\n🔄 Convert JPG, PNG, WebP instantly\n🔒 100% Private (Runs directly in your browser)\n\nTry it free here 👉 https://imgcon.online/";
   const FORMAT_EXTENSIONS = {
     "image/png": "png",
     "image/jpeg": "jpg",
@@ -53,6 +54,7 @@
     heightInput: document.getElementById("height-input"),
     resetButton: document.getElementById("reset-button"),
     chooseAnother: document.getElementById("choose-another"),
+    applySettingsButton: document.getElementById("apply-settings-button"),
     downloadButton: document.getElementById("download-button"),
     downloadAllButton: document.getElementById("download-all-button"),
     batchPanel: document.getElementById("batch-panel"),
@@ -88,6 +90,7 @@
     revision: 0,
     renderFrame: 0,
     loadingImage: false,
+    loadId: 0,
     batchItems: [],
     batchRunId: 0,
     activeBatchItem: null,
@@ -104,11 +107,11 @@
     elements.toastTimer = setTimeout(() => elements.toast.classList.add("opacity-0"), 2800);
   }
 
-  async function copyWebsiteLink() {
+  async function copyShareText() {
     let copied = false;
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText("https://imgcon.online");
+        await navigator.clipboard.writeText(SHARE_TEXT);
         copied = true;
       }
     } catch (error) {
@@ -116,7 +119,7 @@
     }
     if (!copied) {
       const input = document.createElement("textarea");
-      input.value = "https://imgcon.online";
+      input.value = SHARE_TEXT;
       input.setAttribute("readonly", "");
       input.style.position = "fixed";
       input.style.left = "-9999px";
@@ -130,15 +133,14 @@
         input.remove();
       }
     }
-    showToast(copied ? "Link copied to clipboard!" : "Could not copy the link.");
+    showToast(copied ? "Share text copied to clipboard!" : "Could not copy the share text.");
   }
 
   async function sharePage() {
     if (navigator.share) {
       const shareData = {
-        title: "ImgCon — Free Online Image Tools",
-        text: "Compress, convert, and enhance images privately in your browser.",
-        url: "https://imgcon.online",
+        title: "ImgCon — Best Free Online Image Compressor & Converter!",
+        text: SHARE_TEXT,
       };
       if (state.resultBlob && state.file && typeof File === "function") {
         const extension = FORMAT_EXTENSIONS[elements.formatSelect.value];
@@ -160,7 +162,7 @@
         console.warn("ImgCon could not open the native share dialog; copying the website link.", error);
       }
     }
-    await copyWebsiteLink();
+    await copyShareText();
   }
 
   function renderBatchQueue() {
@@ -199,6 +201,8 @@
     elements.batchPanel.classList.toggle("hidden", state.batchItems.length === 0);
     elements.batchSummary.textContent = `${state.batchItems.length} image${state.batchItems.length === 1 ? "" : "s"} · ${readyCount} ready${pendingCount ? ` · ${pendingCount} processing` : ""}${failedCount ? ` · ${failedCount} failed` : ""}`;
     elements.downloadAllButton.disabled = readyCount === 0 || pendingCount > 0 || state.zipBuilding;
+    elements.applySettingsButton.classList.toggle("hidden", state.batchItems.filter((item) => item.previewUrl).length < 2);
+    elements.applySettingsButton.disabled = state.zipBuilding;
   }
 
   function completeActiveBatchItem(success) {
@@ -215,6 +219,7 @@
       item.message = "Could not process";
     }
     renderBatchQueue();
+    state.activeBatchItem = null;
     if (state.batchResolver) {
       const resolve = state.batchResolver;
       state.batchResolver = null;
@@ -248,7 +253,7 @@
       if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
     }
     state.batchItems = selectedFiles.map((file) => {
-      const item = { file, status: "Queued", message: "", previewUrl: null, blob: null, outputName: "" };
+      const item = { file, status: "Queued", message: "", previewUrl: null, blob: null, outputName: "", settings: null };
       if (!file.type.startsWith("image/")) {
         item.status = "Failed";
         item.message = "Not an image file";
@@ -268,6 +273,28 @@
     void processBatch(runId);
   }
 
+  function applySettingsToAll() {
+    const queuedImages = state.batchItems.filter((item) => item.previewUrl);
+    if (queuedImages.length < 2) return;
+    const settings = {
+      format: elements.formatSelect.value,
+      quality: Number(elements.qualitySlider.value),
+      targetBytes: state.targetBytes,
+    };
+    cancelBatchRun();
+    clearCurrentImage();
+    for (const item of queuedImages) {
+      item.settings = { ...settings };
+      item.status = "Queued";
+      item.message = "";
+      item.blob = null;
+      item.outputName = "";
+    }
+    renderBatchQueue();
+    showToast(`Applying settings to ${queuedImages.length} images…`);
+    void processBatch(state.batchRunId);
+  }
+
   async function processBatch(runId) {
     for (const item of state.batchItems) {
       if (runId !== state.batchRunId) return;
@@ -281,7 +308,9 @@
         item.message = "Could not process";
         if (state.activeBatchItem === item) {
           state.activeBatchItem = null;
+          const resolve = state.batchResolver;
           state.batchResolver = null;
+          if (resolve) resolve(false);
         }
         showMessage(elements.uploadError, error.message || "An image could not be processed.");
         renderBatchQueue();
@@ -391,6 +420,7 @@
     cancelAnimationFrame(state.renderFrame);
     state.renderFrame = 0;
     state.revision += 1;
+    state.loadId += 1;
     releaseResult();
     if (state.sourceUrl) URL.revokeObjectURL(state.sourceUrl);
     state.file = null;
@@ -427,6 +457,7 @@
       return Promise.resolve(false);
     }
     return new Promise((resolve) => {
+      const loadId = ++state.loadId;
       state.batchResolver = resolve;
       state.activeBatchItem = batchItem;
       releaseResult();
@@ -434,12 +465,25 @@
       state.loadingImage = true;
       state.file = file;
       elements.status.textContent = "Loading image…";
-      state.targetBytes = null;
+      const settings = batchItem && batchItem.settings
+        ? batchItem.settings
+        : {
+          format: FORMAT_EXTENSIONS[file.type] ? file.type : "image/png",
+          quality: 85,
+          targetBytes: null,
+        };
+      if (batchItem && !batchItem.settings) batchItem.settings = { ...settings };
+      state.targetBytes = settings.targetBytes;
+      elements.formatSelect.value = settings.format;
+      elements.qualitySlider.value = String(settings.quality);
+      elements.qualityValue.textContent = `${settings.quality}%`;
+      elements.customTargetKb.value = settings.targetBytes === null ? "" : String(settings.targetBytes / 1024);
       updateTargetSizeControls();
+      updateQualityNote();
       state.sourceUrl = URL.createObjectURL(file);
       const image = new Image();
       image.onload = () => {
-        if (state.file !== file) return;
+        if (state.loadId !== loadId || state.file !== file) return;
         state.loadingImage = false;
         if (!image.naturalWidth || !image.naturalHeight) {
           showMessage(elements.uploadError, "This image could not be decoded. Try another image.");
@@ -474,9 +518,6 @@
         elements.originalPreview.src = state.sourceUrl;
         elements.widthInput.value = String(state.width);
         elements.heightInput.value = String(state.height);
-        elements.formatSelect.value = FORMAT_EXTENSIONS[file.type] ? file.type : "image/png";
-        elements.qualitySlider.value = "85";
-        elements.qualityValue.textContent = "85%";
         elements.editor.classList.remove("hidden");
         elements.features.classList.add("hidden");
         elements.dropZone.classList.add("hidden");
@@ -484,7 +525,7 @@
         scheduleProcessing();
       };
       image.onerror = () => {
-        if (state.file !== file) return;
+        if (state.loadId !== loadId || state.file !== file) return;
         showMessage(elements.uploadError, "This image could not be opened. Try a different file.");
         completeActiveBatchItem(false);
         clearCurrentImage();
@@ -1060,6 +1101,7 @@
   });
   elements.browseButton.addEventListener("click", openPicker);
   elements.fileInput.addEventListener("change", (event) => queueFiles(event.target.files));
+  elements.applySettingsButton.addEventListener("click", applySettingsToAll);
   elements.chooseAnother.addEventListener("click", () => {
     cancelBatchRun();
     clearCurrentImage();

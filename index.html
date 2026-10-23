@@ -8,13 +8,17 @@
     <meta name="keywords" content="compress image to 20KB online free, compress image to 50KB, compress image to 100KB, passport photo maker, convert JPG to WebP, image compressor, image enhancer" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://imgcon.online/" />
-    <meta property="og:title" content="ImgCon — Free Image Compressor, Converter & Passport Photo Maker" />
-    <meta property="og:description" content="Compress to 20KB, 50KB, or 100KB, convert JPG to WebP, and enhance images locally in your browser." />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="ImgCon — Free Online Image Tools" />
-    <meta name="twitter:description" content="Compress, convert, resize, and enhance images privately in your browser." />
+    <meta property="og:title" content="ImgCon - ⚡ Free Online Image Compressor &amp; Converter" />
+    <meta property="og:description" content="Compress photos to 20KB, 50KB, convert JPG to PNG/WebP, and crop passport sizes instantly. 100% free &amp; private in your browser!" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ImgCon - ⚡ Free Online Image Compressor &amp; Converter" />
+    <meta name="twitter:description" content="Compress photos to 20KB, 50KB, convert JPG to PNG/WebP, and crop passport sizes instantly. 100% free &amp; private in your browser!" />
+    <meta name="twitter:image" content="https://imgcon.online/imgconlogo.png" />
     <meta name="robots" content="index,follow" />
     <link rel="canonical" href="https://imgcon.online/" />
+    <meta property="og:image" content="https://imgcon.online/imgconlogo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <link rel="icon" type="image/png" href="imgconlogo.png" />
     <link rel="manifest" href="manifest.json" />
     <title>ImgCon — Free Image Compressor 20KB, 50KB &amp; 100KB</title>
@@ -354,7 +358,10 @@
             <img id="file-thumbnail" alt="Selected image thumbnail" class="h-9 w-9 shrink-0 rounded-xl border border-white/[0.07] object-cover" />
             <div class="min-w-0"><p id="file-name" class="truncate text-sm font-medium text-white"></p><p id="image-details" class="mt-0.5 text-xs text-slate-500"></p></div>
           </div>
-          <button id="choose-another" type="button" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-slate-500 hover:text-white">Choose another</button>
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="apply-settings-button" type="button" class="hidden rounded-lg border border-indigo-400/50 px-3 py-2 text-xs font-medium text-indigo-200 transition hover:border-indigo-300 hover:bg-indigo-500/10">Apply these settings to all images in queue</button>
+            <button id="choose-another" type="button" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-slate-500 hover:text-white">Choose another</button>
+          </div>
         </div>
 
         <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">

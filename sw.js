@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "imgcon-shell-v1";
+const CACHE_NAME = "imgcon-shell-v2";
 const APP_SHELL = [
   "./index.html",
   "./script.js",
