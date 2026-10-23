@@ -20,6 +20,38 @@
         "description": "Free browser-based image conversion, compression, resizing, filtering, and PDF export."
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can ImgCon compress an image to 50 KB?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Choose the 50 KB target in the editor. ImgCon adjusts image quality and, when necessary, dimensions to fit under the selected maximum. Some images or formats may not be able to meet every target."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I convert an image to another format?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Open an image and select PNG, JPG, or WEBP as the output format, then download the converted result."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are my images private when I use ImgCon?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Image editing and export run locally in your browser. ImgCon does not upload your selected image to an image-processing server."
+            }
+          }
+        ]
+      }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -39,9 +71,13 @@
       };
     </script>
     <style>
-      html { color-scheme: dark; }
+      html { color-scheme: dark; scroll-behavior: smooth; }
+      header, footer, .bg-panel, [class~="border-line"], [class~="bg-white/[0.02]"], [class~="bg-white/[0.025]"], [class~="bg-[#0d111b]"], [class~="bg-[#0c111c]"], [class~="bg-[#101522]"] {
+        transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+      }
       body {
         background: radial-gradient(ellipse at 50% -18%, rgba(79, 70, 229, .16), transparent 48%), #080b14;
+        transition: background .25s ease, color .25s ease;
       }
       .checkerboard {
         background-color: #111827;
@@ -55,7 +91,7 @@
       input[type="range"] { accent-color: #818cf8; }
       input[type="number"]::-webkit-inner-spin-button,
       input[type="number"]::-webkit-outer-spin-button { opacity: .6; }
-      .drop-active { border-color: #818cf8 !important; background-color: rgba(99, 102, 241, .09) !important; }
+      .drop-active { border-color: #818cf8 !important; background-color: rgba(99, 102, 241, .09) !important; box-shadow: 0 0 0 1px rgba(129, 140, 248, .5), 0 0 32px rgba(99, 102, 241, .2); }
       .transform-button {
         display: inline-flex;
         height: 38px;
@@ -65,13 +101,49 @@
         border-radius: .5rem;
         background: #0c111c;
         color: #cbd5e1;
-        transition: border-color .15s, color .15s, background .15s;
+        transition: border-color .15s, color .15s, background .15s, transform .15s, box-shadow .15s;
       }
-      .transform-button:hover { border-color: #818cf8; color: #c7d2fe; background: rgba(99, 102, 241, .08); }
+      .transform-button:hover { border-color: #818cf8; color: #c7d2fe; background: rgba(99, 102, 241, .08); transform: translateY(-1px); }
+      button { transition: transform .15s ease, filter .15s ease; }
+      button:active:not(:disabled) { transform: scale(.97); }
+      button:hover:not(:disabled) { filter: brightness(1.08); }
+      img:not(.hidden) { animation: preview-in .24s ease both; }
+      @keyframes preview-in { from { opacity:  0; transform: scale(.985); } to { opacity: 1; transform: scale(1); } }
       .target-size-button[aria-pressed="true"] { border-color: #818cf8; background: rgba(99, 102, 241, .16); color: #e0e7ff; }
       .aspect-button[aria-pressed="true"] { border-color: #818cf8; background: rgba(99, 102, 241, .16); color: #e0e7ff; }
       dialog { color: #e2e8f0; }
       dialog::backdrop { background: rgba(2, 6, 23, .78); backdrop-filter: blur(4px); }
+      dialog[open] { animation: dialog-in .2s ease both; }
+      dialog[open]::backdrop { animation: backdrop-in .2s ease both; }
+      @keyframes dialog-in { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+      @keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+      .faq-answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .24s ease; }
+      .faq-item[data-open="true"] .faq-answer { grid-template-rows: 1fr; }
+      .faq-answer > div { overflow: hidden; }
+      [data-theme="light"] { color-scheme: light; }
+      [data-theme="light"] body { background: radial-gradient(ellipse at 50% -18%, rgba(99, 102, 241, .09), transparent 48%), #f1f5f9; color: #0f172a; }
+      [data-theme="light"] header, [data-theme="light"] footer { border-color: #dbe3ee; }
+      [data-theme="light"] .bg-panel, [data-theme="light"] [class~="bg-[#101522]"] { background-color: #fff; }
+      [data-theme="light"] [class~="bg-[#0d111b]"], [data-theme="light"] [class~="bg-[#0c111c]"] { background-color: #f8fafc; }
+      [data-theme="light"] [class~="border-line"], [data-theme="light"] [class~="border-slate-700"] { border-color: #d8e0eb; }
+      [data-theme="light"] [class~="border-white/[0.06]"], [data-theme="light"] [class~="border-white/[0.07]"] { border-color: #dbe3ee; }
+      [data-theme="light"] [class~="bg-white/[0.025]"], [data-theme="light"] [class~="bg-white/[0.02]"] { background-color: rgba(255, 255, 255, .82); }
+      [data-theme="light"] .text-white, [data-theme="light"] .text-slate-100, [data-theme="light"] .text-slate-200 { color: #0f172a; }
+      [data-theme="light"] .text-slate-300 { color: #334155; }
+      [data-theme="light"] .text-slate-400 { color: #475569; }
+      [data-theme="light"] .text-slate-500, [data-theme="light"] .text-slate-600 { color: #64748b; }
+      [data-theme="light"] .text-indigo-200 { color: #4338ca; }
+      [data-theme="light"] .text-indigo-300 { color: #4f46e5; }
+      [data-theme="light"] .transform-button { background: #fff; color: #334155; border-color: #cbd5e1; }
+      [data-theme="light"] .checkerboard { background-color: #e2e8f0; background-image: linear-gradient(45deg, #cbd5e1 25%, transparent 25%), linear-gradient(-45deg, #cbd5e1 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #cbd5e1 75%), linear-gradient(-45deg, transparent 75%, #cbd5e1 75%); }
+      [data-theme="light"] dialog { color: #334155; background: #fff; border-color: #cbd5e1; }
+      [data-theme="light"] dialog .text-white { color: #0f172a; }
+      [data-theme="light"] #theme-toggle { color: #4f46e5; background: #fff; border-color: #cbd5e1; }
+      [data-theme="light"] .faq-item { background: #fff; border-color: #dbe3ee; }
+      [data-theme="light"] input:not([type="range"]):not([type="checkbox"]), [data-theme="light"] select { color: #0f172a; }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      }
     </style>
   </head>
   <body class="min-h-full font-sans text-slate-100 antialiased">
@@ -83,8 +155,13 @@
           </span>
           <span class="text-lg font-semibold tracking-tight">ImgCon</span>
         </a>
-        <div class="flex items-center gap-2 rounded-full border border-emerald-400/15 bg-emerald-400/[0.06] px-3 py-1.5 text-xs font-medium text-emerald-300">
-          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>100% private · runs in your browser
+        <div class="flex items-center gap-3">
+          <button id="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="false" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-amber-300 hover:border-indigo-400" title="Switch theme">
+            <svg id="theme-icon" viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </button>
+          <div class="flex items-center gap-2 rounded-full border border-emerald-400/15 bg-emerald-400/[0.06] px-3 py-1.5 text-xs font-medium text-emerald-300">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>100% private · runs in your browser
+          </div>
         </div>
       </div>
     </header>
@@ -227,6 +304,35 @@
         </div>
       </section>
 
+      <section id="how-to-use" class="mx-auto mt-14 max-w-5xl rounded-3xl border border-white/[0.06] bg-white/[0.02] p-6 sm:p-8">
+        <div class="mx-auto max-w-3xl text-center">
+          <h2 class="text-2xl font-semibold tracking-tight text-white">How to use ImgCon in 3 steps</h2>
+          <p class="mt-2 text-sm text-slate-400">A simple, private workflow from original image to finished file.</p>
+        </div>
+        <ol class="mt-7 grid gap-4 sm:grid-cols-3">
+          <li class="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-5"><span class="text-xs font-semibold uppercase tracking-wider text-indigo-300">01 · Choose</span><h3 class="mt-2 text-sm font-semibold text-white">Add your image</h3><p class="mt-1 text-xs leading-5 text-slate-400">Browse for an image or drag it into the editor. It stays on your device.</p></li>
+          <li class="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-5"><span class="text-xs font-semibold uppercase tracking-wider text-indigo-300">02 · Adjust</span><h3 class="mt-2 text-sm font-semibold text-white">Make it yours</h3><p class="mt-1 text-xs leading-5 text-slate-400">Choose a format, target size, dimensions, and image adjustments.</p></li>
+          <li class="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-5"><span class="text-xs font-semibold uppercase tracking-wider text-indigo-300">03 · Download</span><h3 class="mt-2 text-sm font-semibold text-white">Save your result</h3><p class="mt-1 text-xs leading-5 text-slate-400">Preview the result and download your converted image or PDF.</p></li>
+        </ol>
+        <div class="mx-auto mt-10 max-w-3xl">
+          <h2 class="text-center text-xl font-semibold text-white">Frequently asked questions</h2>
+          <div id="faq-list" class="mt-5 space-y-3">
+            <article class="faq-item rounded-xl border border-white/[0.06] bg-white/[0.02] px-4" data-open="false">
+              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-size" aria-expanded="false"><span>Can I compress an image to 50 KB?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
+              <div id="faq-answer-size" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Choose the 50 KB target in the editor. ImgCon adjusts quality and, if needed, dimensions to meet the maximum. Exact results depend on the source image and format; some files cannot meet a particular target.</p></div></div>
+            </article>
+            <article class="faq-item rounded-xl border border-white/[0.06] bg-white/[0.02] px-4" data-open="false">
+              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-format" aria-expanded="false"><span>Can I convert between image formats?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
+              <div id="faq-answer-format" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Yes. Open your image, select PNG, JPG, or WEBP under Output format, then download your converted image.</p></div></div>
+            </article>
+            <article class="faq-item rounded-xl border border-white/[0.06] bg-white/[0.02] px-4" data-open="false">
+              <h3><button type="button" class="faq-toggle flex w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-slate-200" aria-controls="faq-answer-privacy" aria-expanded="false"><span>Are my images 100% private?</span><span class="faq-indicator text-indigo-300" aria-hidden="true">+</span></button></h3>
+              <div id="faq-answer-privacy" class="faq-answer" role="region" aria-hidden="true"><div><p class="pb-4 text-sm leading-6 text-slate-400">Image editing and export run locally in your browser; selected images are not uploaded to an ImgCon image-processing server. Your browser and device remain responsible for their local security.</p></div></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section id="features" class="mx-auto mt-14 grid max-w-5xl gap-3 sm:grid-cols-3">
         <article class="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4">
           <div class="mb-3 grid h-9 w-9 place-items-center rounded-xl bg-indigo-400/10 text-indigo-300"><svg viewBox="0 0 20 20" fill="none" class="h-4 w-4" aria-hidden="true"><path d="M4 5h12M4 10h8M4 15h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="m14 12 3 3m0-3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
@@ -244,7 +350,7 @@
     </main>
     <footer class="border-t border-white/[0.06]">
       <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-5 py-5 text-xs text-slate-600 sm:flex-row sm:px-8">
-        <span>ImgCon · Simple image tools, with privacy built in.</span>
+        <div class="text-center sm:text-left"><span>ImgCon · Simple image tools, with privacy built in.</span><p class="mt-1">Questions? <a class="font-medium text-indigo-300 underline underline-offset-2 hover:text-indigo-200" href="mailto:imgcon72@gmail.com">imgcon72@gmail.com</a> <button type="button" data-copy-email class="ml-1 underline underline-offset-2 hover:text-slate-300">Copy email</button><span data-copy-status class="sr-only" aria-live="polite"></span><br />We aim to reply within 2 business days.</p></div>
         <nav aria-label="Legal and company information" class="flex flex-wrap justify-center gap-x-4 gap-y-2">
           <button type="button" data-legal="about" class="transition hover:text-slate-300">About Us</button>
           <button type="button" data-legal="privacy" class="transition hover:text-slate-300">Privacy Policy</button>

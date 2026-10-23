@@ -54,6 +54,8 @@
     legalTitle: document.getElementById("legal-title"),
     legalContent: document.getElementById("legal-content"),
     legalClose: document.getElementById("legal-close"),
+    themeToggle: document.getElementById("theme-toggle"),
+    themeIcon: document.getElementById("theme-icon"),
   };
 
   const state = {
@@ -72,8 +74,38 @@
     ratio: 1,
     revision: 0,
     processingTimer: null,
+    renderFrame: 0,
     loadingImage: false,
   };
+
+  function setTheme(theme, persist = true) {
+    const isLight = theme === "light";
+    document.documentElement.dataset.theme = isLight ? "light" : "dark";
+    elements.themeToggle.setAttribute("aria-pressed", String(isLight));
+    elements.themeToggle.setAttribute("aria-label", `Switch to ${isLight ? "dark" : "light"} mode`);
+    elements.themeToggle.title = `Switch to ${isLight ? "dark" : "light"} mode`;
+    elements.themeIcon.innerHTML = isLight
+      ? '<path d="M20.4 15.3A8.5 8.5 0 0 1 8.7 3.6 8.5 8.5 0 1 0 20.4 15.3Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>'
+      : '<circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>';
+    if (persist) {
+      try {
+        localStorage.setItem("imgcon-theme", isLight ? "light" : "dark");
+      } catch (error) {
+        console.warn("ImgCon could not save the theme preference.", error);
+      }
+    }
+  }
+
+  try {
+    setTheme(localStorage.getItem("imgcon-theme") === "light" ? "light" : "dark", false);
+  } catch (error) {
+    console.warn("ImgCon could not read the saved theme preference.", error);
+    setTheme("dark", false);
+  }
+
+  elements.themeToggle.addEventListener("click", () => {
+    setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
+  });
 
   function formatBytes(bytes) {
     if (bytes === 0) return "0 B";
@@ -119,6 +151,8 @@
 
   function clearCurrentImage() {
     clearTimeout(state.processingTimer);
+    cancelAnimationFrame(state.renderFrame);
+    state.renderFrame = 0;
     state.revision += 1;
     releaseResult();
     if (state.sourceUrl) URL.revokeObjectURL(state.sourceUrl);
@@ -229,21 +263,26 @@
   }
 
   function scheduleProcessing() {
-    clearTimeout(state.processingTimer);
     if (!state.image) return;
+    clearTimeout(state.processingTimer);
+    cancelAnimationFrame(state.renderFrame);
     state.revision += 1;
     const revision = state.revision;
-    showMessage(elements.processingError, "");
-    updateTargetSizeControls();
-    elements.resultPlaceholder.textContent = "Your edited image will appear here";
-    elements.status.textContent = "Updating preview…";
-    elements.processing.classList.remove("hidden");
-    elements.processing.classList.add("flex");
-    elements.resultPreview.classList.add("hidden");
-    elements.resultPlaceholder.classList.add("hidden");
-    elements.downloadButton.disabled = true;
-    elements.downloadPdfButton.disabled = true;
-    state.processingTimer = setTimeout(() => processImage(revision), 160);
+    state.renderFrame = requestAnimationFrame(() => {
+      state.renderFrame = 0;
+      if (revision !== state.revision) return;
+      showMessage(elements.processingError, "");
+      updateTargetSizeControls();
+      elements.resultPlaceholder.textContent = "Your edited image will appear here";
+      elements.status.textContent = "Updating preview…";
+      elements.processing.classList.remove("hidden");
+      elements.processing.classList.add("flex");
+      elements.resultPreview.classList.add("hidden");
+      elements.resultPlaceholder.classList.add("hidden");
+      elements.downloadButton.disabled = true;
+      elements.downloadPdfButton.disabled = true;
+      state.processingTimer = setTimeout(() => processImage(revision), 140);
+    });
   }
 
   function createCanvas(dimensions) {
@@ -251,39 +290,49 @@
     canvas.width = dimensions.width;
     canvas.height = dimensions.height;
     const context = canvas.getContext("2d");
-    if (!context) throw new Error("Your browser could not create an image canvas.");
+    if (!context) {
+      canvas.width = 0;
+      canvas.height = 0;
+      throw new Error("Your browser could not create an image canvas.");
+    }
 
-    if (elements.formatSelect.value === "image/jpeg") {
-      context.fillStyle = "#ffffff";
-      context.fillRect(0, 0, canvas.width, canvas.height);
-    }
-    const radians = (state.rotation * Math.PI) / 180;
-    context.translate(canvas.width / 2, canvas.height / 2);
-    context.rotate(radians);
-    context.scale(state.flipX ? -1 : 1, state.flipY ? -1 : 1);
-    const rotatedWidth = Math.abs(state.rotation % 180) === 90 ? canvas.height : canvas.width;
-    const rotatedHeight = Math.abs(state.rotation % 180) === 90 ? canvas.width : canvas.height;
-    context.filter = `brightness(${Number(elements.brightnessSlider.value)}%) contrast(${Number(elements.contrastSlider.value)}%) grayscale(${elements.grayscaleToggle.checked ? 1 : 0})`;
-    if (state.cropRatio === null) {
-      context.drawImage(state.image, -rotatedWidth / 2, -rotatedHeight / 2, rotatedWidth, rotatedHeight);
-    } else {
-      const outputRatio = rotatedWidth / rotatedHeight;
-      const sourceRatio = Math.abs(state.rotation % 180) === 90 ? 1 / outputRatio : outputRatio;
-      const imageRatio = state.image.naturalWidth / state.image.naturalHeight;
-      let sourceX = 0;
-      let sourceY = 0;
-      let sourceWidth = state.image.naturalWidth;
-      let sourceHeight = state.image.naturalHeight;
-      if (imageRatio > sourceRatio) {
-        sourceWidth = sourceHeight * sourceRatio;
-        sourceX = (state.image.naturalWidth - sourceWidth) / 2;
-      } else {
-        sourceHeight = sourceWidth / sourceRatio;
-        sourceY = (state.image.naturalHeight - sourceHeight) / 2;
+    try {
+      if (elements.formatSelect.value === "image/jpeg") {
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, canvas.width, canvas.height);
       }
-      context.drawImage(state.image, sourceX, sourceY, sourceWidth, sourceHeight, -rotatedWidth / 2, -rotatedHeight / 2, rotatedWidth, rotatedHeight);
+      const radians = (state.rotation * Math.PI) / 180;
+      context.translate(canvas.width / 2, canvas.height / 2);
+      context.rotate(radians);
+      context.scale(state.flipX ? -1 : 1, state.flipY ? -1 : 1);
+      const rotatedWidth = Math.abs(state.rotation % 180) === 90 ? canvas.height : canvas.width;
+      const rotatedHeight = Math.abs(state.rotation % 180) === 90 ? canvas.width : canvas.height;
+      context.filter = `brightness(${Number(elements.brightnessSlider.value)}%) contrast(${Number(elements.contrastSlider.value)}%) grayscale(${elements.grayscaleToggle.checked ? 1 : 0})`;
+      if (state.cropRatio === null) {
+        context.drawImage(state.image, -rotatedWidth / 2, -rotatedHeight / 2, rotatedWidth, rotatedHeight);
+      } else {
+        const outputRatio = rotatedWidth / rotatedHeight;
+        const sourceRatio = Math.abs(state.rotation % 180) === 90 ? 1 / outputRatio : outputRatio;
+        const imageRatio = state.image.naturalWidth / state.image.naturalHeight;
+        let sourceX = 0;
+        let sourceY = 0;
+        let sourceWidth = state.image.naturalWidth;
+        let sourceHeight = state.image.naturalHeight;
+        if (imageRatio > sourceRatio) {
+          sourceWidth = sourceHeight * sourceRatio;
+          sourceX = (state.image.naturalWidth - sourceWidth) / 2;
+        } else {
+          sourceHeight = sourceWidth / sourceRatio;
+          sourceY = (state.image.naturalHeight - sourceHeight) / 2;
+        }
+        context.drawImage(state.image, sourceX, sourceY, sourceWidth, sourceHeight, -rotatedWidth / 2, -rotatedHeight / 2, rotatedWidth, rotatedHeight);
+      }
+      return canvas;
+    } catch (error) {
+      canvas.width = 0;
+      canvas.height = 0;
+      throw error;
     }
-    return canvas;
   }
 
   function encodeCanvas(canvas, mimeType, quality) {
@@ -766,8 +815,9 @@
       title: "Contact Us",
       html: `<p>We welcome questions, accessibility feedback, and reports about problems with ImgCon.</p>
         <h3 class="font-semibold text-white">Contact information</h3>
-        <p>No monitored support email or contact form has been configured for this version of the website. The site operator should publish a working contact address here before launch so users can reach the team.</p>
-        <p>Please do not include sensitive personal information or private images in a support request. Image files are processed locally and are not needed to report a problem.</p>`,
+        <p><a class="font-medium text-indigo-300 underline underline-offset-2" href="mailto:imgcon72@gmail.com">imgcon72@gmail.com</a> <button type="button" data-copy-email class="ml-2 rounded-lg border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-300 hover:border-indigo-400">Copy email</button></p>
+        <p data-copy-status role="status" aria-live="polite" class="text-xs text-slate-500"></p>
+        <p>We aim to respond to support messages within 2 business days. Please do not include sensitive personal information or private images in a support request; image files are processed locally and are not needed to report a problem.</p>`,
     },
   };
 
@@ -784,5 +834,58 @@
   elements.legalClose.addEventListener("click", () => elements.legalDialog.close());
   elements.legalDialog.addEventListener("click", (event) => {
     if (event.target === elements.legalDialog) elements.legalDialog.close();
+  });
+
+  document.addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-copy-email]");
+    if (!button) return;
+    const status = button.parentElement.querySelector("[data-copy-status]")
+      || button.closest("#legal-content").querySelector("[data-copy-status]");
+    let copied = false;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText("imgcon72@gmail.com");
+        copied = true;
+      }
+    } catch (error) {
+      console.warn("ImgCon could not use the Clipboard API; trying the browser fallback.", error);
+    }
+    if (!copied) {
+      const textarea = document.createElement("textarea");
+      textarea.value = "imgcon72@gmail.com";
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      document.body.append(textarea);
+      textarea.select();
+      try {
+        copied = document.execCommand("copy");
+      } catch (error) {
+        console.warn("ImgCon could not use the browser clipboard fallback.", error);
+      } finally {
+        textarea.remove();
+      }
+    }
+    if (copied) {
+      button.textContent = "Copied!";
+      status.textContent = "Email address copied to clipboard.";
+    } else {
+      button.textContent = "Copy unavailable";
+      status.textContent = "Clipboard access is unavailable. Use the email link to contact us.";
+    }
+  });
+
+  document.querySelectorAll(".faq-toggle").forEach((button) => {
+    button.addEventListener("click", () => {
+      const item = button.closest(".faq-item");
+      const opening = item.dataset.open !== "true";
+      document.querySelectorAll(".faq-item").forEach((faqItem) => {
+        const isOpen = faqItem === item && opening;
+        faqItem.dataset.open = String(isOpen);
+        faqItem.querySelector(".faq-toggle").setAttribute("aria-expanded", String(isOpen));
+        faqItem.querySelector(".faq-answer").setAttribute("aria-hidden", String(!isOpen));
+        faqItem.querySelector(".faq-indicator").textContent = isOpen ? "−" : "+";
+      });
+    });
   });
 })();
