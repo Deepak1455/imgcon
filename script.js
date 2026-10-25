@@ -1454,7 +1454,7 @@
     let copied = false;
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText("support@imgcon.online");
+        await navigator.clipboard.writeText("imgcon72@gmail.com");
         copied = true;
       }
     } catch (error) {
@@ -1462,7 +1462,7 @@
     }
     if (!copied) {
       const textarea = document.createElement("textarea");
-      textarea.value = "support@imgcon.online";
+      textarea.value = "imgcon72@gmail.com";
       textarea.setAttribute("readonly", "");
       textarea.style.position = "fixed";
       textarea.style.left = "-9999px";
