@@ -1469,7 +1469,7 @@
       document.body.append(textarea);
       textarea.select();
       try {
-        copied = document.execCommand("copy");
+        copied = document.execCommand("copyws");
       } catch (error) {
         console.warn("ImgCon could not use the browser clipboard fallback.", error);
       } finally {
