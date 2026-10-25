@@ -1405,7 +1405,7 @@
         <p>ImgCon uses Google AdSense to serve advertisements. Google and its partners may use cookies or similar technologies to show, measure, and personalize ads, subject to your location, consent choices, and Google’s policies. These third parties may process information such as your browser, device, or ad interactions; this is separate from image editing, and selected image files are not sent to ImgCon’s image-processing server. Learn about Google’s data practices at <a class="font-medium text-indigo-300 underline underline-offset-2" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">Google’s Partner Sites policy</a> and manage personalization through <a class="font-medium text-indigo-300 underline underline-offset-2" href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">Google Ads Settings</a>. Styling and other site features may also load resources from third-party providers.</p>
         <h3 class="font-semibold text-white">Your choices and security</h3>
         <p>You can remove an image from the editor by choosing another file or closing the page. You can manage cookies through your browser settings and ad personalization through Google Ads Settings. Where required, additional consent choices may be presented for advertising cookies. Keep in mind that no website or local browser environment can guarantee absolute security. Do not use this tool for files that your device or browser is not permitted to handle.</p>
-        <p>For privacy questions, contact <a class="font-medium text-indigo-300 underline underline-offset-2" href="mailto:support@imgcon.online">support@imgcon.online</a>.</p>
+        <p>For privacy questions, contact <a class="font-medium text-indigo-300 underline underline-offset-2" href="mailto:imgcon72@gmail.com">imgcon72@gmail.com</a>.</p>
         <p class="text-xs text-slate-500">Last updated: October 23, 2026.</p>`,
     },
     terms: {
@@ -1425,7 +1425,7 @@
       title: "Contact Us",
       html: `<p>We welcome questions, accessibility feedback, and reports about problems with ImgCon.</p>
         <h3 class="font-semibold text-white">Contact information</h3>
-        <p><a class="font-medium text-indigo-300 underline underline-offset-2" href="mailto:support@imgcon.online">support@imgcon.online</a> <button type="button" data-copy-email class="ml-2 rounded-lg border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-300 hover:border-indigo-400">Copy email</button></p>
+        <p><a class="font-medium text-indigo-300 underline underline-offset-2" href="mailto:imgcon72@gmail.com">imgcon72@gmail.com</a> <button type="button" data-copy-email class="ml-2 rounded-lg border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-300 hover:border-indigo-400">Copy email</button></p>
         <p data-copy-status role="status" aria-live="polite" class="text-xs text-slate-500"></p>
         <p>We aim to respond to support messages within 2 business days. Please do not include sensitive personal information or private images in a support request; image files are processed locally and are not needed to report a problem.</p>`,
     },
@@ -1454,7 +1454,7 @@
     let copied = false;
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText("support@imgcon.online");
+        await navigator.clipboard.writeText("imgcon72@gmail.com");
         copied = true;
       }
     } catch (error) {
@@ -1462,7 +1462,7 @@
     }
     if (!copied) {
       const textarea = document.createElement("textarea");
-      textarea.value = "support@imgcon.online";
+      textarea.value = "imgcon72@gmail.com";
       textarea.setAttribute("readonly", "");
       textarea.style.position = "fixed";
       textarea.style.left = "-9999px";
