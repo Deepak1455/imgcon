@@ -349,9 +349,9 @@
     const item = state.activeBatchItem;
     if (!item) return;
     if (success && state.resultBlob) {
-      const baseName = item.file.name.replace(/\.[^.]+$/, "").replace(/[\\/:*?"<>|]+/g, "_") || "image";
+      const baseName = getSafeBaseName(item.file.name);
       item.blob = state.resultBlob;
-      item.outputName = `${baseName}.${FORMAT_EXTENSIONS[elements.formatSelect.value]}`;
+      item.outputName = `${baseName}-imgcon.${FORMAT_EXTENSIONS[elements.formatSelect.value]}`;
       item.status = "Ready";
       item.message = "";
     } else if (!item.blob) {
@@ -594,6 +594,18 @@
     const unitIndex = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
     const value = bytes / (1024 ** unitIndex);
     return `${value.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
+  }
+
+  function getSafeBaseName(filename) {
+    const baseName = filename
+      .replace(/(\.[^.]+)\1+$/i, "$1")
+      .replace(/\.[^.]+$/, "")
+      .replace(/[<>:"/\\|?*\u0000-\u001f]+/g, "_")
+      .replace(/[\s._-]+$/g, "")
+      .replace(/(?:-imgcon)+$/i, "")
+      .replace(/[\s._-]+$/g, "");
+    if (!baseName) return "image";
+    return /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i.test(baseName) ? `_${baseName}` : baseName;
   }
 
   function showMessage(element, message) {
@@ -1169,7 +1181,7 @@
       const url = URL.createObjectURL(pdf);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `${sourceFile.name.replace(/\.[^.]+$/, "") || "image"}.pdf`;
+      link.download = `${getSafeBaseName(sourceFile.name)}-imgcon.pdf`;
       document.body.append(link);
       link.click();
       link.remove();
@@ -1301,7 +1313,7 @@
       const url = URL.createObjectURL(archive);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "imgcon-images.zip";
+      link.download = "imgcon-images-imgcon.zip";
       document.body.append(link);
       link.click();
       link.remove();
@@ -1487,10 +1499,10 @@
   elements.downloadButton.addEventListener("click", () => {
     if (!state.resultBlob || !state.resultUrl || !state.file) return;
     const extension = FORMAT_EXTENSIONS[elements.formatSelect.value];
-    const baseName = state.file.name.replace(/\.[^.]+$/, "") || "image";
+    const baseName = getSafeBaseName(state.file.name);
     const link = document.createElement("a");
     link.href = state.resultUrl;
-    link.download = `${baseName}.${extension}`;
+    link.download = `${baseName}-imgcon.${extension}`;
     document.body.append(link);
     link.click();
     link.remove();

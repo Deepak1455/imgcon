@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "imgcon-shell-v5";
+const CACHE_NAME = "imgcon-shell-v6";
 const APP_SHELL = [
   "./index.html",
   "./compress-image-to-20kb.html",
