@@ -4,7 +4,6 @@
   const MAX_FILE_SIZE = 50 * 1024 * 1024;
   const MAX_DIMENSION = 16000;
   const MAX_PIXELS = 100_000_000;
-  const SHARE_TEXT = "⚡ ImgCon — Best Free Online Image Compressor & Converter!\n📸 Compress to 20KB, 50KB for Govt Forms\n🔄 Convert JPG, PNG, WebP instantly\n🔒 100% Private (Runs directly in your browser)\n\nTry it free here 👉 https://imgcon.online/";
   const FORMAT_EXTENSIONS = {
     "image/png": "png",
     "image/jpeg": "jpg",
@@ -72,7 +71,6 @@
     batchSummary: document.getElementById("batch-summary"),
     downloadPdfButton: document.getElementById("download-pdf-button"),
     processingError: document.getElementById("processing-error"),
-    shareButton: document.getElementById("share-button"),
     installButton: document.getElementById("install-button"),
     toast: document.getElementById("toast"),
     themeToggle: document.getElementById("theme-toggle"),
@@ -106,19 +104,98 @@
     installPrompt: null,
     pendingQuickPreset: initialPreset,
   };
+  let shareToastTimer = 0;
 
   function showToast(message) {
+    if (!elements.toast) return;
     clearTimeout(state.toastTimer);
     elements.toast.textContent = message;
     elements.toast.classList.remove("opacity-0");
     elements.toastTimer = setTimeout(() => elements.toast.classList.add("opacity-0"), 2800);
   }
 
-  async function copyShareText() {
+  function getShareContext(pageTitle) {
+    const heading = document.querySelector("h1");
+    const headingText = heading ? heading.textContent : "";
+    const pathAndQuery = `${window.location.pathname} ${window.location.search}`.toLowerCase();
+    const isHomePage = window.location.pathname === "/" || /\/index\.html$/i.test(window.location.pathname);
+    const titleAndHeading = `${isHomePage ? "" : pageTitle} ${headingText}`.toLowerCase();
+    const context = `${pathAndQuery} ${titleAndHeading}`;
+    if (/\bpreset=20kb\b/.test(pathAndQuery) || /20\s?kb/.test(titleAndHeading) || /compress-image-to-20kb/.test(pathAndQuery)) {
+      return "Compress photos to 20KB for forms such as SSC and UPSC";
+    }
+    if (/\bpreset=50kb\b/.test(pathAndQuery) || /50\s?kb/.test(titleAndHeading) || /compress-image-to-50kb/.test(pathAndQuery)) {
+      return "Compress photos to 50KB for application forms";
+    }
+    if (/\bpreset=webp\b/.test(pathAndQuery) || /jpg.{0,12}webp|webp.{0,12}jpg/.test(titleAndHeading) || /jpg-to-webp/.test(pathAndQuery)) {
+      return "Convert JPG images to WebP";
+    }
+    if (/\bpreset=passport\b/.test(pathAndQuery) || /passport photo/.test(titleAndHeading) || /passport-photo-maker/.test(pathAndQuery)) {
+      return "Make a passport-style photo crop";
+    }
+    if (/\bssc\b|\bupsc\b|state psc/.test(context)) {
+      return "Prepare a photo for an SSC, UPSC, or State PSC form";
+    }
+    return `Explore free image tools with ${pageTitle}`;
+  }
+
+  function createShareDialog() {
+    let dialog = document.getElementById("smart-share-dialog");
+    if (dialog) return dialog;
+    dialog = document.createElement("dialog");
+    dialog.id = "smart-share-dialog";
+    dialog.className = "smart-share-dialog";
+    dialog.setAttribute("aria-labelledby", "smart-share-title");
+    dialog.innerHTML = `
+      <div class="smart-share-panel">
+        <div class="smart-share-heading">
+          <div><p class="smart-share-eyebrow">Share ImgCon</p><h2 id="smart-share-title">Spread the word</h2></div>
+          <button type="button" class="smart-share-close" data-share-close aria-label="Close share dialog">&times;</button>
+        </div>
+        <p id="smart-share-message" class="smart-share-message"></p>
+        <div class="smart-share-networks" aria-label="Share using a social network">
+          <a data-share-whatsapp target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a data-share-telegram target="_blank" rel="noopener noreferrer">Telegram</a>
+          <a data-share-x target="_blank" rel="noopener noreferrer">X</a>
+          <a data-share-linkedin target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a data-share-facebook target="_blank" rel="noopener noreferrer">Facebook</a>
+        </div>
+        <div class="smart-share-copy-row">
+          <input type="text" data-share-url readonly aria-label="Current page link" />
+          <button type="button" data-share-copy>Copy Link</button>
+        </div>
+        <p class="smart-share-privacy">Your image stays on your device. Sharing only sends this page link.</p>
+        <p class="smart-share-status" data-share-status role="status" aria-live="polite"></p>
+      </div>`;
+    document.body.append(dialog);
+    return dialog;
+  }
+
+  function showShareToast(message) {
+    if (elements.toast) {
+      showToast(message);
+      return;
+    }
+    let toast = document.getElementById("smart-share-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "smart-share-toast";
+      toast.className = "smart-share-toast";
+      toast.setAttribute("role", "status");
+      toast.setAttribute("aria-live", "polite");
+      document.body.append(toast);
+    }
+    clearTimeout(shareToastTimer);
+    toast.textContent = message;
+    toast.classList.add("is-visible");
+    shareToastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 2400);
+  }
+
+  async function copyShareLink(dialog, currentUrl) {
     let copied = false;
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(SHARE_TEXT);
+        await navigator.clipboard.writeText(currentUrl);
         copied = true;
       }
     } catch (error) {
@@ -126,7 +203,7 @@
     }
     if (!copied) {
       const input = document.createElement("textarea");
-      input.value = SHARE_TEXT;
+      input.value = currentUrl;
       input.setAttribute("readonly", "");
       input.style.position = "fixed";
       input.style.left = "-9999px";
@@ -135,41 +212,97 @@
       try {
         copied = document.execCommand("copy");
       } catch (error) {
-        console.warn("ImgCon could not copy the website link.", error);
+        console.warn("ImgCon could not copy the current page link.", error);
       } finally {
         input.remove();
       }
     }
-    showToast(copied ? "Share text copied to clipboard!" : "Could not copy the share text.");
+    const copyButton = dialog.querySelector("[data-share-copy]");
+    const status = dialog.querySelector("[data-share-status]");
+    if (copied) {
+      copyButton.textContent = "Copied!";
+      status.textContent = "Link copied to clipboard.";
+      showShareToast("Link copied!");
+      window.setTimeout(() => {
+        copyButton.textContent = "Copy Link";
+      }, 1800);
+    } else {
+      status.textContent = "Could not copy automatically. Select and copy the link above.";
+      dialog.querySelector("[data-share-url]").focus();
+      dialog.querySelector("[data-share-url]").select();
+      showShareToast("Could not copy the link.");
+    }
   }
 
-  async function sharePage() {
-    if (navigator.share) {
-      const shareData = {
-        title: "ImgCon — Best Free Online Image Compressor & Converter!",
-        text: SHARE_TEXT,
-      };
-      if (state.resultBlob && state.file && typeof File === "function") {
-        const extension = FORMAT_EXTENSIONS[elements.formatSelect.value];
-        const baseName = state.file.name.replace(/\.[^.]+$/, "") || "image";
-        const imageFile = new File([state.resultBlob], `${baseName}.${extension}`, { type: state.resultBlob.type });
-        try {
-          if (navigator.canShare && navigator.canShare({ files: [imageFile] })) {
-            shareData.files = [imageFile];
-          }
-        } catch (error) {
-          console.warn("ImgCon could not check image sharing support.", error);
-        }
-      }
+  async function smartShare() {
+    const currentUrl = window.location.href;
+    const pageTitle = document.title;
+    let message;
+    if (state.resultBlob) {
+      message = `⚡ I just compressed my image from ${formatBytes(state.file.size)} to ${formatBytes(state.resultBlob.size)} using ImgCon! Completely free & private directly in your browser. Check it out here: ${currentUrl}`;
+    } else {
+      const context = getShareContext(pageTitle);
+      message = `🖼️ ${context}. Free and private image processing directly in your browser. Try it here: ${currentUrl}`;
+    }
+
+    const isMobile = window.matchMedia("(max-width: 767px), (pointer: coarse)").matches;
+    if (isMobile && typeof navigator.share === "function") {
       try {
-        await navigator.share(shareData);
+        await navigator.share({ title: pageTitle, text: message });
         return;
       } catch (error) {
         if (error.name === "AbortError") return;
-        console.warn("ImgCon could not open the native share dialog; copying the website link.", error);
+        console.warn("ImgCon could not open the native share sheet; opening the share dialog.", error);
       }
     }
-    await copyShareText();
+
+    const dialog = createShareDialog();
+    const messageWithoutUrl = message.replace(currentUrl, "").trim();
+    dialog.querySelector("#smart-share-message").textContent = message;
+    dialog.querySelector("[data-share-url]").value = currentUrl;
+    dialog.querySelector("[data-share-whatsapp]").href = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+    dialog.querySelector("[data-share-telegram]").href = `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(messageWithoutUrl)}`;
+    dialog.querySelector("[data-share-x]").href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(messageWithoutUrl)}&url=${encodeURIComponent(currentUrl)}`;
+    dialog.querySelector("[data-share-linkedin]").href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`;
+    dialog.querySelector("[data-share-facebook]").href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
+    dialog.querySelector("[data-share-status]").textContent = "";
+    if (!dialog.open) dialog.showModal();
+    dialog.querySelector("[data-share-close]").focus();
+  }
+
+  document.addEventListener("click", (event) => {
+    const trigger = event.target.closest("[data-smart-share]");
+    if (trigger) {
+      void smartShare();
+      return;
+    }
+    const closeButton = event.target.closest("[data-share-close]");
+    if (closeButton) {
+      const dialog = closeButton.closest("#smart-share-dialog");
+      if (dialog && dialog.open) dialog.close();
+      return;
+    }
+    const copyButton = event.target.closest("[data-share-copy]");
+    if (copyButton) {
+      const dialog = copyButton.closest("#smart-share-dialog");
+      void copyShareLink(dialog, window.location.href);
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    const dialog = event.target;
+    if (dialog && dialog.id === "smart-share-dialog" && dialog.tagName === "DIALOG" && dialog.open) dialog.close();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const dialog = document.getElementById("smart-share-dialog");
+    if (dialog && dialog.open) dialog.close();
+  });
+
+  createShareDialog();
+  if (!elements.dropZone) {
+    return;
   }
 
   function renderBatchQueue() {
@@ -429,7 +562,6 @@
   elements.themeToggle.addEventListener("click", () => {
     setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
   });
-  elements.shareButton.addEventListener("click", sharePage);
 
   window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();

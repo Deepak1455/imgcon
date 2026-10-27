@@ -21,6 +21,7 @@
     <meta property="og:image:height" content="630" />
     <link rel="icon" type="image/png" href="imgconlogo.png" />
     <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="smart-share.css" />
     <title>ImgCon — Free Online Image Compressor (20KB, 50KB) &amp; Format Converter</title>
     <meta name="google-adsense-account" content="ca-pub-6616979929366975" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6616979929366975" crossorigin="anonymous"></script>
@@ -296,6 +297,7 @@
       html.is-embedded #popular-solutions, html.is-embedded #how-to-use, html.is-embedded #features,
       html.is-embedded footer { display: none; }
       html.is-embedded .primary-navigation { display: none; }
+      html.is-embedded #share-button { display: none; }
     </style>
   </head>
   <body class="min-h-full font-sans text-slate-100 antialiased">
@@ -306,7 +308,7 @@
           <span class="text-lg font-semibold tracking-tight">ImgCon</span>
         </a>
         <div class="flex items-center gap-3">
-          <button id="share-button" type="button" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-indigo-400 hover:text-white">Share</button>
+          <button id="share-button" type="button" data-smart-share class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-indigo-400 hover:text-white">Share</button>
           <button id="install-button" type="button" class="hidden rounded-lg bg-indigo-500 px-3 py-2 text-xs font-semibold text-white transition hover:bg-indigo-400">Install App</button>
           <button id="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="false" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-amber-300 hover:border-indigo-400" title="Switch theme">
             <svg id="theme-icon" viewBox="0 0 24 24" fill="none" class="icon-svg h-5 w-5" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
@@ -675,6 +677,28 @@
         </div>
       </div>
     </footer>
+    <dialog id="smart-share-dialog" class="smart-share-dialog" aria-labelledby="smart-share-title">
+      <div class="smart-share-panel">
+        <div class="smart-share-heading">
+          <div><p class="smart-share-eyebrow">Share ImgCon</p><h2 id="smart-share-title">Spread the word</h2></div>
+          <button type="button" class="smart-share-close" data-share-close aria-label="Close share dialog">&times;</button>
+        </div>
+        <p id="smart-share-message" class="smart-share-message"></p>
+        <div class="smart-share-networks" aria-label="Share using a social network">
+          <a data-share-whatsapp target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a data-share-telegram target="_blank" rel="noopener noreferrer">Telegram</a>
+          <a data-share-x target="_blank" rel="noopener noreferrer">X</a>
+          <a data-share-linkedin target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a data-share-facebook target="_blank" rel="noopener noreferrer">Facebook</a>
+        </div>
+        <div class="smart-share-copy-row">
+          <input type="text" data-share-url readonly aria-label="Current page link" />
+          <button type="button" data-share-copy>Copy Link</button>
+        </div>
+        <p class="smart-share-privacy">Your image stays on your device. Sharing only sends this page link.</p>
+        <p class="smart-share-status" data-share-status role="status" aria-live="polite"></p>
+      </div>
+    </dialog>
     <div id="toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-5 left-1/2 z-50 -translate-x-1/2 rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm font-medium text-white opacity-0 shadow-xl transition-opacity"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
     <script src="script.js" defer></script>
