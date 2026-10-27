@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Learn about ImgCon, its browser-based canvas image processing, supported tools, privacy approach and how to contact the developer." />
+    <meta name="robots" content="index,follow" />
+    <title>About ImgCon and the Developer | ImgCon</title>
+    <link rel="canonical" href="https://imgcon.online/about.html" />
+    <style>
+      :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #020617; color: #e2e8f0; }
+      * { box-sizing: border-box; }
+      body { margin: 0; line-height: 1.7; }
+      a { color: #a5b4fc; }
+      header, main, footer { width: min(100% - 2rem, 880px); margin-inline: auto; }
+      header, footer { padding-block: 1rem; border-bottom: 1px solid #263247; }
+      footer { border-top: 1px solid #263247; border-bottom: 0; margin-top: 3rem; padding-block: 1.5rem; }
+      h1, h2 { line-height: 1.25; color: #f8fafc; }
+      h1 { font-size: clamp(2rem, 6vw, 3rem); }
+      section { margin-block: 2rem; }
+      nav { display: flex; flex-wrap: wrap; gap: .75rem 1rem; }
+    </style>
+  </head>
+  <body>
+    <header><a href="index.html">ImgCon</a></header>
+    <main>
+      <h1>About ImgCon</h1>
+      <p>ImgCon is an independent browser-based image utility built to make common photo tasks accessible without installing desktop software or creating an account. The site brings image compression, format conversion, crop and resize controls, visual adjustments, batch processing and PDF export together in one interface. It is maintained as a practical web project; questions and feedback can be sent to <a href="mailto:imgcon72@gmail.com">imgcon72@gmail.com</a>.</p>
+
+      <section>
+        <h2>How the image tools work</h2>
+        <p>When you choose an image, the browser reads the selected file on your device. The app uses browser image decoding and a canvas to draw the source, apply supported adjustments, and encode the resulting pixels as PNG, JPEG or WebP. The preview and output-size information are generated in the same browser session. For downloads, the browser saves the created image locally; batch exports are packaged as a ZIP in the browser, and PDF output is generated from the processed image.</p>
+        <p>This client-side approach means selected image files are not sent to an ImgCon image-processing server. It also means device memory, browser compatibility, image dimensions and available browser codecs affect speed and supported formats. Keep a copy of your source image and review an export before using it.</p>
+      </section>
+
+      <section>
+        <h2>Tools available</h2>
+        <ul>
+          <li>Compress an image to a selected maximum file size, including common 20KB and 50KB targets.</li>
+          <li>Convert common browser-supported images to PNG, JPEG or WebP.</li>
+          <li>Crop to common aspect ratios, including a 3.5:4.5 portrait shape, and set pixel dimensions.</li>
+          <li>Adjust brightness, contrast, saturation and sharpness, then preview changes before download.</li>
+          <li>Process a queue of images and download the results together as a ZIP archive.</li>
+        </ul>
+        <p>Target file size is not a guarantee of official acceptance. A government form or other destination may require specific dimensions, format, background or composition. Always check that destination's current rules.</p>
+      </section>
+
+      <section>
+        <h2>Privacy and third-party resources</h2>
+        <p>ImgCon does not require an account and does not upload selected images for editing. The site does use external website resources, and may serve advertising if the relevant provider approves and delivers it. Those providers can receive technical connection information when a browser requests their code. Read the <a href="privacy-policy.html">Privacy Policy</a> for details about site operation, potential advertising technologies, choices and privacy requests.</p>
+      </section>
+
+      <section>
+        <h2>Contact and feedback</h2>
+        <p>For a bug report, question, accessibility suggestion or privacy request, email <a href="mailto:imgcon72@gmail.com">imgcon72@gmail.com</a>. We aim to respond within two business days. Please describe the browser and the steps that led to a problem, but do not attach private photographs or other sensitive files.</p>
+      </section>
+    </main>
+    <footer><nav aria-label="Site information"><a href="index.html">Image tools</a><a href="privacy-policy.html">Privacy</a><a href="terms-of-service.html">Terms</a><a href="contact.html">Contact</a></nav></footer>
+  </body>
+</html>

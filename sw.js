@@ -1,8 +1,18 @@
 "use strict";
 
-const CACHE_NAME = "imgcon-shell-v3";
+const CACHE_NAME = "imgcon-shell-v4";
 const APP_SHELL = [
   "./index.html",
+  "./compress-image-to-20kb.html",
+  "./compress-image-to-50kb.html",
+  "./jpg-to-webp.html",
+  "./passport-photo-maker.html",
+  "./privacy-policy.html",
+  "./terms-of-service.html",
+  "./about.html",
+  "./contact.html",
+  "./sitemap.xml",
+  "./robots.txt",
   "./script.js",
   "./manifest.json",
   "./imgconlogo.png",
@@ -35,11 +45,14 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put("./index.html", copy));
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
           return response;
         })
-        .catch(() => caches.match("./index.html")),
+        .catch(() => caches.match(event.request, { ignoreSearch: true })
+          .then((cachedResponse) => cachedResponse || caches.match("./index.html"))),
     );
     return;
   }

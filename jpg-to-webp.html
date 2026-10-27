@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Convert JPG images to WebP in your browser. Learn about browser support, quality choices, transparency and how to verify the converted file." />
+    <meta name="robots" content="index,follow" />
+    <title>JPG to WebP Converter Online — Free Browser Tool | ImgCon</title>
+    <link rel="canonical" href="https://imgcon.online/jpg-to-webp.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="JPG to WebP Converter Online | ImgCon" />
+    <meta property="og:description" content="Convert JPEG photos to WebP locally and learn how to choose quality for web use." />
+    <style>
+      :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #020617; color: #e2e8f0; }
+      * { box-sizing: border-box; }
+      body { margin: 0; line-height: 1.7; }
+      a { color: #a5b4fc; }
+      header, main, footer { width: min(100% - 2rem, 960px); margin-inline: auto; }
+      header, footer { padding-block: 1rem; border-bottom: 1px solid #263247; }
+      footer { border-top: 1px solid #263247; border-bottom: 0; margin-top: 3rem; padding-block: 1.5rem; }
+      h1, h2, h3 { line-height: 1.25; color: #f8fafc; }
+      h1 { font-size: clamp(2rem, 6vw, 3.25rem); }
+      section, article { margin-block: 2rem; }
+      .tool { margin-block: 2rem; border: 1px solid #334155; border-radius: 1rem; overflow: hidden; background: #0b1120; }
+      iframe { display: block; width: 100%; height: 900px; border: 0; }
+      .note { border-left: 3px solid #818cf8; padding: .75rem 1rem; background: #111c32; }
+      nav { display: flex; flex-wrap: wrap; gap: .75rem 1rem; }
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {"@type":"Question","name":"How do I convert JPG to WebP?","acceptedAnswer":{"@type":"Answer","text":"Choose a JPEG image in ImgCon, select WebP as the output format, review the preview and quality setting, then download the converted file."}},
+          {"@type":"Question","name":"Does WebP always make an image smaller than JPG?","acceptedAnswer":{"@type":"Answer","text":"Not always. File size depends on the original image, encoder and quality. Compare the output size and visual quality before replacing the source."}},
+          {"@type":"Question","name":"Will JPG to WebP conversion preserve transparency?","acceptedAnswer":{"@type":"Answer","text":"JPEG does not contain transparency, so converting a JPG cannot recover a transparent background. WebP supports transparency when converting suitable sources such as PNG."}}
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <header><a href="index.html" aria-label="ImgCon home">ImgCon image tools</a></header>
+    <main>
+      <h1>Convert JPG to WebP online</h1>
+      <p>WebP is an image format supported by current browsers and common content-management workflows. Converting a JPEG can be useful when preparing images for a website, but the best result depends on the image and the quality level you choose. Use ImgCon below to select a JPEG, set WebP as the export format, preview the result and save it locally. Keep the original until you have checked that the converted file looks right and fits your site.</p>
+      <section class="tool" aria-label="JPG to WebP converter">
+        <iframe title="ImgCon image converter with WebP output selected" src="index.html?embed=1&amp;preset=webp" loading="eager"></iframe>
+      </section>
+      <p><a href="index.html?preset=webp">Open the JPG to WebP converter in the full editor</a>.</p>
+
+      <section>
+        <h2>Step-by-step conversion</h2>
+        <ol>
+          <li><strong>Pick the source JPEG.</strong> Select a JPG or JPEG image from your device. Images are processed by your browser; the selected photo is not uploaded to ImgCon's image-processing server.</li>
+          <li><strong>Choose WebP output.</strong> The page preselects WebP for the first image. If working in the full editor, select WebP in the output-format control. Confirm that the intended website, publishing platform or application accepts WebP.</li>
+          <li><strong>Set a quality level.</strong> Lossy WebP can reduce file size by approximating some image details. Higher quality usually retains more detail and can produce a larger file; lower quality may show artifacts around edges, text, gradients or fine texture. There is no single best setting for every image.</li>
+          <li><strong>Compare before downloading.</strong> Inspect the preview at a useful viewing size, check the exported dimensions and file size, and make sure colors and details remain acceptable. A smaller output is not automatically a better output.</li>
+          <li><strong>Save and test in context.</strong> Download the WebP file, keep a backup of the JPEG, and test the result in the page or application where it will be used. Check the file extension and confirm the site serves the correct content type.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>When WebP helps—and when to keep JPG</h2>
+        <p>WebP can encode photographic content efficiently, and it supports both lossy and lossless modes as well as transparency. Conversion may reduce transferred bytes and help a page's image payload, but the result is source- and setting-dependent. A JPEG already optimized at an appropriate quality can sometimes be smaller than a new WebP export, so measure rather than assume. Images that contain small text, fine lines or repeated editing may need special attention because lossy encoding can soften detail.</p>
+        <p>JPEG does not carry an alpha channel. Turning a JPG into WebP does not create transparency; it only changes the encoding and container format. If the goal is transparent artwork, start with a source that actually has transparency, such as a PNG, and verify that the export preserves the transparent areas. For compatibility, consider the browsers, devices, CMS and downstream tools used by your audience. You may want to keep a JPG fallback for older workflows.</p>
+        <p class="note"><strong>Practical tip:</strong> compare file size and appearance together, and retain your original image. ImgCon is a conversion tool; it does not automatically optimize your website's delivery, responsive variants or caching.</p>
+      </section>
+
+      <section>
+        <h2>Frequently asked questions</h2>
+        <h3>Will WebP always be smaller than JPEG?</h3>
+        <p>No. The relative size depends on source image content, export quality and encoder implementation. Check the actual downloaded file and visually compare it with the original.</p>
+        <h3>Can I convert many photos?</h3>
+        <p>Yes. ImgCon supports selecting multiple images, applying the WebP setting to the queue and downloading the processed results together as a ZIP file.</p>
+        <h3>Does WebP support transparency?</h3>
+        <p>WebP supports transparency, but an opaque JPG has no transparent pixels to preserve. Start with a suitable transparent source if that is required.</p>
+      </section>
+    </main>
+    <footer><nav aria-label="Site information"><a href="index.html">Image tools</a><a href="passport-photo-maker.html">Passport photo guide</a><a href="privacy-policy.html">Privacy</a><a href="contact.html">Contact</a></nav></footer>
+    <script>
+      const toolFrame = document.querySelector(".tool iframe");
+      window.addEventListener("message", (event) => {
+        if (event.origin !== location.origin || event.source !== toolFrame.contentWindow) return;
+        if (event.data && event.data.type === "imgcon-embed-height" && Number.isFinite(event.data.height)) {
+          toolFrame.style.height = `${Math.max(700, Math.min(event.data.height, 5000))}px`;
+        }
+      });
+    </script>
+  </body>
+</html>

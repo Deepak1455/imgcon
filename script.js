@@ -10,6 +10,16 @@
     "image/jpeg": "jpg",
     "image/webp": "webp",
   };
+  const PAGE_PRESETS = {
+    "20kb": { format: null, targetBytes: 20 * 1024, aspectRatio: null },
+    "50kb": { format: null, targetBytes: 50 * 1024, aspectRatio: null },
+    webp: { format: "image/webp", targetBytes: null, aspectRatio: null },
+    passport: { format: null, targetBytes: null, aspectRatio: 3.5 / 4.5 },
+  };
+  const queryPreset = new URLSearchParams(window.location.search).get("preset");
+  const initialPreset = Object.prototype.hasOwnProperty.call(PAGE_PRESETS, queryPreset)
+    ? PAGE_PRESETS[queryPreset]
+    : null;
 
   const elements = {
     dropZone: document.getElementById("drop-zone"),
@@ -65,10 +75,6 @@
     shareButton: document.getElementById("share-button"),
     installButton: document.getElementById("install-button"),
     toast: document.getElementById("toast"),
-    legalDialog: document.getElementById("legal-dialog"),
-    legalTitle: document.getElementById("legal-title"),
-    legalContent: document.getElementById("legal-content"),
-    legalClose: document.getElementById("legal-close"),
     themeToggle: document.getElementById("theme-toggle"),
     themeIcon: document.getElementById("theme-icon"),
   };
@@ -98,7 +104,7 @@
     zipBuilding: false,
     toastTimer: 0,
     installPrompt: null,
-    pendingQuickPreset: null,
+    pendingQuickPreset: initialPreset,
   };
 
   function showToast(message) {
@@ -1387,70 +1393,10 @@
 
   elements.autoEnhanceButton.addEventListener("click", autoEnhance);
 
-  const legalPages = {
-    about: {
-      title: "About the Developer",
-      html: `<p>ImgCon is created and maintained as a browser-based image utility for everyday conversion, resizing, compression, cropping, and PDF export. It is designed to make common image tasks straightforward without requiring an account.</p>
-        <h3 class="font-semibold text-white">Private by design</h3>
-        <p>Image processing happens locally in your browser. Images selected in the editor are not uploaded to or stored on an ImgCon image-processing server. Temporary working data stays in your browser tab and is released when you replace or clear the image or close the page.</p>
-        <h3 class="font-semibold text-white">About this service</h3>
-        <p>ImgCon is provided as a general-purpose tool. Supported formats and performance depend on your browser and device. We may improve or change the service over time.</p>`,
-    },
-    privacy: {
-      title: "Privacy Policy",
-      html: `<p><strong class="text-white">Images are processed on your device.</strong> ImgCon does not upload, collect, or store the image files you open in the editor on an ImgCon server. Conversion, resizing, filtering, compression, and PDF generation take place locally in your browser.</p>
-        <h3 class="font-semibold text-white">Information and storage</h3>
-        <p>This version does not require an account and does not intentionally store image content, edited results, or personal information. Your browser or device may keep temporary memory while the page is open. Standard web hosting and network providers may process basic technical request data, such as an IP address or requested page, to deliver and protect the website; this does not include image files selected in the editor.</p>
-        <h3 class="font-semibold text-white">Advertising and third parties</h3>
-        <p>ImgCon uses Google AdSense to serve advertisements. Google and its partners may use cookies or similar technologies to show, measure, and personalize ads, subject to your location, consent choices, and Google’s policies. These third parties may process information such as your browser, device, or ad interactions; this is separate from image editing, and selected image files are not sent to ImgCon’s image-processing server. Learn about Google’s data practices at <a class="font-medium text-indigo-300 underline underline-offset-2" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">Google’s Partner Sites policy</a> and manage personalization through <a class="font-medium text-indigo-300 underline underline-offset-2" href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">Google Ads Settings</a>. Styling and other site features may also load resources from third-party providers.</p>
-        <h3 class="font-semibold text-white">Your choices and security</h3>
-        <p>You can remove an image from the editor by choosing another file or closing the page. You can manage cookies through your browser settings and ad personalization through Google Ads Settings. Where required, additional consent choices may be presented for advertising cookies. Keep in mind that no website or local browser environment can guarantee absolute security. Do not use this tool for files that your device or browser is not permitted to handle.</p>
-        <p>For privacy questions, contact <a class="font-medium text-indigo-300 underline underline-offset-2" href="mailto:imgcon72@gmail.com">imgcon72@gmail.com</a>.</p>
-        <p class="text-xs text-slate-500">Last updated: October 23, 2026.</p>`,
-    },
-    terms: {
-      title: "Terms of Service",
-      html: `<p>By using ImgCon, you agree to these terms. If you do not agree, do not use the service.</p>
-        <h3 class="font-semibold text-white">Use of the tool</h3>
-        <p>ImgCon provides browser-based image utilities on an “as available” basis. You are responsible for ensuring that you have the rights and permissions needed to use, edit, and download each image, and for checking that the resulting file meets the requirements of its intended destination.</p>
-        <h3 class="font-semibold text-white">Your files and results</h3>
-        <p>Image processing and PDF creation are performed locally in your browser; ImgCon does not upload or retain your image files on an image-processing server. You remain responsible for keeping your original files and verifying downloaded results. Output quality, supported formats, and exact file size can vary by browser.</p>
-        <h3 class="font-semibold text-white">No warranty; limitation</h3>
-        <p>The service is provided without warranties to the fullest extent permitted by applicable law. ImgCon is not responsible for lost files, rejected uploads, inaccurate output, interruption, or indirect damages arising from use of the service. Nothing in these terms limits rights that cannot be excluded by law.</p>
-        <h3 class="font-semibold text-white">Changes</h3>
-        <p>We may update these terms or change features as the service evolves. Continued use after a revised version is posted constitutes acceptance where permitted by law.</p>
-        <p class="text-xs text-slate-500">Last updated: October 23, 2026.</p>`,
-    },
-    contact: {
-      title: "Contact Us",
-      html: `<p>We welcome questions, accessibility feedback, and reports about problems with ImgCon.</p>
-        <h3 class="font-semibold text-white">Contact information</h3>
-        <p><a class="font-medium text-indigo-300 underline underline-offset-2" href="mailto:imgcon72@gmail.com">imgcon72@gmail.com</a> <button type="button" data-copy-email class="ml-2 rounded-lg border border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-300 hover:border-indigo-400">Copy email</button></p>
-        <p data-copy-status role="status" aria-live="polite" class="text-xs text-slate-500"></p>
-        <p>We aim to respond to support messages within 2 business days. Please do not include sensitive personal information or private images in a support request; image files are processed locally and are not needed to report a problem.</p>`,
-    },
-  };
-
-  document.querySelectorAll("[data-legal]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const page = legalPages[button.dataset.legal];
-      if (!page) return;
-      elements.legalTitle.textContent = page.title;
-      elements.legalContent.innerHTML = page.html;
-      elements.legalDialog.showModal();
-      elements.legalClose.focus();
-    });
-  });
-  elements.legalClose.addEventListener("click", () => elements.legalDialog.close());
-  elements.legalDialog.addEventListener("click", (event) => {
-    if (event.target === elements.legalDialog) elements.legalDialog.close();
-  });
-
   document.addEventListener("click", async (event) => {
     const button = event.target.closest("[data-copy-email]");
     if (!button) return;
-    const status = button.parentElement.querySelector("[data-copy-status]")
-      || button.closest("#legal-content").querySelector("[data-copy-status]");
+    const status = button.parentElement.querySelector("[data-copy-status]");
     let copied = false;
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1504,5 +1450,16 @@
       console.error("ImgCon could not register offline support.", error);
       showToast("Offline support could not be enabled.");
     });
+  }
+
+  if (document.documentElement.classList.contains("is-embedded") && window.parent !== window) {
+    const reportEmbeddedHeight = () => {
+      window.parent.postMessage(
+        { type: "imgcon-embed-height", height: document.documentElement.scrollHeight },
+        window.location.origin,
+      );
+    };
+    window.addEventListener("load", reportEmbeddedHeight);
+    if ("ResizeObserver" in window) new ResizeObserver(reportEmbeddedHeight).observe(document.body);
   }
 })();

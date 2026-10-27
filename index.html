@@ -23,7 +23,10 @@
     <link rel="manifest" href="manifest.json" />
     <title>ImgCon — Free Online Image Compressor (20KB, 50KB) &amp; Format Converter</title>
     <meta name="google-adsense-account" content="ca-pub-6616979929366975" />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6616979329366975" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6616979929366975" crossorigin="anonymous"></script>
+    <script>
+      if (new URLSearchParams(location.search).has("embed")) document.documentElement.classList.add("is-embedded");
+    </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -213,14 +216,6 @@
       .target-size-button[aria-pressed="true"], .aspect-button[aria-pressed="true"] { border-color: #4f46e5; background: #4f46e5; color: #fff; }
       .quick-tool-card { min-height: 46px; border: 1px solid rgba(255, 255, 255, .08); border-radius: .75rem; background: linear-gradient(120deg, rgba(99, 102, 241, .1), rgba(139, 92, 246, .05)); padding: .75rem 1rem; color: #cbd5e1; text-align: left; font-size: .8125rem; line-height: 1.35rem; transition: border-color .2s ease, background .2s ease, color .2s ease, transform .2s ease; }
       .quick-tool-card:hover, .quick-tool-card:focus-visible { border-color: rgba(129, 140, 248, .65); background: linear-gradient(120deg, rgba(99, 102, 241, .2), rgba(139, 92, 246, .12)); color: #fff; outline: none; }
-      .ad-placeholder { min-height: 90px; border: 1px dashed rgba(148, 163, 184, .24); border-radius: 1rem; background: linear-gradient(120deg, rgba(255, 255, 255, .018), rgba(99, 102, 241, .025)); }
-      .ad-placeholder-inner { min-height: inherit; display: grid; place-items: center; padding: 1rem; text-align: center; }
-      dialog { color: #e2e8f0; }
-      dialog::backdrop { background: rgba(2, 6, 23, .78); backdrop-filter: blur(4px); }
-      dialog[open] { animation: dialog-in .2s ease both; }
-      dialog[open]::backdrop { animation: backdrop-in .2s ease both; }
-      @keyframes dialog-in { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-      @keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
       .faq-answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .24s ease; }
       .faq-item[data-open="true"] .faq-answer { grid-template-rows: 1fr; }
       .faq-answer > div { overflow: hidden; }
@@ -238,7 +233,6 @@
       [data-theme="light"] [class~="bg-white/[0.025]"], [data-theme="light"] [class~="bg-white/[0.02]"] { background-color: rgba(255, 255, 255, .82); }
       [data-theme="light"] .quick-tool-card { border-color: #dbe3ee; background: linear-gradient(120deg, rgba(99, 102, 241, .07), rgba(139, 92, 246, .03)); color: #334155; }
       [data-theme="light"] .quick-tool-card:hover, [data-theme="light"] .quick-tool-card:focus-visible { border-color: #818cf8; color: #1e1b4b; }
-      [data-theme="light"] .ad-placeholder { border-color: #cbd5e1; background: linear-gradient(120deg, rgba(99, 102, 241, .025), rgba(139, 92, 246, .035)); }
       [data-theme="light"] .text-white, [data-theme="light"] .text-slate-100, [data-theme="light"] .text-slate-200 { color: #0f172a; }
       [data-theme="light"] .text-slate-300, [data-theme="light"] .text-slate-400,
       [data-theme="light"] .text-slate-500, [data-theme="light"] .text-slate-600 { color: #334155; }
@@ -246,8 +240,6 @@
       [data-theme="light"] .text-indigo-300 { color: #4f46e5; }
       [data-theme="light"] .transform-button { background: #fff; color: #334155; border-color: #cbd5e1; }
       [data-theme="light"] .checkerboard { background-color: #e2e8f0; background-image: linear-gradient(45deg, #cbd5e1 25%, transparent 25%), linear-gradient(-45deg, #cbd5e1 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #cbd5e1 75%), linear-gradient(-45deg, transparent 75%, #cbd5e1 75%); }
-      [data-theme="light"] dialog { color: #334155; background: #fff; border-color: #cbd5e1; }
-      [data-theme="light"] dialog .text-white { color: #0f172a; }
       [data-theme="light"] #theme-toggle { color: #4f46e5; background: #fff; border-color: #cbd5e1; }
       [data-theme="light"] .faq-item { background: #fff; border-color: #dbe3ee; }
       [data-theme="light"] .editor-tab[aria-selected="true"] { color: #fff; border-color: #4f46e5; background: #4f46e5; }
@@ -301,6 +293,8 @@
       @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
       }
+      html.is-embedded #popular-solutions, html.is-embedded #how-to-use, html.is-embedded #features,
+      html.is-embedded footer { display: none; }
     </style>
   </head>
   <body class="min-h-full font-sans text-slate-100 antialiased">
@@ -322,14 +316,6 @@
         </div>
       </div>
     </header>
-
-    <aside class="mx-auto mt-5 max-w-7xl px-5 sm:px-8" aria-label="Advertisement">
-      <div class="ad-placeholder" data-ad-placeholder="top">
-        <div class="ad-placeholder-inner">
-          <span class="text-[10px] font-medium uppercase tracking-[.18em] text-slate-500">Advertisement</span>
-        </div>
-      </div>
-    </aside>
 
     <main class="mx-auto max-w-7xl px-5 pb-16 pt-12 sm:px-8 sm:pt-16">
       <section class="mx-auto mb-10 max-w-3xl text-center">
@@ -506,14 +492,6 @@
         </div>
       </section>
 
-      <aside class="mx-auto mt-8 max-w-6xl" aria-label="Advertisement">
-        <div class="ad-placeholder" data-ad-placeholder="after-tools">
-          <div class="ad-placeholder-inner">
-            <span class="text-[10px] font-medium uppercase tracking-[.18em] text-slate-500">Advertisement</span>
-          </div>
-        </div>
-      </aside>
-
       <section id="popular-solutions" class="mx-auto mt-14 max-w-6xl" aria-labelledby="popular-solutions-title">
         <div class="mx-auto max-w-3xl text-center">
           <p class="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-300">Quick image tools</p>
@@ -657,21 +635,18 @@
       <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-5 py-5 text-xs text-slate-600 sm:flex-row sm:px-8">
         <div class="text-center sm:text-left"><span>ImgCon · Simple image tools, with privacy built in.</span><p class="mt-1">Questions? <a class="font-medium text-indigo-300 underline underline-offset-2 hover:text-indigo-200" href="mailto:imgcon72@gmail.com">imgcon72@gmail.com</a> <button type="button" data-copy-email class="ml-1 underline underline-offset-2 hover:text-slate-300">Copy email</button><span data-copy-status class="sr-only" aria-live="polite"></span><br />We aim to reply within 2 business days.</p></div>
         <nav aria-label="Legal and company information" class="flex flex-wrap justify-center gap-x-4 gap-y-2">
-          <button type="button" data-legal="about" class="transition hover:text-slate-300">About Developer</button>
-          <button type="button" data-legal="privacy" class="transition hover:text-slate-300">Privacy Policy</button>
-          <button type="button" data-legal="terms" class="transition hover:text-slate-300">Terms of Service</button>
-          <a class="transition hover:text-slate-300" href="mailto:imgcon72@gmail.com">Contact: imgcon72@gmail.com</a>
+          <a class="transition hover:text-slate-300" href="about.html">About</a>
+          <a class="transition hover:text-slate-300" href="privacy-policy.html">Privacy Policy</a>
+          <a class="transition hover:text-slate-300" href="terms-of-service.html">Terms of Service</a>
+          <a class="transition hover:text-slate-300" href="contact.html">Contact</a>
+          <a class="transition hover:text-slate-300" href="compress-image-to-20kb.html">20KB guide</a>
+          <a class="transition hover:text-slate-300" href="compress-image-to-50kb.html">50KB guide</a>
+          <a class="transition hover:text-slate-300" href="jpg-to-webp.html">JPG to WebP</a>
+          <a class="transition hover:text-slate-300" href="passport-photo-maker.html">Passport photo</a>
         </nav>
         <span>Made for your browser. No uploads, ever.</span>
       </div>
     </footer>
-    <dialog id="legal-dialog" aria-labelledby="legal-title" class="m-auto max-h-[85vh] w-[min(92vw,42rem)] rounded-2xl border border-slate-700 bg-[#101522] p-0 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-line px-5 py-4">
-        <h2 id="legal-title" class="text-base font-semibold text-white"></h2>
-        <button id="legal-close" type="button" aria-label="Close dialog" class="rounded-lg border border-slate-700 px-3 py-1.5 text-xs text-slate-300 hover:border-slate-500 hover:text-white">Close</button>
-      </div>
-      <div id="legal-content" class="space-y-4 overflow-y-auto px-5 py-5 text-sm leading-6 text-slate-300"></div>
-    </dialog>
     <div id="toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-5 left-1/2 z-50 -translate-x-1/2 rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm font-medium text-white opacity-0 shadow-xl transition-opacity"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
     <script src="script.js" defer></script>
