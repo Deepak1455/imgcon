@@ -295,6 +295,7 @@
       }
       html.is-embedded #popular-solutions, html.is-embedded #how-to-use, html.is-embedded #features,
       html.is-embedded footer { display: none; }
+      html.is-embedded .primary-navigation { display: none; }
     </style>
   </head>
   <body class="min-h-full font-sans text-slate-100 antialiased">
@@ -314,6 +315,12 @@
         <div class="flex w-full items-center justify-center gap-2 rounded-full border border-emerald-400/15 bg-emerald-400/[0.06] px-3 py-1.5 text-[11px] font-medium text-emerald-300 sm:ml-auto sm:w-auto sm:text-xs">
           <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>100% private · runs in your browser
         </div>
+        <nav aria-label="Primary navigation" class="primary-navigation grid w-full grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-3">
+          <a class="rounded-lg border border-white/[0.08] px-3 py-2 text-center text-xs font-medium text-slate-300 transition hover:border-indigo-400 hover:text-white" href="compress-image-to-20kb.html">Compress 20KB</a>
+          <a class="rounded-lg border border-white/[0.08] px-3 py-2 text-center text-xs font-medium text-slate-300 transition hover:border-indigo-400 hover:text-white" href="compress-image-to-50kb.html">Compress 50KB</a>
+          <a class="rounded-lg border border-white/[0.08] px-3 py-2 text-center text-xs font-medium text-slate-300 transition hover:border-indigo-400 hover:text-white" href="jpg-to-webp.html">JPG to WebP</a>
+          <a class="rounded-lg border border-white/[0.08] px-3 py-2 text-center text-xs font-medium text-slate-300 transition hover:border-indigo-400 hover:text-white" href="passport-photo-maker.html">Passport Photo</a>
+        </nav>
       </div>
     </header>
 
@@ -504,15 +511,15 @@
             <div class="mt-4 grid gap-2">
               <button type="button" data-quick-tool="target-size" data-target-bytes="20480" class="quick-tool-card">Compress photo to 20KB</button>
               <button type="button" data-quick-tool="target-size" data-target-bytes="51200" class="quick-tool-card">Compress to 50KB for SSC / UPSC</button>
-              <button type="button" data-quick-tool="target-size" data-target-bytes="10240" class="quick-tool-card">Resize signature under 10KB</button>
-              <button type="button" data-quick-tool="crop" data-aspect-ratio="0.7777777778" class="quick-tool-card">Passport photo crop · 3.5 × 4.5</button>
+              <button id="quick-signature-resizer" type="button" data-quick-tool="target-size" data-target-bytes="10240" class="quick-tool-card">Resize signature under 10KB</button>
+              <button id="quick-passport-photo-crop" type="button" data-quick-tool="crop" data-aspect-ratio="0.7777777778" class="quick-tool-card">Passport photo crop · 3.5 × 4.5</button>
             </div>
           </section>
           <section class="rounded-2xl border border-white/[0.06] bg-panel p-5" aria-labelledby="quick-convert-title">
             <h3 id="quick-convert-title" class="text-base font-semibold text-white">Image Converters</h3>
             <div class="mt-4 grid gap-2">
-              <button type="button" data-quick-tool="format" data-output-format="image/png" class="quick-tool-card">Convert JPG to PNG</button>
-              <button type="button" data-quick-tool="format" data-output-format="image/jpeg" class="quick-tool-card">Convert PNG to JPG</button>
+              <button id="quick-jpg-to-png" type="button" data-quick-tool="format" data-output-format="image/png" class="quick-tool-card">Convert JPG to PNG</button>
+              <button id="quick-png-to-jpg" type="button" data-quick-tool="format" data-output-format="image/jpeg" class="quick-tool-card">Convert PNG to JPG</button>
               <button type="button" data-quick-tool="format" data-output-format="image/jpeg" class="quick-tool-card">Convert WebP to JPG</button>
               <button type="button" data-quick-tool="format" data-output-format="image/jpeg" data-accept-heic class="quick-tool-card">Convert HEIC to JPG <span class="mt-1 block text-[10px] font-normal text-slate-500">Requires browser support for opening HEIC images</span></button>
             </div>
@@ -523,7 +530,7 @@
               <button type="button" data-quick-tool="crop" data-aspect-ratio="1.7777777778" class="quick-tool-card">YouTube thumbnail · 16:9</button>
               <button type="button" data-quick-tool="crop" data-aspect-ratio="1" class="quick-tool-card">Instagram profile image · Square 1:1</button>
               <button type="button" data-quick-tool="bulk" data-bulk class="quick-tool-card">Bulk image compressor</button>
-              <button type="button" data-quick-tool="pdf" data-output-format="image/jpeg" data-pdf class="quick-tool-card">Convert image to PDF <span class="mt-1 block text-[10px] font-normal text-slate-500">Choose a photo, then use Download as PDF</span></button>
+              <button id="quick-image-to-pdf" type="button" data-quick-tool="pdf" data-output-format="image/jpeg" data-pdf class="quick-tool-card">Convert image to PDF <span class="mt-1 block text-[10px] font-normal text-slate-500">Choose a photo, then use Download as PDF</span></button>
             </div>
           </section>
         </div>
@@ -632,19 +639,40 @@
       </section>
     </main>
     <footer class="border-t border-white/[0.06]">
-      <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-5 py-5 text-xs text-slate-600 sm:flex-row sm:px-8">
-        <div class="text-center sm:text-left"><span>ImgCon · Simple image tools, with privacy built in.</span><p class="mt-1">Questions? <a class="font-medium text-indigo-300 underline underline-offset-2 hover:text-indigo-200" href="mailto:imgcon72@gmail.com">imgcon72@gmail.com</a> <button type="button" data-copy-email class="ml-1 underline underline-offset-2 hover:text-slate-300">Copy email</button><span data-copy-status class="sr-only" aria-live="polite"></span><br />We aim to reply within 2 business days.</p></div>
-        <nav aria-label="Legal and company information" class="flex flex-wrap justify-center gap-x-4 gap-y-2">
-          <a class="transition hover:text-slate-300" href="about.html">About</a>
-          <a class="transition hover:text-slate-300" href="privacy-policy.html">Privacy Policy</a>
-          <a class="transition hover:text-slate-300" href="terms-of-service.html">Terms of Service</a>
-          <a class="transition hover:text-slate-300" href="contact.html">Contact</a>
-          <a class="transition hover:text-slate-300" href="compress-image-to-20kb.html">20KB guide</a>
-          <a class="transition hover:text-slate-300" href="compress-image-to-50kb.html">50KB guide</a>
-          <a class="transition hover:text-slate-300" href="jpg-to-webp.html">JPG to WebP</a>
-          <a class="transition hover:text-slate-300" href="passport-photo-maker.html">Passport photo</a>
-        </nav>
-        <span>Made for your browser. No uploads, ever.</span>
+      <div class="mx-auto max-w-7xl px-5 py-8 text-xs text-slate-400 sm:px-8">
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <section aria-labelledby="footer-exam-tools">
+            <h2 id="footer-exam-tools" class="mb-3 text-sm font-semibold text-slate-200">Popular Exam Tools</h2>
+            <nav aria-label="Popular exam tools" class="grid gap-2">
+              <a class="transition hover:text-white" href="compress-image-to-20kb.html">Compress to 20KB</a>
+              <a class="transition hover:text-white" href="compress-image-to-50kb.html">Compress to 50KB</a>
+              <a class="transition hover:text-white" href="index.html#quick-signature-resizer">Signature Resizer</a>
+              <a class="transition hover:text-white" href="passport-photo-maker.html">Passport Photo Crop</a>
+            </nav>
+          </section>
+          <section aria-labelledby="footer-converters">
+            <h2 id="footer-converters" class="mb-3 text-sm font-semibold text-slate-200">Converters</h2>
+            <nav aria-label="Image converters" class="grid gap-2">
+              <a class="transition hover:text-white" href="index.html#quick-jpg-to-png">JPG to PNG</a>
+              <a class="transition hover:text-white" href="index.html#quick-png-to-jpg">PNG to JPG</a>
+              <a class="transition hover:text-white" href="jpg-to-webp.html">JPG to WebP</a>
+              <a class="transition hover:text-white" href="index.html#quick-image-to-pdf">Image to PDF</a>
+            </nav>
+          </section>
+          <section aria-labelledby="footer-legal-support">
+            <h2 id="footer-legal-support" class="mb-3 text-sm font-semibold text-slate-200">Legal &amp; Support</h2>
+            <nav aria-label="Legal and support" class="grid gap-2">
+              <a class="transition hover:text-white" href="about.html">About Us</a>
+              <a class="transition hover:text-white" href="contact.html">Contact</a>
+              <a class="transition hover:text-white" href="privacy-policy.html">Privacy Policy</a>
+              <a class="transition hover:text-white" href="terms-of-service.html">Terms of Service</a>
+            </nav>
+          </section>
+        </div>
+        <div class="mt-8 border-t border-white/[0.06] pt-5 text-center sm:text-left">
+          <p>ImgCon · Simple image tools, with privacy built in. Made for your browser; images are processed on your device.</p>
+          <p class="mt-2">Questions? <a class="font-medium text-indigo-300 underline underline-offset-2 hover:text-indigo-200" href="mailto:imgcon72@gmail.com">imgcon72@gmail.com</a> <button type="button" data-copy-email class="ml-1 underline underline-offset-2 hover:text-slate-300">Copy email</button><span data-copy-status class="sr-only" aria-live="polite"></span> · We aim to reply within 2 business days.</p>
+        </div>
       </div>
     </footer>
     <div id="toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-5 left-1/2 z-50 -translate-x-1/2 rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm font-medium text-white opacity-0 shadow-xl transition-opacity"></div>

@@ -18,6 +18,19 @@
       header, main, footer { width: min(100% - 2rem, 960px); margin-inline: auto; }
       header, footer { padding-block: 1rem; border-bottom: 1px solid #263247; }
       footer { border-top: 1px solid #263247; border-bottom: 0; margin-top: 3rem; padding-block: 1.5rem; }
+      .site-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+      .site-brand { color: #f8fafc; font-weight: 700; text-decoration: none; }
+      .site-nav { display: flex; flex-wrap: wrap; gap: .5rem; }
+      .site-nav a { display: inline-block; padding: .35rem .65rem; border: 1px solid #334155; border-radius: .5rem; text-decoration: none; }
+      .site-nav a:hover { border-color: #818cf8; color: #fff; }
+      .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem; }
+      .footer-column h2 { margin: 0 0 .65rem; font-size: 1rem; }
+      .footer-column nav { display: grid; gap: .4rem; }
+      .requirements-table { width: 100%; border-collapse: collapse; }
+      .requirements-table th, .requirements-table td { border: 1px solid #334155; padding: .7rem; text-align: left; vertical-align: top; }
+      .requirements-table th { background: #111c32; color: #f8fafc; }
+      .overflow-x-auto { overflow-x: auto; }
+      @media (max-width: 600px) { .requirements-table { font-size: .85rem; } .requirements-table th, .requirements-table td { padding: .5rem; } }
       h1, h2, h3 { line-height: 1.25; color: #f8fafc; }
       h1 { font-size: clamp(2rem, 6vw, 3.25rem); }
       section, article { margin-block: 2rem; }
@@ -39,7 +52,15 @@
     </script>
   </head>
   <body>
-    <header><a href="index.html" aria-label="ImgCon home">ImgCon image tools</a></header>
+    <header class="site-header">
+      <a class="site-brand" href="index.html" aria-label="ImgCon home">ImgCon</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="compress-image-to-20kb.html">Compress 20KB</a>
+        <a href="compress-image-to-50kb.html">Compress 50KB</a>
+        <a href="jpg-to-webp.html">JPG to WebP</a>
+        <a href="passport-photo-maker.html">Passport Photo</a>
+      </nav>
+    </header>
     <main>
       <h1>Make a passport-style photo with a 3.5 × 4.5 cm crop</h1>
       <p>Prepare a portrait crop with the common 3.5 by 4.5 centimetre shape using ImgCon's 7:9 aspect-ratio preset. This is a crop ratio, not a certificate that the file meets an official passport or visa standard. Authorities and application portals can specify different pixel dimensions, background, head position, expression, print resolution and file limits. Confirm the current destination rules before relying on an edited image.</p>
@@ -67,6 +88,22 @@
       </section>
 
       <section>
+        <h2>Photo checks for common application portals</h2>
+        <p>There is no universal passport-style image specification across recruitment portals. The table highlights what to verify in the current instructions before using a portrait; exact dimensions, file limits and photo rules may change by exam or application.</p>
+        <div class="overflow-x-auto">
+          <table class="requirements-table">
+            <thead><tr><th scope="col">Portal</th><th scope="col">Verify in the current notice</th><th scope="col">How to prepare</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">SSC</th><td>Recruitment-specific pixel range, file type and size, recent-photo rules, background and framing instructions.</td><td>Use the 7:9 crop only if it matches the notice; set required pixel dimensions and size separately.</td></tr>
+              <tr><th scope="row">UPSC</th><td>The exam's accepted portrait format, dimensions, file-size range, appearance and any capture or identity steps.</td><td>Check whether a cropped portrait is accepted and follow the exam's exact instructions; the crop does not certify compliance.</td></tr>
+              <tr><th scope="row">State PSC</th><td>The specific state commission's photo specification, including aspect ratio, pixels, background and upload limits.</td><td>Set the crop, dimensions and file format independently to match that commission's current notice.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Before submitting, view the downloaded image rather than relying only on the editor preview. Check that the face is not cut off, the required background and lighting remain suitable, and the pixel width and height are correct. A 3.5:4.5 crop can be a useful starting shape, but it does not determine print resolution, file type or official acceptance. When rules conflict with this guide, follow the current authority instructions.</p>
+      </section>
+
+      <section>
         <h2>Frequently asked questions</h2>
         <h3>Is 3.5 × 4.5 cm accepted for every passport?</h3>
         <p>No. Photo specifications vary by country, document type and application method. The ratio is a convenient crop preset only; check the issuing authority's current directions.</p>
@@ -76,7 +113,13 @@
         <p>No image-processing upload is involved. ImgCon uses browser-based image processing, so the selected photo remains on your device while it is edited.</p>
       </section>
     </main>
-    <footer><nav aria-label="Site information"><a href="index.html">Image tools</a><a href="compress-image-to-20kb.html">20KB guide</a><a href="privacy-policy.html">Privacy</a><a href="contact.html">Contact</a></nav></footer>
+    <footer>
+      <div class="footer-grid">
+        <section class="footer-column" aria-labelledby="footer-exam-tools"><h2 id="footer-exam-tools">Popular Exam Tools</h2><nav aria-label="Popular exam tools"><a href="compress-image-to-20kb.html">Compress to 20KB</a><a href="compress-image-to-50kb.html">Compress to 50KB</a><a href="index.html#quick-signature-resizer">Signature Resizer</a><a href="passport-photo-maker.html">Passport Photo Crop</a></nav></section>
+        <section class="footer-column" aria-labelledby="footer-converters"><h2 id="footer-converters">Converters</h2><nav aria-label="Image converters"><a href="index.html#quick-jpg-to-png">JPG to PNG</a><a href="index.html#quick-png-to-jpg">PNG to JPG</a><a href="jpg-to-webp.html">JPG to WebP</a><a href="index.html#quick-image-to-pdf">Image to PDF</a></nav></section>
+        <section class="footer-column" aria-labelledby="footer-legal-support"><h2 id="footer-legal-support">Legal &amp; Support</h2><nav aria-label="Legal and support"><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms-of-service.html">Terms of Service</a></nav></section>
+      </div>
+    </footer>
     <script>
       const toolFrame = document.querySelector(".tool iframe");
       window.addEventListener("message", (event) => {

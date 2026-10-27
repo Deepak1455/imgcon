@@ -15,6 +15,14 @@
       header, main, footer { width: min(100% - 2rem, 800px); margin-inline: auto; }
       header, footer { padding-block: 1rem; border-bottom: 1px solid #263247; }
       footer { border-top: 1px solid #263247; border-bottom: 0; margin-top: 3rem; padding-block: 1.5rem; }
+      .site-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+      .site-brand { color: #f8fafc; font-weight: 700; text-decoration: none; }
+      .site-nav { display: flex; flex-wrap: wrap; gap: .5rem; }
+      .site-nav a { display: inline-block; padding: .35rem .65rem; border: 1px solid #334155; border-radius: .5rem; text-decoration: none; }
+      .site-nav a:hover { border-color: #818cf8; color: #fff; }
+      .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem; }
+      .footer-column h2 { margin: 0 0 .65rem; font-size: 1rem; }
+      .footer-column nav { display: grid; gap: .4rem; }
       h1, h2 { line-height: 1.25; color: #f8fafc; }
       h1 { font-size: clamp(2rem, 6vw, 3rem); }
       section { margin-block: 2rem; }
@@ -23,7 +31,15 @@
     </style>
   </head>
   <body>
-    <header><a href="index.html">ImgCon</a></header>
+    <header class="site-header">
+      <a class="site-brand" href="index.html">ImgCon</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="compress-image-to-20kb.html">Compress 20KB</a>
+        <a href="compress-image-to-50kb.html">Compress 50KB</a>
+        <a href="jpg-to-webp.html">JPG to WebP</a>
+        <a href="passport-photo-maker.html">Passport Photo</a>
+      </nav>
+    </header>
     <main>
       <h1>Contact ImgCon</h1>
       <p>We welcome questions about using the image tools, reports about technical problems, accessibility feedback, and privacy requests. ImgCon is maintained as a small web project, and email is the direct support channel.</p>
@@ -42,6 +58,12 @@
         <p>For a privacy request, describe the right you wish to exercise and any relevant email correspondence. Review the <a href="privacy-policy.html">Privacy Policy</a> for information about local image processing, website providers and advertising technologies. For questions about permitted use, see the <a href="terms-of-service.html">Terms of Service</a>.</p>
       </section>
     </main>
-    <footer><nav aria-label="Site information"><a href="index.html">Image tools</a><a href="about.html">About</a><a href="privacy-policy.html">Privacy</a><a href="terms-of-service.html">Terms</a></nav></footer>
+    <footer>
+      <div class="footer-grid">
+        <section class="footer-column" aria-labelledby="footer-exam-tools"><h2 id="footer-exam-tools">Popular Exam Tools</h2><nav aria-label="Popular exam tools"><a href="compress-image-to-20kb.html">Compress to 20KB</a><a href="compress-image-to-50kb.html">Compress to 50KB</a><a href="index.html#quick-signature-resizer">Signature Resizer</a><a href="passport-photo-maker.html">Passport Photo Crop</a></nav></section>
+        <section class="footer-column" aria-labelledby="footer-converters"><h2 id="footer-converters">Converters</h2><nav aria-label="Image converters"><a href="index.html#quick-jpg-to-png">JPG to PNG</a><a href="index.html#quick-png-to-jpg">PNG to JPG</a><a href="jpg-to-webp.html">JPG to WebP</a><a href="index.html#quick-image-to-pdf">Image to PDF</a></nav></section>
+        <section class="footer-column" aria-labelledby="footer-legal-support"><h2 id="footer-legal-support">Legal &amp; Support</h2><nav aria-label="Legal and support"><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms-of-service.html">Terms of Service</a></nav></section>
+      </div>
+    </footer>
   </body>
 </html>

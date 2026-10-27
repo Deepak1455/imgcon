@@ -18,6 +18,19 @@
       header, main, footer { width: min(100% - 2rem, 960px); margin-inline: auto; }
       header, footer { padding-block: 1rem; border-bottom: 1px solid #263247; }
       footer { border-top: 1px solid #263247; border-bottom: 0; margin-top: 3rem; padding-block: 1.5rem; }
+      .site-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+      .site-brand { color: #f8fafc; font-weight: 700; text-decoration: none; }
+      .site-nav { display: flex; flex-wrap: wrap; gap: .5rem; }
+      .site-nav a { display: inline-block; padding: .35rem .65rem; border: 1px solid #334155; border-radius: .5rem; text-decoration: none; }
+      .site-nav a:hover { border-color: #818cf8; color: #fff; }
+      .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem; }
+      .footer-column h2 { margin: 0 0 .65rem; font-size: 1rem; }
+      .footer-column nav { display: grid; gap: .4rem; }
+      .requirements-table { width: 100%; border-collapse: collapse; }
+      .requirements-table th, .requirements-table td { border: 1px solid #334155; padding: .7rem; text-align: left; vertical-align: top; }
+      .requirements-table th { background: #111c32; color: #f8fafc; }
+      .overflow-x-auto { overflow-x: auto; }
+      @media (max-width: 600px) { .requirements-table { font-size: .85rem; } .requirements-table th, .requirements-table td { padding: .5rem; } }
       h1, h2, h3 { line-height: 1.25; color: #f8fafc; }
       h1 { font-size: clamp(2rem, 6vw, 3.25rem); }
       section, article { margin-block: 2rem; }
@@ -40,7 +53,15 @@
     </script>
   </head>
   <body>
-    <header><a href="index.html" aria-label="ImgCon home">ImgCon image tools</a></header>
+    <header class="site-header">
+      <a class="site-brand" href="index.html" aria-label="ImgCon home">ImgCon</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="compress-image-to-20kb.html">Compress 20KB</a>
+        <a href="compress-image-to-50kb.html">Compress 50KB</a>
+        <a href="jpg-to-webp.html">JPG to WebP</a>
+        <a href="passport-photo-maker.html">Passport Photo</a>
+      </nav>
+    </header>
     <main>
       <h1>Compress an image to 20KB for SSC, UPSC and online forms</h1>
       <p>Need to prepare a photograph or signature for a form that limits uploads to 20KB? Use the browser-based tool below, then check the saved file against the current instructions from the exam or government portal. Requirements can change between applications and recruitment cycles, so the portal itself is always the authority for accepted dimensions, format, and maximum size.</p>
@@ -68,6 +89,22 @@
       </section>
 
       <section>
+        <h2>Check the current portal requirements</h2>
+        <p>There is no single file specification that applies to every vacancy or application. Use this checklist to locate the rules that matter for your exact submission; the official notification or upload screen takes precedence over general advice.</p>
+        <div class="overflow-x-auto">
+          <table class="requirements-table">
+            <thead><tr><th scope="col">Portal</th><th scope="col">Verify in the current notice</th><th scope="col">ImgCon preparation</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">SSC</th><td>Photo and signature limits separately; accepted format; pixel dimensions; image or signature recency and composition rules.</td><td>Use the 20KB maximum only where the relevant SSC form specifies it; crop or resize to its listed dimensions.</td></tr>
+              <tr><th scope="row">UPSC</th><td>Exam-specific photo/signature size range, file type, dimensions, and any live-photo or identity instructions.</td><td>Set an appropriate size target, then confirm the exported format and pixel dimensions against that exam's instructions.</td></tr>
+              <tr><th scope="row">State PSC</th><td>The particular state's commission notice, including separate photo and signature rules and portal validation limits.</td><td>Prepare each image independently and test the final saved file against the selected commission's published rules.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>File-size wording matters: “less than 20KB” can be stricter than a rounded display that says “20KB.” If the portal rejects a file, use its error message to identify whether the issue is size, dimensions, format, or framing instead of repeatedly lowering quality. Keep a clean original so you can create another version without compounding compression artifacts.</p>
+      </section>
+
+      <section>
         <h2>Common questions</h2>
         <h3>How do I compress a photo to 20KB for an SSC or UPSC form?</h3>
         <p>Select a photo in ImgCon, choose the 20KB target, and download the processed image. Check the form's current format and dimension requirements and verify the output file size before uploading. The selected value is a target maximum; the final file may be smaller.</p>
@@ -77,7 +114,13 @@
         <p>Not necessarily. Each form can have its own photo rules. Confirm that the current application accepts the chosen format, size, background and dimensions before uploading.</p>
       </section>
     </main>
-    <footer><nav aria-label="Site information"><a href="index.html">Image tools</a><a href="compress-image-to-50kb.html">50KB guide</a><a href="privacy-policy.html">Privacy</a><a href="contact.html">Contact</a></nav></footer>
+    <footer>
+      <div class="footer-grid">
+        <section class="footer-column" aria-labelledby="footer-exam-tools"><h2 id="footer-exam-tools">Popular Exam Tools</h2><nav aria-label="Popular exam tools"><a href="compress-image-to-20kb.html">Compress to 20KB</a><a href="compress-image-to-50kb.html">Compress to 50KB</a><a href="index.html#quick-signature-resizer">Signature Resizer</a><a href="passport-photo-maker.html">Passport Photo Crop</a></nav></section>
+        <section class="footer-column" aria-labelledby="footer-converters"><h2 id="footer-converters">Converters</h2><nav aria-label="Image converters"><a href="index.html#quick-jpg-to-png">JPG to PNG</a><a href="index.html#quick-png-to-jpg">PNG to JPG</a><a href="jpg-to-webp.html">JPG to WebP</a><a href="index.html#quick-image-to-pdf">Image to PDF</a></nav></section>
+        <section class="footer-column" aria-labelledby="footer-legal-support"><h2 id="footer-legal-support">Legal &amp; Support</h2><nav aria-label="Legal and support"><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms-of-service.html">Terms of Service</a></nav></section>
+      </div>
+    </footer>
     <script>
       const toolFrame = document.querySelector(".tool iframe");
       window.addEventListener("message", (event) => {
