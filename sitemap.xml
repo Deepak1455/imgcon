@@ -102,6 +102,16 @@
     </image:image>
   </url>
   <url>
+    <loc>https://imgcon.online/signature-resizer.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>Signature Resizer Online — ImgCon</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://imgcon.online/upsc-photo-compressor.html</loc>
     <lastmod>2026-10-28</lastmod>
     <changefreq>daily</changefreq>

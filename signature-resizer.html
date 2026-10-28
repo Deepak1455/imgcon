@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Resize and compress signature under 10KB to 20KB for SSC, UPSC, IBPS and online application forms. 100% free, fast, and private in your browser." />
+    <meta name="robots" content="index,follow" />
+    <title>Signature Resizer Online (10KB - 20KB for SSC, UPSC, Govt Exams) — ImgCon</title>
+    <meta name="thumbnail" content="https://imgcon.online/imgconlogo.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://imgcon.online/signature-resizer.html" />
+    <meta property="og:title" content="Signature Resizer Online (10KB - 20KB) — ImgCon" />
+    <meta property="og:description" content="Resize and compress signatures for SSC, UPSC, IBPS and online application forms in your browser." />
+    <meta property="og:image" content="https://imgcon.online/imgconlogo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://imgcon.online/imgconlogo.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="imgcon-icon-192.png" />
+    <link rel="canonical" href="https://imgcon.online/signature-resizer.html" />
+    <link rel="preload" href="script.js" as="script" />
+    <link rel="stylesheet" href="smart-share.css" />
+    <style>
+      :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #020617; color: #e2e8f0; }
+      * { box-sizing: border-box; }
+      body { margin: 0; line-height: 1.7; }
+      a { color: #a5b4fc; }
+      header, main, footer { width: min(100% - 2rem, 1040px); margin-inline: auto; }
+      header, footer { padding-block: 1rem; border-bottom: 1px solid #263247; }
+      footer { border-top: 1px solid #263247; border-bottom: 0; margin-top: 3rem; padding-block: 1.5rem; }
+      .site-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+      .site-brand { color: #f8fafc; font-weight: 700; text-decoration: none; }
+      .site-nav { display: flex; flex-wrap: wrap; gap: .5rem; }
+      .site-nav a { display: inline-block; padding: .35rem .65rem; border: 1px solid #334155; border-radius: .5rem; text-decoration: none; }
+      .site-nav a:hover { border-color: #818cf8; color: #fff; }
+      .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; }
+      .footer-grid h2 { margin: 0 0 .65rem; font-size: 1rem; }
+      .footer-grid nav { display: grid; gap: .4rem; }
+      main { padding-top: 1.5rem; }
+      h1, h2, h3 { line-height: 1.25; color: #f8fafc; }
+      h1 { font-size: clamp(2rem, 6vw, 3rem); }
+      section { margin-block: 2rem; }
+      .note { padding: 1rem; border: 1px solid #334155; border-radius: .75rem; background: #0b1120; }
+      .table-wrap { overflow-x: auto; }
+      table { width: 100%; min-width: 620px; border-collapse: collapse; }
+      th, td { border: 1px solid #334155; padding: .7rem; text-align: left; vertical-align: top; }
+      th { color: #f8fafc; background: #0b1120; }
+      .tool-frame { display: block; width: 100%; height: 900px; border: 1px solid #263247; border-radius: 1rem; background: #020617; }
+      @media (max-width: 600px) { th, td { padding: .5rem; } }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {"@type":"ListItem","position":1,"name":"Home","item":"https://imgcon.online/"},
+              {"@type":"ListItem","position":2,"name":"Signature Resizer","item":"https://imgcon.online/signature-resizer.html"}
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {"@type":"Question","name":"How to resize signature to 10KB - 20KB for online forms?","acceptedAnswer":{"@type":"Answer","text":"Choose your signature image in ImgCon. The editor starts with a 20KB maximum, JPEG output, a 2:1 crop, and contrast enhancement. Review the result and adjust the target if the current form specifies a different size; confirm all dimensions and format requirements before uploading."}},
+              {"@type":"Question","name":"Why is my signature rejected on the exam portal?","acceptedAnswer":{"@type":"Answer","text":"A portal may reject a signature if its file size, pixel dimensions, file type, crop, background or legibility differs from the current application instructions. Check the exact rules shown in the active exam notification and upload screen."}},
+              {"@type":"Question","name":"Is my signature safe on ImgCon?","acceptedAnswer":{"@type":"Answer","text":"Yes. ImgCon processes the selected signature locally in your browser using canvas; the image is not uploaded to an ImgCon image-processing server."}}
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-brand" href="index.html" aria-label="ImgCon home">ImgCon</a>
+      <button id="share-button" class="smart-share-trigger" type="button" data-smart-share>Share</button>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="ssc-photo-resizer.html">SSC Photo</a>
+        <a href="signature-resizer.html" aria-current="page">Signature Resizer</a>
+        <a href="upsc-photo-compressor.html">UPSC Photo</a>
+        <a href="pan-card-photo-resizer.html">PAN Photo</a>
+        <a href="compress-image-to-20kb.html">Compress 20KB</a>
+        <a href="jpg-to-webp.html">JPG to WebP</a>
+      </nav>
+    </header>
+    <main>
+      <h1>Signature Resizer Online for SSC, UPSC, IBPS and Govt Exams</h1>
+      <p>Resize and compress a scanned signature for exam and online application forms. The editor below starts with JPEG output, a 20KB maximum target and a 2:1 crop, with extra contrast and sharpness for clear ink on white paper. Some portals specify a minimum as well as a maximum file size: check the final file and the current application instructions before submitting. Exam rules can change, so the active official notification remains authoritative.</p>
+      <section aria-label="Signature resizer">
+        <iframe class="tool-frame" title="ImgCon signature resizer with a 20KB maximum, JPEG output and 2:1 crop selected" src="index.html?embed=1&amp;preset=signature-resizer" loading="eager" width="1040" height="900"></iframe>
+      </section>
+      <p><a href="index.html?preset=signature-resizer">Open the signature resizer in the full ImgCon editor</a> if you prefer the full-screen tool.</p>
+      <p class="note"><strong>Before uploading:</strong> The preset prepares a general 2:1 signature crop. Dimensions, accepted file types and minimum file sizes vary by application; use the exact current portal rules and verify the downloaded file.</p>
+      <section>
+        <h2>How to Resize Your Signature under 20KB in 3 Steps</h2>
+        <ol>
+          <li><strong>Prepare a clean signature.</strong> Sign with black or blue ink on plain white paper using a clear, even light. Let the ink dry, and avoid shadows, folds or marks near the signature.</li>
+          <li><strong>Crop and resize in ImgCon.</strong> Select your scan or photo. The editor starts at a 2:1 crop and JPEG with a 20KB maximum. Adjust the crop to include the full signature without excess margins; use the contrast and sharpness controls to keep the strokes distinct.</li>
+          <li><strong>Download and check the result.</strong> Confirm the file size, dimensions and format against the current exam application. If a form requires at least 10KB, make sure the output is not below that minimum; do not rely on a preset instead of the official requirements.</li>
+        </ol>
+      </section>
+      <section>
+        <h2>Exam Signature Specification Guide</h2>
+        <p>These are common preparation targets, not a substitute for the current recruitment notification or upload form. Confirm the exact dimensions, file size and format for your application before submission.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Exam / application</th><th>Common file size</th><th>Common dimensions</th></tr></thead>
+            <tbody>
+              <tr><td>SSC</td><td>10 KB to 20 KB</td><td>4.0 cm × 2.0 cm</td></tr>
+              <tr><td>UPSC</td><td>10 KB to 20 KB</td><td>350 × 350 px minimum (check the current form; this may refer to a different image field)</td></tr>
+              <tr><td>IBPS / Bank</td><td>10 KB to 20 KB</td><td>140 × 60 px</td></tr>
+              <tr><td>Police / State Exams</td><td>5 KB to 20 KB</td><td>Varies by application; verify the notification</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section>
+        <h2>Tips for a clear, accepted signature</h2>
+        <ul>
+          <li>Use plain white paper and a dark black or blue pen.</li>
+          <li>Keep the paper flat and use even lighting to avoid shadows.</li>
+          <li>Crop closely but leave enough margin to preserve every signature stroke.</li>
+          <li>Check the file size, pixel dimensions, format and legibility after downloading.</li>
+          <li>Use a signature that matches your official records and follow the portal's current instructions.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Frequently asked questions</h2>
+        <h3>How to resize signature to 10KB - 20KB for online forms?</h3>
+        <p>Choose your image in the editor above. ImgCon starts with JPEG output, a 2:1 crop, contrast enhancement and a 20KB maximum. Check that the result also meets any minimum size and dimension rules in the active application instructions.</p>
+        <h3>Why is my signature rejected on the exam portal?</h3>
+        <p>The size, pixels, file format, crop or legibility may not match the portal's current rules. Check the rejection message and official notification, then verify the downloaded file's properties.</p>
+        <h3>Is my signature safe on ImgCon?</h3>
+        <p>Yes. The signature is processed on your device in your browser and is not sent to an ImgCon image-processing server.</p>
+      </section>
+    </main>
+    <footer>
+      <div class="footer-grid">
+        <section><h2>Exam Tools (SSC, UPSC, PAN)</h2><nav aria-label="Exam tools"><a href="ssc-photo-resizer.html">SSC Photo &amp; Signature</a><a href="signature-resizer.html">Signature Resizer</a><a href="upsc-photo-compressor.html">UPSC Photo &amp; Signature</a><a href="pan-card-photo-resizer.html">PAN Card Photo &amp; Signature</a><a href="compress-image-to-20kb.html">Compress to 20KB</a><a href="compress-image-to-50kb.html">Compress to 50KB</a></nav></section>
+        <section><h2>Image Converters</h2><nav aria-label="Image converters"><a href="jpg-to-webp.html">JPG to WebP</a><a href="index.html#quick-jpg-to-png">JPG to PNG</a><a href="index.html#quick-png-to-jpg">PNG to JPG</a></nav></section>
+        <section><h2>Legal &amp; Support</h2><nav aria-label="Legal and support"><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms-of-service.html">Terms of Service</a></nav></section>
+      </div>
+      <p>© 2026 ImgCon. Use the current official exam instructions as the authority for upload requirements.</p>
+    </footer>
+    <script>
+      const toolFrame = document.querySelector(".tool-frame");
+      window.addEventListener("message", (event) => {
+        if (event.origin !== location.origin || event.source !== toolFrame.contentWindow) return;
+        if (event.data && event.data.type === "imgcon-embed-height" && Number.isFinite(event.data.height)) {
+          toolFrame.style.height = `${Math.max(700, Math.min(event.data.height, 5000))}px`;
+        }
+      });
+    </script>
+    <script src="script.js" defer></script>
+  </body>
+</html>

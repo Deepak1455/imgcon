@@ -14,6 +14,13 @@
     "50kb": { format: null, targetBytes: 50 * 1024, aspectRatio: null },
     webp: { format: "image/webp", targetBytes: null, aspectRatio: null },
     passport: { format: null, targetBytes: null, aspectRatio: 3.5 / 4.5 },
+    "signature-resizer": {
+      format: "image/jpeg",
+      targetBytes: 20 * 1024,
+      aspectRatio: 2,
+      contrast: 112,
+      sharpness: 18,
+    },
     "ssc-photo": { format: null, targetBytes: 20 * 1024, aspectRatio: null, width: null, height: null },
     "ssc-signature": { format: null, targetBytes: 10 * 1024, aspectRatio: 138 / 177, width: 138, height: 177 },
     "upsc-photo": { format: null, targetBytes: 300 * 1024, aspectRatio: 1, width: 350, height: 350 },
@@ -414,6 +421,8 @@
           aspectRatio: pendingPreset?.aspectRatio ?? null,
           width: pendingPreset?.width ?? null,
           height: pendingPreset?.height ?? null,
+          contrast: pendingPreset?.contrast ?? 100,
+          sharpness: pendingPreset?.sharpness ?? 0,
         },
       };
       if (!file.type.startsWith("image/")) {
@@ -445,6 +454,8 @@
       aspectRatio: state.cropRatio,
       width: Number(elements.widthInput.value),
       height: Number(elements.heightInput.value),
+      contrast: Number(elements.contrastSlider.value),
+      sharpness: Number(elements.sharpnessSlider.value),
     };
     cancelBatchRun();
     clearCurrentImage();
@@ -736,13 +747,15 @@
         state.cropRatio = null;
         elements.brightnessSlider.value = "100";
         elements.brightnessValue.textContent = "100%";
-        elements.contrastSlider.value = "100";
-        elements.contrastValue.textContent = "100%";
+        elements.contrastSlider.value = String(settings.contrast ?? 100);
+        elements.contrastValue.textContent = `${elements.contrastSlider.value}%`;
         elements.saturationSlider.value = "100";
         elements.saturationValue.textContent = "100%";
-        elements.sharpnessSlider.value = "0";
-        elements.sharpnessValue.textContent = "0%";
-        elements.enhanceNote.textContent = "Automatically balance contrast and color, then add a touch of sharpness.";
+        elements.sharpnessSlider.value = String(settings.sharpness ?? 0);
+        elements.sharpnessValue.textContent = `${elements.sharpnessSlider.value}%`;
+        elements.enhanceNote.textContent = settings.contrast || settings.sharpness
+          ? "Signature contrast and sharpness preset applied. Fine-tune the controls if needed."
+          : "Automatically balance contrast and color, then add a touch of sharpness.";
         elements.grayscaleToggle.checked = false;
         updateAspectControls();
 
