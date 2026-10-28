@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Resize SSC CGL, CHSL, MTS, GD and Stenographer photos and signatures in your browser. Set photo file size, signature crop and pixels, then verify the current notice." />
+    <meta name="robots" content="index,follow" />
+    <title>SSC Photo &amp; Signature Resizer Online (20KB - 50KB) — ImgCon</title>
+    <meta name="thumbnail" content="https://imgcon.online/imgconlogo.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://imgcon.online/ssc-photo-resizer.html" />
+    <meta property="og:title" content="SSC Photo &amp; Signature Resizer Online — ImgCon" />
+    <meta property="og:description" content="Prepare SSC exam photos and signatures with browser-based size and crop presets. Confirm the current SSC notice before uploading." />
+    <meta property="og:image" content="https://imgcon.online/imgconlogo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://imgcon.online/imgconlogo.png" />
+    <link rel="canonical" href="https://imgcon.online/ssc-photo-resizer.html" />
+    <link rel="icon" type="image/png" sizes="192x192" href="imgcon-icon-192.png" />
+    <link rel="preload" href="script.js" as="script" />
+    <link rel="stylesheet" href="smart-share.css" />
+    <style>
+      :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #020617; color: #e2e8f0; }
+      * { box-sizing: border-box; }
+      body { margin: 0; line-height: 1.7; }
+      a { color: #a5b4fc; }
+      header, main, footer { width: min(100% - 2rem, 1040px); margin-inline: auto; }
+      header, footer { padding-block: 1rem; border-bottom: 1px solid #263247; }
+      footer { border-top: 1px solid #263247; border-bottom: 0; margin-top: 3rem; padding-block: 1.5rem; }
+      .site-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+      .site-brand { color: #f8fafc; font-weight: 700; text-decoration: none; }
+      .site-nav, .actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+      .site-nav a, .actions a { display: inline-block; padding: .4rem .7rem; border: 1px solid #334155; border-radius: .5rem; text-decoration: none; }
+      .site-nav a:hover, .actions a:hover { border-color: #818cf8; color: #fff; }
+      main { padding-top: 1.5rem; }
+      h1, h2, h3 { line-height: 1.25; color: #f8fafc; }
+      h1 { font-size: clamp(2rem, 6vw, 3rem); }
+      section { margin-block: 2rem; }
+      .note { padding: 1rem; border: 1px solid #334155; border-radius: .75rem; background: #0b1120; }
+      .table-wrap { overflow-x: auto; }
+      table { width: 100%; min-width: 760px; border-collapse: collapse; }
+      th, td { border: 1px solid #334155; padding: .7rem; text-align: left; vertical-align: top; }
+      th { color: #f8fafc; background: #0b1120; }
+      .tool-frame { display: block; width: 100%; height: 900px; border: 1px solid #263247; border-radius: 1rem; background: #020617; }
+      .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; }
+      .footer-grid nav { display: grid; gap: .4rem; }
+      .footer-grid h2 { font-size: 1rem; }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {"@type":"BreadcrumbList","itemListElement":[
+            {"@type":"ListItem","position":1,"name":"Home","item":"https://imgcon.online/"},
+            {"@type":"ListItem","position":2,"name":"SSC Photo Resizer","item":"https://imgcon.online/ssc-photo-resizer.html"}
+          ]},
+          {"@type":"FAQPage","mainEntity":[
+            {"@type":"Question","name":"Why does the SSC portal reject my photo?","acceptedAnswer":{"@type":"Answer","text":"The active SSC application may check file size, pixel dimensions, format, photo quality or other rules. Compare the exact field requirements in the current notification and upload screen with the downloaded image."}},
+            {"@type":"Question","name":"How can I resize an SSC signature under 10KB?","acceptedAnswer":{"@type":"Answer","text":"Open the signature preset, select your signature image, and check the output size and 138 by 177 pixel crop. Adjust the target if the current SSC notice specifies a different limit; keep the signature legible."}},
+            {"@type":"Question","name":"Are my SSC photos uploaded to ImgCon?","acceptedAnswer":{"@type":"Answer","text":"ImgCon processes selected images in your browser with canvas. The image file is not sent to an ImgCon image-processing server."}},
+            {"@type":"Question","name":"Do all SSC exams use the same photo size and format?","acceptedAnswer":{"@type":"Answer","text":"No single specification is guaranteed for every recruitment or application cycle. Use the current SSC CGL, CHSL, MTS, GD or Stenographer notice and upload screen as the authority."}}
+          ]},
+          {"@type":"HowTo","name":"Prepare an SSC photo or signature with ImgCon","description":"Use the browser-based editor to prepare an image and verify it against the current SSC instructions.","step":[
+            {"@type":"HowToStep","name":"Check the current notice","text":"Confirm the exact size limit, pixels, file type and photo or signature instructions for your SSC application."},
+            {"@type":"HowToStep","name":"Select a matching preset","text":"Choose the photo preset or the signature preset, then select an image from your device. Adjust the settings if the notice differs."},
+            {"@type":"HowToStep","name":"Download and verify","text":"Review the preview, output size and dimensions, download the file, and compare it with the SSC upload requirements."}
+          ]}
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-brand" href="index.html">ImgCon</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="ssc-photo-resizer.html">SSC Photo</a>
+        <a href="upsc-photo-compressor.html">UPSC Photo</a>
+        <a href="pan-card-photo-resizer.html">PAN Photo</a>
+        <a href="compress-image-to-20kb.html">Compress 20KB</a>
+        <a href="jpg-to-webp.html">JPG to WebP</a>
+      </nav>
+    </header>
+    <main>
+      <h1>SSC Photo &amp; Signature Resizer</h1>
+      <p>Prepare images for SSC CGL, CHSL, MTS, GD and Stenographer applications with ImgCon's on-device editor. The photo preset starts at a 20KB maximum; the signature preset starts at 10KB and a 138 × 177 crop. Set a target between 20KB and 50KB or 10KB and 20KB as appropriate for your field. Requirements can change by notice and recruitment cycle; always follow the active SSC instructions.</p>
+      <div class="actions">
+        <a href="index.html?preset=ssc-photo">Open SSC photo preset</a>
+        <a href="index.html?preset=ssc-signature">Open SSC signature preset</a>
+      </div>
+      <section aria-label="SSC photo resizer">
+        <iframe class="tool-frame" title="ImgCon SSC photo resizer with a 20KB starting target" src="index.html?embed=1&amp;preset=ssc-photo" loading="lazy" width="1040" height="900"></iframe>
+      </section>
+      <p class="note"><strong>Specification note:</strong> The table is a preparation guide, not a claim that one specification applies to every SSC vacancy. Confirm photo size, dimensions, format, signature rules and background requirements in the current official notice before submitting.</p>
+      <section>
+        <h2>SSC exam photo and signature comparison</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Examination</th><th>Required Photo Size</th><th>Required Dimensions</th><th>Signature Specs</th><th>Formats Allowed</th></tr></thead>
+            <tbody>
+              <tr><th>SSC CGL</th><td>Set 20–50KB according to current notice</td><td>Verify the active notice / upload form</td><td>10–20KB starting range; 138 × 177 preset is adjustable</td><td>Use the exact format listed in the notice</td></tr>
+              <tr><th>SSC CHSL</th><td>Set 20–50KB according to current notice</td><td>Verify the active notice / upload form</td><td>10–20KB starting range; 138 × 177 preset is adjustable</td><td>Use the exact format listed in the notice</td></tr>
+              <tr><th>SSC MTS</th><td>Set 20–50KB according to current notice</td><td>Verify the active notice / upload form</td><td>10–20KB starting range; 138 × 177 preset is adjustable</td><td>Use the exact format listed in the notice</td></tr>
+              <tr><th>SSC GD</th><td>Set 20–50KB according to current notice</td><td>Verify the active notice / upload form</td><td>10–20KB starting range; 138 × 177 preset is adjustable</td><td>Use the exact format listed in the notice</td></tr>
+              <tr><th>SSC Stenographer</th><td>Set 20–50KB according to current notice</td><td>Verify the active notice / upload form</td><td>10–20KB starting range; 138 × 177 preset is adjustable</td><td>Use the exact format listed in the notice</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>There is no universal background-color rule we can safely apply across these exams. Use the backdrop and photo-capture directions in your specific recruitment notice.</p>
+      </section>
+      <section>
+        <h2>How to resize an SSC photo or signature</h2>
+        <ol>
+          <li>Read the current SSC notification and note the separate photo and signature constraints.</li>
+          <li>Select the matching preset and image; adjust its size, crop, dimensions or output format to match the notice.</li>
+          <li>Download the result and verify its actual size, dimensions, format and legibility before uploading.</li>
+        </ol>
+      </section>
+      <section>
+        <h2>Frequently asked questions</h2>
+        <h3>Why does the SSC portal reject my photo?</h3>
+        <p>The size, pixel dimensions, format, image quality or framing may not match the current application's rules. Check its validation message and active notice.</p>
+        <h3>How can I resize an SSC signature under 10KB?</h3>
+        <p>Use the signature preset, which starts at a 10KB target and 138 × 177 pixels, then confirm that the limit and dimensions match your form. Adjust if necessary and keep the strokes clear.</p>
+        <h3>Are my images uploaded?</h3>
+        <p>No. Image processing occurs locally in your browser and selected images are not sent to ImgCon's image-processing server.</p>
+        <h3>Can I use the same file for every SSC exam?</h3>
+        <p>Not necessarily. Requirements may vary by exam, recruitment cycle and upload field. Check the current instructions each time.</p>
+      </section>
+    </main>
+    <footer>
+      <div class="footer-grid">
+        <section><h2>Exam Tools (SSC, UPSC, PAN)</h2><nav aria-label="Exam tools"><a href="ssc-photo-resizer.html">SSC Photo &amp; Signature</a><a href="upsc-photo-compressor.html">UPSC Photo &amp; Signature</a><a href="pan-card-photo-resizer.html">PAN Card Photo &amp; Signature</a><a href="compress-image-to-20kb.html">Compress to 20KB</a><a href="compress-image-to-50kb.html">Compress to 50KB</a></nav></section>
+        <section><h2>Image Converters</h2><nav aria-label="Image converters"><a href="jpg-to-webp.html">JPG to WebP</a><a href="index.html#quick-jpg-to-png">JPG to PNG</a><a href="index.html#quick-png-to-jpg">PNG to JPG</a></nav></section>
+        <section><h2>Legal &amp; Support</h2><nav aria-label="Legal and support"><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms-of-service.html">Terms of Service</a></nav></section>
+      </div>
+    </footer>
+    <script src="script.js" defer></script>
+  </body>
+</html>

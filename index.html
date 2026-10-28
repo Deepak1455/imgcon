@@ -20,6 +20,8 @@
     <meta name="twitter:image" content="https://imgcon.online/imgconlogo.png" />
     <meta name="robots" content="index,follow" />
     <link rel="canonical" href="https://imgcon.online/" />
+    <link rel="preload" href="imgconlogo.png" as="image" fetchpriority="high" />
+    <link rel="preload" href="script.js" as="script" />
     <link rel="icon" type="image/png" sizes="192x192" href="imgcon-icon-192.png" />
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="smart-share.css" />
@@ -338,6 +340,9 @@
           <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>100% private · runs in your browser
         </div>
         <nav aria-label="Primary navigation" class="primary-navigation grid w-full grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-3">
+          <a class="rounded-lg border border-white/[0.08] px-3 py-2 text-center text-xs font-medium text-slate-300 transition hover:border-indigo-400 hover:text-white" href="ssc-photo-resizer.html">SSC Photo</a>
+          <a class="rounded-lg border border-white/[0.08] px-3 py-2 text-center text-xs font-medium text-slate-300 transition hover:border-indigo-400 hover:text-white" href="upsc-photo-compressor.html">UPSC Photo</a>
+          <a class="rounded-lg border border-white/[0.08] px-3 py-2 text-center text-xs font-medium text-slate-300 transition hover:border-indigo-400 hover:text-white" href="pan-card-photo-resizer.html">PAN Photo</a>
           <a class="rounded-lg border border-white/[0.08] px-3 py-2 text-center text-xs font-medium text-slate-300 transition hover:border-indigo-400 hover:text-white" href="compress-image-to-20kb.html">Compress 20KB</a>
           <a class="rounded-lg border border-white/[0.08] px-3 py-2 text-center text-xs font-medium text-slate-300 transition hover:border-indigo-400 hover:text-white" href="compress-image-to-50kb.html">Compress 50KB</a>
           <a class="rounded-lg border border-white/[0.08] px-3 py-2 text-center text-xs font-medium text-slate-300 transition hover:border-indigo-400 hover:text-white" href="jpg-to-webp.html">JPG to WebP</a>
@@ -664,8 +669,11 @@
       <div class="mx-auto max-w-7xl px-5 py-8 text-xs text-slate-400 sm:px-8">
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           <section aria-labelledby="footer-exam-tools">
-            <h2 id="footer-exam-tools" class="mb-3 text-sm font-semibold text-slate-200">Popular Exam Tools</h2>
+            <h2 id="footer-exam-tools" class="mb-3 text-sm font-semibold text-slate-200">Exam Tools (SSC, UPSC, PAN)</h2>
             <nav aria-label="Popular exam tools" class="grid gap-2">
+              <a class="transition hover:text-white" href="ssc-photo-resizer.html">SSC Photo &amp; Signature</a>
+              <a class="transition hover:text-white" href="upsc-photo-compressor.html">UPSC Photo &amp; Signature</a>
+              <a class="transition hover:text-white" href="pan-card-photo-resizer.html">PAN Card Photo &amp; Signature</a>
               <a class="transition hover:text-white" href="compress-image-to-20kb.html">Compress to 20KB</a>
               <a class="transition hover:text-white" href="compress-image-to-50kb.html">Compress to 50KB</a>
               <a class="transition hover:text-white" href="index.html#quick-signature-resizer">Signature Resizer</a>
@@ -673,7 +681,7 @@
             </nav>
           </section>
           <section aria-labelledby="footer-converters">
-            <h2 id="footer-converters" class="mb-3 text-sm font-semibold text-slate-200">Converters</h2>
+            <h2 id="footer-converters" class="mb-3 text-sm font-semibold text-slate-200">Image Converters</h2>
             <nav aria-label="Image converters" class="grid gap-2">
               <a class="transition hover:text-white" href="index.html#quick-jpg-to-png">JPG to PNG</a>
               <a class="transition hover:text-white" href="index.html#quick-png-to-jpg">PNG to JPG</a>

@@ -14,6 +14,11 @@
     "50kb": { format: null, targetBytes: 50 * 1024, aspectRatio: null },
     webp: { format: "image/webp", targetBytes: null, aspectRatio: null },
     passport: { format: null, targetBytes: null, aspectRatio: 3.5 / 4.5 },
+    "ssc-photo": { format: null, targetBytes: 20 * 1024, aspectRatio: null, width: null, height: null },
+    "ssc-signature": { format: null, targetBytes: 10 * 1024, aspectRatio: 138 / 177, width: 138, height: 177 },
+    "upsc-photo": { format: null, targetBytes: 300 * 1024, aspectRatio: 1, width: 350, height: 350 },
+    "pan-photo": { format: null, targetBytes: 30 * 1024, aspectRatio: 1, width: 213, height: 213 },
+    "pan-signature": { format: null, targetBytes: 10 * 1024, aspectRatio: null, width: null, height: null },
   };
   const queryPreset = new URLSearchParams(window.location.search).get("preset");
   const initialPreset = Object.prototype.hasOwnProperty.call(PAGE_PRESETS, queryPreset)
@@ -407,6 +412,8 @@
           quality: 85,
           targetBytes: pendingPreset?.targetBytes ?? null,
           aspectRatio: pendingPreset?.aspectRatio ?? null,
+          width: pendingPreset?.width ?? null,
+          height: pendingPreset?.height ?? null,
         },
       };
       if (!file.type.startsWith("image/")) {
@@ -436,6 +443,8 @@
       quality: Number(elements.qualitySlider.value),
       targetBytes: state.targetBytes,
       aspectRatio: state.cropRatio,
+      width: Number(elements.widthInput.value),
+      height: Number(elements.heightInput.value),
     };
     cancelBatchRun();
     clearCurrentImage();
@@ -744,7 +753,14 @@
         elements.originalPreview.src = state.sourceUrl;
         elements.widthInput.value = String(state.width);
         elements.heightInput.value = String(state.height);
-        if (settings.aspectRatio) {
+        if (settings.width && settings.height) {
+          elements.widthInput.value = String(settings.width);
+          elements.heightInput.value = String(settings.height);
+          elements.ratioLock.checked = true;
+          state.ratio = settings.width / settings.height;
+          state.cropRatio = settings.aspectRatio || state.ratio;
+          updateAspectControls();
+        } else if (settings.aspectRatio) {
           const dimensions = getAspectDimensions(state.width, state.height, settings.aspectRatio);
           elements.widthInput.value = String(dimensions.width);
           elements.heightInput.value = String(dimensions.height);

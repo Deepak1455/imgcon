@@ -91,4 +91,34 @@
       <image:title>Contact ImgCon Support</image:title>
     </image:image>
   </url>
+  <url>
+    <loc>https://imgcon.online/ssc-photo-resizer.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>SSC Photo and Signature Resizer</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://imgcon.online/upsc-photo-compressor.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>UPSC Photo and Signature Compressor</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://imgcon.online/pan-card-photo-resizer.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>PAN Card Photo and Signature Resizer</image:title>
+    </image:image>
+  </url>
 </urlset>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Resize PAN card application photos to 213 × 213 pixels and compress a photo under 30KB. Prepare a separate signature in your browser and verify NSDL or UTIITSL rules." />
+    <meta name="robots" content="index,follow" />
+    <title>PAN Card Photo &amp; Signature Resizer (213x213 px) — ImgCon</title>
+    <meta name="thumbnail" content="https://imgcon.online/imgconlogo.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://imgcon.online/pan-card-photo-resizer.html" />
+    <meta property="og:title" content="PAN Card Photo &amp; Signature Resizer (213x213 px) — ImgCon" />
+    <meta property="og:description" content="Prepare PAN application photos and signatures with editable pixel and file-size presets. Verify current NSDL or UTIITSL requirements." />
+    <meta property="og:image" content="https://imgcon.online/imgconlogo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://imgcon.online/imgconlogo.png" />
+    <link rel="canonical" href="https://imgcon.online/pan-card-photo-resizer.html" />
+    <link rel="icon" type="image/png" sizes="192x192" href="imgcon-icon-192.png" />
+    <link rel="preload" href="script.js" as="script" />
+    <link rel="stylesheet" href="smart-share.css" />
+    <style>
+      :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #020617; color: #e2e8f0; }
+      * { box-sizing: border-box; }
+      body { margin: 0; line-height: 1.7; }
+      a { color: #a5b4fc; }
+      header, main, footer { width: min(100% - 2rem, 1040px); margin-inline: auto; }
+      header, footer { padding-block: 1rem; border-bottom: 1px solid #263247; }
+      footer { border-top: 1px solid #263247; border-bottom: 0; margin-top: 3rem; padding-block: 1.5rem; }
+      .site-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+      .site-brand { color: #f8fafc; font-weight: 700; text-decoration: none; }
+      .site-nav, .actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+      .site-nav a, .actions a { display: inline-block; padding: .4rem .7rem; border: 1px solid #334155; border-radius: .5rem; text-decoration: none; }
+      .site-nav a:hover, .actions a:hover { border-color: #818cf8; color: #fff; }
+      main { padding-top: 1.5rem; }
+      h1, h2, h3 { line-height: 1.25; color: #f8fafc; }
+      h1 { font-size: clamp(2rem, 6vw, 3rem); }
+      section { margin-block: 2rem; }
+      .note { padding: 1rem; border: 1px solid #334155; border-radius: .75rem; background: #0b1120; }
+      .table-wrap { overflow-x: auto; }
+      table { width: 100%; min-width: 760px; border-collapse: collapse; }
+      th, td { border: 1px solid #334155; padding: .7rem; text-align: left; vertical-align: top; }
+      th { color: #f8fafc; background: #0b1120; }
+      .tool-frame { display: block; width: 100%; height: 900px; border: 1px solid #263247; border-radius: 1rem; background: #020617; }
+      .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; }
+      .footer-grid nav { display: grid; gap: .4rem; }
+      .footer-grid h2 { font-size: 1rem; }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {"@type":"BreadcrumbList","itemListElement":[
+            {"@type":"ListItem","position":1,"name":"Home","item":"https://imgcon.online/"},
+            {"@type":"ListItem","position":2,"name":"PAN Card Photo Resizer","item":"https://imgcon.online/pan-card-photo-resizer.html"}
+          ]},
+          {"@type":"FAQPage","mainEntity":[
+            {"@type":"Question","name":"Why does my PAN application reject the photo?","acceptedAnswer":{"@type":"Answer","text":"Check the selected NSDL or UTIITSL application's latest photo size, dimensions, format, background and upload instructions. A correct pixel size alone does not guarantee acceptance."}},
+            {"@type":"Question","name":"How do I resize my PAN photo to 213 by 213 pixels?","acceptedAnswer":{"@type":"Answer","text":"Choose the PAN photo preset, which starts at 213 by 213 pixels and a 30KB maximum, then verify the exported dimensions and file size against your current application."}},
+            {"@type":"Question","name":"How can I reduce a PAN signature to 10–20KB?","acceptedAnswer":{"@type":"Answer","text":"Open the signature preset and set a custom size target within the range required by the current application. Download and check the result remains readable."}},
+            {"@type":"Question","name":"Are my PAN photos sent to a server?","acceptedAnswer":{"@type":"Answer","text":"No. ImgCon processes selected images on your device in your browser and does not send them to an ImgCon image-processing server."}}
+          ]},
+          {"@type":"HowTo","name":"Resize a PAN card photo or signature with ImgCon","description":"Prepare a PAN application image in three browser-based steps and check the current application requirements.","step":[
+            {"@type":"HowToStep","name":"Check the application instructions","text":"Confirm the current photo and signature size, pixel dimensions and accepted formats in the NSDL or UTIITSL application."},
+            {"@type":"HowToStep","name":"Select a PAN preset","text":"Choose the photo preset for 213 by 213 pixels and a 30KB maximum, or use the signature preset and set the specified limit."},
+            {"@type":"HowToStep","name":"Download and verify","text":"Inspect the output preview, dimensions, file size and legibility, then compare them with the current application rules."}
+          ]}
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-brand" href="index.html">ImgCon</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="ssc-photo-resizer.html">SSC Photo</a>
+        <a href="upsc-photo-compressor.html">UPSC Photo</a>
+        <a href="pan-card-photo-resizer.html">PAN Photo</a>
+        <a href="compress-image-to-20kb.html">Compress 20KB</a>
+        <a href="jpg-to-webp.html">JPG to WebP</a>
+      </nav>
+    </header>
+    <main>
+      <h1>PAN Card Photo &amp; Signature Resizer</h1>
+      <p>Prepare separate photos and signatures for NSDL or UTIITSL PAN applications. The photo preset starts at exactly 213 × 213 pixels with a 30KB maximum. The signature preset starts at 10KB; set a custom limit up to 20KB when that matches the application. Check the latest instructions from the service handling your application because accepted formats and upload requirements may change.</p>
+      <div class="actions"><a href="index.html?preset=pan-photo">Open PAN photo preset</a><a href="index.html?preset=pan-signature">Open PAN signature preset</a></div>
+      <section aria-label="PAN card photo resizer">
+        <iframe class="tool-frame" title="ImgCon PAN photo resizer preset at 213 by 213 pixels" src="index.html?embed=1&amp;preset=pan-photo" loading="lazy" width="1040" height="900"></iframe>
+      </section>
+      <p class="note"><strong>Before applying:</strong> File size and pixel presets are editing defaults, not PAN application validation. Review the current NSDL or UTIITSL upload screen and follow its requirements if they differ.</p>
+      <section>
+        <h2>PAN photo and signature requirements comparison</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Examination</th><th>Required Photo Size</th><th>Required Dimensions</th><th>Signature Specs</th><th>Formats Allowed</th></tr></thead>
+            <tbody>
+              <tr><th>NSDL PAN</th><td>30KB maximum starting preset; confirm the current portal limit</td><td>213 × 213 px starting preset; confirm current instructions</td><td>10–20KB editable target; use the portal's size and pixel rules</td><td>Use the current NSDL upload screen's allowed types</td></tr>
+              <tr><th>UTIITSL PAN</th><td>30KB maximum starting preset; confirm the current portal limit</td><td>213 × 213 px starting preset; confirm current instructions</td><td>10–20KB editable target; use the portal's size and pixel rules</td><td>Use the current UTIITSL upload screen's allowed types</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Photo and signature are separate upload fields and may have different image rules. Check the current application instructions for background, image appearance, signature dimensions and format before export.</p>
+      </section>
+      <section>
+        <h2>Three steps to prepare your PAN images</h2>
+        <ol>
+          <li>Check the current NSDL or UTIITSL rules for the photo and signature fields.</li>
+          <li>Select the photo or signature preset and adjust the target and output settings to match those instructions.</li>
+          <li>Download and verify each output separately, including dimensions, format, size and legibility.</li>
+        </ol>
+      </section>
+      <section>
+        <h2>Frequently asked questions</h2>
+        <h3>Why does my PAN application reject the photo?</h3>
+        <p>Verify the current upload size, format, pixel dimensions, background and photo instructions for the specific service and application. A 213 × 213 image may still fail another requirement.</p>
+        <h3>How do I resize a PAN photo to 213 × 213 pixels?</h3>
+        <p>Use the photo preset, select an image and review the 213 × 213 output. Confirm the file size and other requirements on your current upload form.</p>
+        <h3>How can I reduce my signature to 10–20KB?</h3>
+        <p>Use the signature preset and enter the size limit specified by your application. Check the downloaded signature is both within the limit and legible.</p>
+        <h3>Are my PAN images uploaded to ImgCon?</h3>
+        <p>No. Images are processed locally in your browser and are not sent to ImgCon's image-processing server.</p>
+      </section>
+    </main>
+    <footer>
+      <div class="footer-grid">
+        <section><h2>Exam Tools (SSC, UPSC, PAN)</h2><nav aria-label="Exam tools"><a href="ssc-photo-resizer.html">SSC Photo &amp; Signature</a><a href="upsc-photo-compressor.html">UPSC Photo &amp; Signature</a><a href="pan-card-photo-resizer.html">PAN Card Photo &amp; Signature</a><a href="compress-image-to-20kb.html">Compress to 20KB</a><a href="compress-image-to-50kb.html">Compress to 50KB</a></nav></section>
+        <section><h2>Image Converters</h2><nav aria-label="Image converters"><a href="jpg-to-webp.html">JPG to WebP</a><a href="index.html#quick-jpg-to-png">JPG to PNG</a><a href="index.html#quick-png-to-jpg">PNG to JPG</a></nav></section>
+        <section><h2>Legal &amp; Support</h2><nav aria-label="Legal and support"><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms-of-service.html">Terms of Service</a></nav></section>
+      </div>
+    </footer>
+    <script src="script.js" defer></script>
+  </body>
+</html>

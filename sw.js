@@ -1,8 +1,11 @@
 "use strict";
 
-const CACHE_NAME = "imgcon-shell-v6";
+const CACHE_NAME = "imgcon-shell-v7";
 const APP_SHELL = [
   "./index.html",
+  "./ssc-photo-resizer.html",
+  "./upsc-photo-compressor.html",
+  "./pan-card-photo-resizer.html",
   "./compress-image-to-20kb.html",
   "./compress-image-to-50kb.html",
   "./jpg-to-webp.html",
