@@ -1,12 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://imgcon.online/</loc></url>
-  <url><loc>https://imgcon.online/compress-image-to-20kb.html</loc></url>
-  <url><loc>https://imgcon.online/compress-image-to-50kb.html</loc></url>
-  <url><loc>https://imgcon.online/jpg-to-webp.html</loc></url>
-  <url><loc>https://imgcon.online/passport-photo-maker.html</loc></url>
-  <url><loc>https://imgcon.online/privacy-policy.html</loc></url>
-  <url><loc>https://imgcon.online/terms-of-service.html</loc></url>
-  <url><loc>https://imgcon.online/about.html</loc></url>
-  <url><loc>https://imgcon.online/contact.html</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://imgcon.online/</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>ImgCon - Free Online Image Tools</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://imgcon.online/compress-image-to-20kb.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>Compress Image to 20KB with ImgCon</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://imgcon.online/compress-image-to-50kb.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>Compress Image to 50KB with ImgCon</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://imgcon.online/jpg-to-webp.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>Convert JPG to WebP with ImgCon</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://imgcon.online/passport-photo-maker.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>Passport Photo Maker by ImgCon</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://imgcon.online/privacy-policy.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>ImgCon Privacy Policy</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://imgcon.online/terms-of-service.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>ImgCon Terms of Service</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://imgcon.online/about.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>About ImgCon</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://imgcon.online/contact.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>Contact ImgCon Support</image:title>
+    </image:image>
+  </url>
 </urlset>
