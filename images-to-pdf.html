@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Merge multiple JPG/PNG images into a single PDF document online. Set page order, compress under 1MB for exam forms. 100% free and private." />
+    <meta name="robots" content="index,follow" />
+    <meta name="thumbnail" content="https://imgcon.online/imgconlogo.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://imgcon.online/images-to-pdf.html" />
+    <meta property="og:title" content="Convert Multiple Images to Single PDF Online Free — ImgCon" />
+    <meta property="og:description" content="Combine and reorder image pages into one PDF locally in your browser." />
+    <meta property="og:image" content="https://imgcon.online/imgconlogo.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://imgcon.online/imgconlogo.png" />
+    <link rel="canonical" href="https://imgcon.online/images-to-pdf.html" />
+    <link rel="icon" type="image/png" sizes="192x192" href="imgcon-icon-192.png" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="smart-share.css" />
+    <title>Convert Multiple Images to Single PDF Online Free — ImgCon</title>
+    <style>
+      :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #020617; color: #e2e8f0; }
+      * { box-sizing: border-box; }
+      body { margin: 0; line-height: 1.65; }
+      a { color: #a5b4fc; }
+      header, main, footer { width: min(100% - 2rem, 1100px); margin-inline: auto; }
+      header, footer { padding-block: 1rem; border-bottom: 1px solid #263247; }
+      footer { border-top: 1px solid #263247; border-bottom: 0; margin-top: 3rem; padding-block: 1.5rem; }
+      .site-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+      .site-brand { color: #f8fafc; font-weight: 700; text-decoration: none; }
+      .site-nav { display: flex; flex-wrap: wrap; gap: .45rem; }
+      .site-nav a { padding: .35rem .6rem; border: 1px solid #334155; border-radius: .5rem; text-decoration: none; }
+      .site-nav a:hover { border-color: #818cf8; color: #fff; }
+      main { padding-top: 1.5rem; }
+      h1, h2, h3 { line-height: 1.25; color: #f8fafc; }
+      h1 { font-size: clamp(2rem, 6vw, 3rem); }
+      section { margin-block: 2rem; }
+      .tool-panel, .content-card { border: 1px solid #263247; border-radius: 1rem; background: #0b1120; padding: clamp(1rem, 3vw, 1.5rem); }
+      .drop-zone { border: 1px dashed #64748b; border-radius: .8rem; padding: 1.5rem; text-align: center; background: #020617; }
+      .drop-zone.is-dragging { border-color: #818cf8; background: #111c32; }
+      .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-block: 1.25rem; }
+      label { display: grid; gap: .35rem; font-weight: 600; }
+      select, button { font: inherit; }
+      select { width: 100%; padding: .7rem .8rem; color: #f8fafc; background: #020617; border: 1px solid #475569; border-radius: .6rem; }
+      button { padding: .6rem .8rem; border: 1px solid #475569; border-radius: .6rem; color: #e2e8f0; background: #111c32; cursor: pointer; }
+      button:hover:not(:disabled) { border-color: #818cf8; color: #fff; }
+      button:disabled { opacity: .5; cursor: not-allowed; }
+      .primary-action { padding: .75rem 1rem; color: #fff; background: #4f46e5; border-color: #6366f1; font-weight: 700; }
+      .page-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-top: 1.2rem; }
+      .page-card { position: relative; min-width: 0; overflow: hidden; border: 1px solid #334155; border-radius: .8rem; background: #020617; }
+      .page-card img { display: block; width: 100%; height: 190px; object-fit: contain; background: #fff; }
+      .page-badge { position: absolute; top: .5rem; left: .5rem; padding: .2rem .45rem; border-radius: 999px; background: #312e81; color: #fff; font-size: .75rem; }
+      .page-name { overflow: hidden; padding-inline: .75rem; text-overflow: ellipsis; white-space: nowrap; }
+      .page-controls { display: flex; flex-wrap: wrap; gap: .35rem; padding: .6rem; }
+      .page-controls button { flex: 1; padding: .4rem; font-size: .85rem; }
+      .hint, .status { color: #aab5c7; font-size: .92rem; }
+      .error { min-height: 1.5em; color: #fca5a5; }
+      .note { border-left: 3px solid #818cf8; padding: .75rem 1rem; background: #111c32; }
+      .table-wrap { overflow-x: auto; }
+      table { width: 100%; min-width: 560px; border-collapse: collapse; }
+      th, td { border: 1px solid #334155; padding: .7rem; text-align: left; vertical-align: top; }
+      th { color: #f8fafc; background: #0b1120; }
+      .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; }
+      .footer-grid h2 { font-size: 1rem; }
+      .footer-grid nav { display: grid; gap: .4rem; }
+      @media (max-width: 600px) { .page-grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); } }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {"@type":"Question","name":"How can I combine multiple images into one PDF?","acceptedAnswer":{"@type":"Answer","text":"Select or drop multiple images, arrange the pages with the up and down controls, choose orientation and compression, then select Merge & Download PDF. Each image becomes a page in one locally generated PDF."}},
+          {"@type":"Question","name":"Are my Aadhaar, marksheets, or certificates uploaded?","acceptedAnswer":{"@type":"Answer","text":"No. Images are decoded and assembled into a PDF in your browser using local canvas processing. They are not uploaded to an ImgCon image-processing server."}},
+          {"@type":"Question","name":"Can I make the combined PDF smaller than 1MB?","acceptedAnswer":{"@type":"Answer","text":"Choose Compressed (<1MB) or Compact (<500KB). ImgCon tries progressively lower image quality and resolution, but the final size depends on the number, content, and complexity of your pages. The actual size and any missed target are shown."}},
+          {"@type":"Question","name":"Can I change the order or remove pages before merging?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the up and down buttons to change page order or Delete to remove a page. The page number badges update automatically before you create the PDF."}}
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-brand" href="index.html">ImgCon</a>
+      <button id="share-button" class="smart-share-trigger" type="button" data-smart-share>Share</button>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="ssc-photo-resizer.html">SSC Photo</a>
+        <a href="signature-resizer.html">Signature Resizer</a>
+        <a href="photo-name-date-maker.html">Name &amp; Date Photo</a>
+        <a href="images-to-pdf.html" aria-current="page">Images to PDF</a>
+        <a href="upsc-photo-compressor.html">UPSC Photo</a>
+        <a href="pan-card-photo-resizer.html">PAN Photo</a>
+      </nav>
+    </header>
+    <main>
+      <h1>Combine Multiple Images into One PDF</h1>
+      <p>Merge Aadhaar front and back, marksheets, certificates, and other image pages into one compact PDF for online applications. Reorder pages before exporting. All processing happens locally in your browser; no image files are uploaded to ImgCon.</p>
+      <section class="tool-panel" aria-label="Images to PDF tool">
+        <div id="pdf-drop-zone" class="drop-zone">
+          <p><strong>Select or drop multiple images</strong></p>
+          <p class="hint">Add JPG, PNG, WebP or other browser-supported images. Each image becomes one A4 PDF page.</p>
+          <input id="images-input" type="file" accept="image/*" multiple hidden />
+          <button id="browse-images" type="button">Choose images</button>
+        </div>
+        <div class="options">
+          <label for="page-orientation">Page orientation
+            <select id="page-orientation">
+              <option value="auto">Auto</option>
+              <option value="portrait">Portrait (A4)</option>
+              <option value="landscape">Landscape</option>
+            </select>
+          </label>
+          <label for="pdf-quality">Quality / compression
+            <select id="pdf-quality">
+              <option value="high">High Quality</option>
+              <option value="compressed">Compressed (target &lt;1MB)</option>
+              <option value="compact">Compact (target &lt;500KB)</option>
+            </select>
+          </label>
+        </div>
+        <p id="pdf-status" class="status" aria-live="polite">Add images to start a PDF.</p>
+        <p id="pdf-error" class="error" role="alert"></p>
+        <div id="page-grid" class="page-grid" aria-label="PDF pages"></div>
+        <p><button id="merge-pdf" class="primary-action" type="button" disabled>Merge &amp; Download PDF</button></p>
+      </section>
+      <p class="note"><strong>Size targets are best-effort.</strong> Portal limits and PDF processing vary. The tool retries with lower image quality and resolution for compressed presets, then reports the actual PDF size. Always follow the current upload instructions.</p>
+      <section>
+        <h2>Common government portal PDF upload limits</h2>
+        <p>Upload limits vary by application field, document type, and recruitment cycle; these ranges are general planning references only. Verify each current portal's file size, page count, format, and legibility rules.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Portal / exam</th><th>Common planning range</th><th>Check before submitting</th></tr></thead>
+            <tbody>
+              <tr><td>SSC</td><td>Often 500KB to 1MB for document uploads</td><td>Application field, PDF/JPG requirement, page count, and maximum size in the active notice.</td></tr>
+              <tr><td>UPSC</td><td>Often 500KB to 1MB, depending on the document field</td><td>Current form instructions; photo, signature, and certificates may have different rules.</td></tr>
+              <tr><td>NTA</td><td>Often below 500KB to 1MB for supporting documents</td><td>Exam-specific information bulletin and upload screen; limits vary across exams.</td></tr>
+              <tr><td>High Court</td><td>Often below 500KB to 1MB per document</td><td>Recruitment notice, accepted file types, page and size limits for each upload field.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section>
+        <h2>How to combine images into a PDF</h2>
+        <ol>
+          <li>Select all document images, or drag them into the upload area.</li>
+          <li>Arrange the page order, remove any unwanted page, and select page orientation and a quality preset.</li>
+          <li>Select Merge &amp; Download PDF, then check the PDF size and legibility against the current portal requirements.</li>
+        </ol>
+      </section>
+      <section>
+        <h2>Frequently asked questions</h2>
+        <h3>Are my documents uploaded while creating a PDF?</h3>
+        <p>No. Image decoding, canvas conversion, and PDF assembly run in your browser. Your documents are not sent to an ImgCon image-processing server.</p>
+        <h3>Can I create one PDF from Aadhaar front and back?</h3>
+        <p>Yes. Select both images, move them into the required order, choose a quality preset, and create the PDF.</p>
+        <h3>Will the PDF always be below 1MB or 500KB?</h3>
+        <p>The compression presets retry at smaller dimensions and lower JPEG quality, but no fixed size can be guaranteed for every selection. The resulting size and any target miss are displayed.</p>
+        <h3>Can I change page order after adding images?</h3>
+        <p>Yes. Use the up/down page controls before merging. Delete removes a page from the queue.</p>
+      </section>
+    </main>
+    <footer>
+      <div class="footer-grid">
+        <section><h2>Exam Tools</h2><nav aria-label="Exam tools"><a href="ssc-photo-resizer.html">SSC Photo &amp; Signature</a><a href="signature-resizer.html">Signature Resizer</a><a href="photo-name-date-maker.html">Name &amp; Date Photo</a><a href="upsc-photo-compressor.html">UPSC Photo</a><a href="pan-card-photo-resizer.html">PAN Card Photo</a></nav></section>
+        <section><h2>Image Converters</h2><nav aria-label="Image converters"><a href="images-to-pdf.html">Images to PDF</a><a href="jpg-to-webp.html">JPG to WebP</a><a href="index.html#quick-jpg-to-png">JPG to PNG</a><a href="index.html#quick-png-to-jpg">PNG to JPG</a></nav></section>
+        <section><h2>Legal &amp; Support</h2><nav aria-label="Legal and support"><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms-of-service.html">Terms of Service</a></nav></section>
+      </div>
+      <p>© 2026 ImgCon. Created with care by <a href="about.html">Deepak Sikarwar</a>.</p>
+    </footer>
+    <script src="images-to-pdf.js" defer></script>
+    <script src="script.js" defer></script>
+  </body>
+</html>

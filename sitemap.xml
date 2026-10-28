@@ -112,6 +112,26 @@
     </image:image>
   </url>
   <url>
+    <loc>https://imgcon.online/photo-name-date-maker.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>Name and Date on Photo Maker — ImgCon</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://imgcon.online/images-to-pdf.html</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
+      <image:title>Convert Multiple Images to PDF — ImgCon</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://imgcon.online/upsc-photo-compressor.html</loc>
     <lastmod>2026-10-28</lastmod>
     <changefreq>daily</changefreq>

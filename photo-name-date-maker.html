@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Add your name and date of photo (DOP) on passport photos for SSC, UP Police, and competitive exams. 100% free, instant, and private in your browser." />
+    <meta name="robots" content="index,follow" />
+    <meta name="thumbnail" content="https://imgcon.online/imgconlogo.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://imgcon.online/photo-name-date-maker.html" />
+    <meta property="og:title" content="Name and Date on Photo Maker Online — ImgCon" />
+    <meta property="og:description" content="Add candidate name and date of photo on exam passport photos privately in your browser." />
+    <meta property="og:image" content="https://imgcon.online/imgconlogo.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://imgcon.online/imgconlogo.png" />
+    <link rel="canonical" href="https://imgcon.online/photo-name-date-maker.html" />
+    <link rel="icon" type="image/png" sizes="192x192" href="imgcon-icon-192.png" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="smart-share.css" />
+    <title>Name and Date on Photo Maker Online (SSC, Police &amp; Govt Exams) — ImgCon</title>
+    <style>
+      :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #020617; color: #e2e8f0; }
+      * { box-sizing: border-box; }
+      body { margin: 0; line-height: 1.65; }
+      a { color: #a5b4fc; }
+      header, main, footer { width: min(100% - 2rem, 1100px); margin-inline: auto; }
+      header, footer { padding-block: 1rem; border-bottom: 1px solid #263247; }
+      footer { border-top: 1px solid #263247; border-bottom: 0; margin-top: 3rem; padding-block: 1.5rem; }
+      .site-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+      .site-brand { color: #f8fafc; font-weight: 700; text-decoration: none; }
+      .site-nav { display: flex; flex-wrap: wrap; gap: .45rem; }
+      .site-nav a { padding: .35rem .6rem; border: 1px solid #334155; border-radius: .5rem; text-decoration: none; }
+      .site-nav a:hover { border-color: #818cf8; color: #fff; }
+      main { padding-top: 1.5rem; }
+      h1, h2, h3 { line-height: 1.25; color: #f8fafc; }
+      h1 { font-size: clamp(2rem, 6vw, 3rem); }
+      section { margin-block: 2rem; }
+      .tool-panel, .content-card { border: 1px solid #263247; border-radius: 1rem; background: #0b1120; padding: clamp(1rem, 3vw, 1.5rem); }
+      .tool-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, .75fr); gap: 1.5rem; align-items: start; }
+      .controls { display: grid; gap: 1rem; }
+      label { display: grid; gap: .35rem; font-weight: 600; }
+      input, select, button { font: inherit; }
+      input[type="text"], input[type="date"], select { width: 100%; padding: .7rem .8rem; color: #f8fafc; background: #020617; border: 1px solid #475569; border-radius: .6rem; }
+      input[type="range"] { width: 100%; accent-color: #818cf8; }
+      button { padding: .65rem .9rem; border: 1px solid #475569; border-radius: .6rem; color: #e2e8f0; background: #111c32; cursor: pointer; }
+      button:hover:not(:disabled) { border-color: #818cf8; color: #fff; }
+      button:disabled { opacity: .5; cursor: not-allowed; }
+      .primary-action { color: #fff; background: #4f46e5; border-color: #6366f1; font-weight: 700; }
+      .drop-zone { border: 1px dashed #64748b; border-radius: .8rem; padding: 1rem; text-align: center; background: #020617; }
+      .drop-zone.is-dragging, .drop-zone.has-photo { border-color: #818cf8; background: #111c32; }
+      .button-row { display: flex; flex-wrap: wrap; gap: .5rem; }
+      [aria-pressed="true"] { border-color: #a5b4fc; background: #312e81; }
+      .preview-wrap { display: grid; justify-items: center; gap: .75rem; }
+      #photo-preview { width: min(100%, 350px); height: auto; border: 1px solid #475569; border-radius: .4rem; background: #fff; }
+      .hint, .status { color: #aab5c7; font-size: .92rem; }
+      .error { min-height: 1.5em; color: #fca5a5; }
+      .note { border-left: 3px solid #818cf8; padding: .75rem 1rem; background: #111c32; }
+      .table-wrap { overflow-x: auto; }
+      table { width: 100%; min-width: 560px; border-collapse: collapse; }
+      th, td { border: 1px solid #334155; padding: .7rem; text-align: left; vertical-align: top; }
+      th { color: #f8fafc; background: #0b1120; }
+      .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; }
+      .footer-grid h2 { font-size: 1rem; }
+      .footer-grid nav { display: grid; gap: .4rem; }
+      @media (max-width: 700px) { .tool-grid { grid-template-columns: 1fr; } }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {"@type":"Question","name":"Why do SSC forms reject a photo without a name and date?","acceptedAnswer":{"@type":"Answer","text":"Some exam notices or application fields ask for the candidate's name and date of photograph on a clear white strip. Rules vary by recruitment cycle, so check the current notice and preview the final image before uploading."}},
+          {"@type":"Question","name":"What date format should I use for the date of photo (DOP)?","acceptedAnswer":{"@type":"Answer","text":"Use the date format and prefix required by the active application instructions. ImgCon offers DOP:, Date:, or no prefix and displays the selected date as DD-MM-YYYY."}},
+          {"@type":"Question","name":"Will adding a name and date change my passport photo dimensions?","acceptedAnswer":{"@type":"Answer","text":"ImgCon exports a 700 by 900 pixel JPEG canvas, a 7:9 ratio corresponding to 3.5 by 4.5. The white label overlays the bottom of the photo; verify the exact dimensions and composition required by your exam."}},
+          {"@type":"Question","name":"Are my photo and personal details uploaded to ImgCon?","acceptedAnswer":{"@type":"Answer","text":"No. The photo and entered name and date are processed locally in your browser using an HTML canvas and are not sent to an ImgCon image-processing server."}}
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-brand" href="index.html">ImgCon</a>
+      <button id="share-button" class="smart-share-trigger" type="button" data-smart-share>Share</button>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="ssc-photo-resizer.html">SSC Photo</a>
+        <a href="signature-resizer.html">Signature Resizer</a>
+        <a href="photo-name-date-maker.html" aria-current="page">Name &amp; Date Photo</a>
+        <a href="images-to-pdf.html">Images to PDF</a>
+        <a href="upsc-photo-compressor.html">UPSC Photo</a>
+        <a href="pan-card-photo-resizer.html">PAN Photo</a>
+      </nav>
+    </header>
+    <main>
+      <h1>Name and Date on Passport Photo Maker</h1>
+      <p>Add your candidate name and date of photograph (DOP) on a clean white strip for SSC, UP Police, Bihar Police, Railway and state exam applications. Preview the result, choose a JPEG size target, and download it directly from your browser. Always confirm the active exam notice before submitting.</p>
+      <section class="tool-panel" aria-label="Name and date photo maker">
+        <div class="tool-grid">
+          <div class="controls">
+            <div class="drop-zone" id="photo-drop-zone">
+              <p><strong>Select or drop one passport photo</strong></p>
+              <p class="hint">JPG, PNG, WebP and other browser-supported image files · output 700 × 900 px JPEG</p>
+              <input id="photo-input" type="file" accept="image/*" hidden />
+              <button id="browse-photo" type="button">Choose photo</button>
+            </div>
+            <label for="candidate-name">Candidate name
+              <input id="candidate-name" type="text" maxlength="80" autocomplete="name" placeholder="DEEPAK SIKARWAR" />
+            </label>
+            <label for="photo-date">Date of photograph
+              <input id="photo-date" type="date" />
+            </label>
+            <label for="date-prefix">Date prefix
+              <select id="date-prefix">
+                <option value="dop">DOP: DD-MM-YYYY</option>
+                <option value="date">Date: DD-MM-YYYY</option>
+                <option value="none">DD-MM-YYYY</option>
+              </select>
+            </label>
+            <label for="strip-height">White strip height: <span id="strip-height-value">20%</span>
+              <input id="strip-height" type="range" min="14" max="28" value="20" />
+            </label>
+            <div>
+              <p><strong>Optional JPEG size target</strong></p>
+              <div class="button-row">
+                <button type="button" data-target-bytes="51200" aria-pressed="false">Compress under 50KB</button>
+                <button type="button" data-target-bytes="20480" aria-pressed="false">Compress under 20KB</button>
+              </div>
+            </div>
+            <p id="target-note" class="status" aria-live="polite">Choose a photo to create a preview.</p>
+            <p id="photo-error" class="error" role="alert"></p>
+            <button id="download-photo" class="primary-action" type="button" disabled>Download name &amp; date JPG</button>
+          </div>
+          <div class="preview-wrap">
+            <h2>Live preview</h2>
+            <canvas id="photo-preview" width="700" height="900" aria-label="Preview of the photo with a name and date strip"></canvas>
+            <p class="hint">The label is overlaid on the bottom 20% by default. Check that it does not cover important parts of your photo.</p>
+          </div>
+        </div>
+      </section>
+      <p class="note"><strong>Privacy:</strong> The photo and the entered personal details stay in this browser session. They are processed locally and are not uploaded to ImgCon's image-processing server.</p>
+      <section>
+        <h2>Exam photo name and date rules</h2>
+        <p>These are general preparation notes, not a guarantee of one rule for every recruitment. Follow the active official notification and the upload field instructions.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Exam / recruitment</th><th>Name and date guidance</th><th>What to confirm</th></tr></thead>
+            <tbody>
+              <tr><td>SSC</td><td>Some notices require the candidate's name and date of photograph (DOP) on a white label or strip.</td><td>Whether a printed/visible name and date are required, plus image size, dimensions and date format.</td></tr>
+              <tr><td>Police Recruitment</td><td>UP Police, Bihar Police and state police instructions may prescribe a name/date caption or photo recency condition.</td><td>Required wording, label placement, background, pixels and maximum file size for that recruitment.</td></tr>
+              <tr><td>Defense exams</td><td>Photo-caption rules differ among defense recruitment and examination processes.</td><td>Whether a name/date strip is permitted or required; do not add one unless the current instructions ask for it.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section>
+        <h2>How to add a name and date to an exam photo</h2>
+        <ol>
+          <li>Read the current recruitment notice to confirm that the name/date caption is required and note its exact format.</li>
+          <li>Select a clear passport photo, enter your name and date, and choose the matching date prefix. The name is automatically converted to uppercase.</li>
+          <li>Review the preview, choose a compression target if needed, and download the JPEG. Check its actual size, dimensions, and appearance before uploading.</li>
+        </ol>
+      </section>
+      <section>
+        <h2>Frequently asked questions</h2>
+        <h3>Why do SSC forms reject a photo without a name and date?</h3>
+        <p>Some exam notices require the candidate name and date of photograph on a clear strip. Requirements can change; consult the active SSC notice and the upload screen.</p>
+        <h3>What date format should I use?</h3>
+        <p>Select the prefix and DD-MM-YYYY date format specified by the application. The picker defaults to today's date; change it to the actual photo date when required.</p>
+        <h3>Does this tool upload my photo?</h3>
+        <p>No. Your photo and text are drawn on a canvas in your browser and are not uploaded to ImgCon's image-processing server.</p>
+        <h3>Can I compress the photo to 20KB or 50KB?</h3>
+        <p>Yes. Choose either target, and the tool adjusts JPEG quality and, if needed, pixel dimensions. Very complex images may not reach the target without substantial quality loss; the actual resulting size is shown.</p>
+      </section>
+    </main>
+    <footer>
+      <div class="footer-grid">
+        <section><h2>Exam Tools</h2><nav aria-label="Exam tools"><a href="ssc-photo-resizer.html">SSC Photo &amp; Signature</a><a href="signature-resizer.html">Signature Resizer</a><a href="photo-name-date-maker.html">Name &amp; Date Photo</a><a href="upsc-photo-compressor.html">UPSC Photo</a><a href="pan-card-photo-resizer.html">PAN Card Photo</a></nav></section>
+        <section><h2>Image Converters</h2><nav aria-label="Image converters"><a href="images-to-pdf.html">Images to PDF</a><a href="jpg-to-webp.html">JPG to WebP</a><a href="index.html#quick-jpg-to-png">JPG to PNG</a><a href="index.html#quick-png-to-jpg">PNG to JPG</a></nav></section>
+        <section><h2>Legal &amp; Support</h2><nav aria-label="Legal and support"><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms-of-service.html">Terms of Service</a></nav></section>
+      </div>
+      <p>© 2026 ImgCon. Created with care by <a href="about.html">Deepak Sikarwar</a>.</p>
+    </footer>
+    <script src="photo-name-date-maker.js" defer></script>
+    <script src="script.js" defer></script>
+  </body>
+</html>
