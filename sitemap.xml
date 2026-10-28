@@ -75,10 +75,10 @@
     <loc>https://imgcon.online/about.html</loc>
     <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
     <image:image>
-      <image:loc>https://imgcon.online/imgconlogo.png</image:loc>
-      <image:title>About ImgCon</image:title>
+      <image:loc>https://imgcon.online/deepak-sikarwar.jpg</image:loc>
+      <image:title>Deepak Sikarwar - Founder and Developer of ImgCon</image:title>
     </image:image>
   </url>
   <url>
